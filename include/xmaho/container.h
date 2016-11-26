@@ -11,7 +11,7 @@ namespace container
 /**
  * \brief Speedy string map.
  *
- * This is unorderd map.
+ * This is unordered map.
  */
 template<typename T>
 using StringMap = std::unordered_map<std::string, T>;
