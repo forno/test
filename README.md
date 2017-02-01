@@ -1,2 +1,2 @@
 # x.maho
-Librarys for me.
+Libraries for me.
