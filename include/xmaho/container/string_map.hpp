@@ -14,7 +14,7 @@ namespace container
  * This is unordered map.
  */
 template<typename T>
-using StringMap = std::unordered_map<std::string, T>;
+using string_map = std::unordered_map<std::string, T>;
 
 }
 }
