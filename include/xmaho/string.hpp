@@ -2,8 +2,9 @@
 #define XMAHO_XMAHO_STRING_H
 
 #include <regex>
-#include <vector>
 #include <string>
+#include <utility>
+#include <vector>
 
 namespace xmaho
 {
@@ -18,9 +19,9 @@ namespace string
  */
 template<typename StringT, typename DelimiterT>
 std::vector<StringT> split(const StringT& base_text,
-                           const DelimiterT& delimiter)
+                           DelimiterT&& delimiter)
 {
-  std::basic_regex<typename StringT::value_type> delimiterRegex(delimiter);
+  std::basic_regex<typename StringT::value_type> delimiterRegex(std::forward<DelimiterT>(delimiter));
   std::regex_token_iterator<typename StringT::const_iterator>
       first {base_text.cbegin(), base_text.cend(), delimiterRegex, -1},
       last;
