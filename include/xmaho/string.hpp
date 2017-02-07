@@ -27,6 +27,11 @@ inline std::vector<StringT> split(const StringT& base_text, DelimiterT&& delimit
   return {first, last};
 }
 
+/**
+ * \brief xmaho::string::split for string literal
+ *
+ * Call xmaho::string::split with std::basic_string<CharT> on const CharT (&)[N].
+ */
 template<typename DelimiterT, typename CharT, size_t N>
 inline std::vector<std::basic_string<CharT>> split(const CharT (&base_text)[N], DelimiterT&& delimiter)
 {
