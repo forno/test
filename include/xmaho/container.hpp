@@ -1,21 +1,6 @@
 #ifndef XMAHO_XMAHO_CONTAINER_H
 #define XMAHO_XMAHO_CONTAINER_H
 
-#include <unordered_map>
-
-namespace xmaho
-{
-namespace container
-{
-
-/**
- * \brief Speedy string map.
- *
- * This is unordered map.
- */
-template<typename T>
-using StringMap = std::unordered_map<std::string, T>;
-}
-}
+#include "xmaho/container/string_map.hpp"
 
 #endif
