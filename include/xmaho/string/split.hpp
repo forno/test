@@ -13,7 +13,7 @@ namespace string
 {
 
 /**
- * \brief Vector of string is splited by delimiter
+ * \brief Vector of string is splited by delimiter that is regex.
  *
  * The string is splited by delimiter to std::vector.
  * On Javascript, It is know as String.split().
@@ -31,7 +31,7 @@ split(const StringT& base_text, const DelimiterT& delimiter_regex)
 }
 
 /**
- * \brief Vector of string is splited by delimiter
+ * \brief Vector of string is splited by delimiter that is string
  *
  * The string is splited by delimiter to std::vector.
  * On Javascript, It is know as String.split().
