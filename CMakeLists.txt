@@ -37,7 +37,7 @@ file(GLOB ICS3_HEADERS
 )
 
 if(ENABLE_TEST)
-  set(GTEST_ROOT ${MY_DIR}/thirdpatry/googletest/googletest)
+  set(GTEST_ROOT ${MY_DIR}/thirdparty/googletest/googletest)
   find_package(GTest REQUIRED)
   find_package(Threads)
 
