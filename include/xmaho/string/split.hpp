@@ -39,7 +39,7 @@ split(const StringT& base_text, const DelimiterT& delimiter_regex)
 template<typename StringT, typename DelimiterT>
 inline typename std::enable_if<!std::is_same<typename std::remove_reference<DelimiterT>::type,
                                              std::basic_regex<typename StringT::value_type>>{},
-                               std::vector<StringT>>::type
+                               decltype(split(StringT{}, std::basic_regex<typename StringT::value_type>{}))>::type
 split(const StringT& base_text, DelimiterT&& delimiter)
 {
   std::basic_regex<typename StringT::value_type> delimiter_regex {std::forward<DelimiterT>(delimiter)};
@@ -52,7 +52,7 @@ split(const StringT& base_text, DelimiterT&& delimiter)
  * Call xmaho::string::split with std::basic_string<CharT> on const CharT (&)[N].
  */
 template<typename CharT, size_t N, typename DelimiterT>
-inline std::vector<std::basic_string<CharT>> split(const CharT (&base_text)[N], DelimiterT&& delimiter)
+inline auto split(const CharT (&base_text)[N], DelimiterT&& delimiter) -> decltype(split(std::basic_string<CharT>{}, std::forward<DelimiterT>(delimiter)))
 {
   return split(std::basic_string<CharT>(base_text), std::forward<DelimiterT>(delimiter));
 }
