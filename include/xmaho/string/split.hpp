@@ -52,7 +52,7 @@ split(const StringT& base_text, DelimiterT&& delimiter)
  * Call xmaho::string::split with std::basic_string<CharT> on const CharT (&)[N].
  */
 template<typename CharT, size_t N, typename DelimiterT>
-inline std::vector<std::basic_string<CharT>> split(const CharT (&base_text)[N], DelimiterT&& delimiter)
+inline auto split(const CharT (&base_text)[N], DelimiterT&& delimiter) -> decltype(split(std::basic_string<CharT>{}, std::forward<DelimiterT>(delimiter)))
 {
   return split(std::basic_string<CharT>(base_text), std::forward<DelimiterT>(delimiter));
 }
