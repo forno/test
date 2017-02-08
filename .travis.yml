@@ -6,15 +6,14 @@ compiler:
 - g++
 - clang++
 before_install:
-#- cd thirdpatry/googletest/googletest
-#- cmake -DCMAKE_BUILD_TYPE=RELEASE .
-#- make
-#- cd -
+- cd thirdpatry/googletest/googletest
+- cmake -DCMAKE_BUILD_TYPE=RELEASE .
+- make
+- cd -
 - mkdir build
 - cd build
 install:
-#- cmake .. -DCMAKE_INSTALL_PREFIX=install -DENABLE_TEST=ON
-- cmake .. -DCMAKE_INSTALL_PREFIX=install
+- cmake .. -DCMAKE_INSTALL_PREFIX=install -DENABLE_TEST=ON
 - make
 - make install
 script:
