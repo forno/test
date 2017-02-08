@@ -1,6 +1,8 @@
-#include "xmaho/string.hpp"
-
 #include <iostream>
+#include <regex>
+#include <string>
+
+#include "xmaho/string.hpp"
 
 int main(int argc, char* argv[]) {
   {
