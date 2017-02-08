@@ -6,7 +6,7 @@ compiler:
 - g++
 - clang++
 before_install:
-- cd thirdpatry/googletest/googletest
+- cd thirdparty/googletest/googletest
 - cmake -DCMAKE_BUILD_TYPE=RELEASE .
 - make
 - cd -
