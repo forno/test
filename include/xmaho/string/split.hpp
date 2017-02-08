@@ -20,10 +20,10 @@ namespace string
 template<typename DelimiterT, typename StringT>
 inline std::vector<StringT> split(const StringT& base_text, DelimiterT&& delimiter)
 {
-  std::basic_regex<typename StringT::value_type> delimiter_regex(std::forward<DelimiterT>(delimiter));
+  std::basic_regex<typename StringT::value_type> delimiter_regex {std::forward<DelimiterT>(delimiter)};
   std::regex_token_iterator<typename StringT::const_iterator>
       first {base_text.cbegin(), base_text.cend(), delimiter_regex, -1},
-      last;
+      last {};
   return {first, last};
 }
 
