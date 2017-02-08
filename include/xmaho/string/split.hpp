@@ -3,6 +3,7 @@
 
 #include <regex>
 #include <string>
+#include <type_traits>
 #include <utility>
 #include <vector>
 
@@ -17,9 +18,10 @@ namespace string
  * The string is splited by delimiter to std::vector.
  * On Javascript, It is know as String.split().
  */
-template<typename DelimiterT,
-         typename StringT>
-inline typename std::enable_if<std::is_same<DelimiterT, std::basic_regex<typename StringT::value_type>>{}, std::vector<StringT>>::type
+template<typename StringT, typename DelimiterT>
+inline typename std::enable_if<std::is_same<DelimiterT,
+                                            std::basic_regex<typename StringT::value_type>>{},
+                               std::vector<StringT>>::type
 split(const StringT& base_text, const DelimiterT& delimiter_regex)
 {
   std::regex_token_iterator<typename StringT::const_iterator>
@@ -34,9 +36,10 @@ split(const StringT& base_text, const DelimiterT& delimiter_regex)
  * The string is splited by delimiter to std::vector.
  * On Javascript, It is know as String.split().
  */
-template<typename DelimiterT,
-         typename StringT>
-inline typename std::enable_if<!std::is_same<typename std::remove_reference<DelimiterT>::type, std::basic_regex<typename StringT::value_type>>{}, std::vector<StringT>>::type
+template<typename StringT, typename DelimiterT>
+inline typename std::enable_if<!std::is_same<typename std::remove_reference<DelimiterT>::type,
+                                             std::basic_regex<typename StringT::value_type>>{},
+                               std::vector<StringT>>::type
 split(const StringT& base_text, DelimiterT&& delimiter)
 {
   std::basic_regex<typename StringT::value_type> delimiter_regex {std::forward<DelimiterT>(delimiter)};
@@ -48,7 +51,7 @@ split(const StringT& base_text, DelimiterT&& delimiter)
  *
  * Call xmaho::string::split with std::basic_string<CharT> on const CharT (&)[N].
  */
-template<typename DelimiterT, typename CharT, size_t N>
+template<typename CharT, size_t N, typename DelimiterT>
 inline std::vector<std::basic_string<CharT>> split(const CharT (&base_text)[N], DelimiterT&& delimiter)
 {
   return split(std::basic_string<CharT>(base_text), std::forward<DelimiterT>(delimiter));

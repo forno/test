@@ -1,6 +1,6 @@
-#include "xmaho/container.hpp"
-
 #include <cassert>
+
+#include "xmaho/container.hpp"
 
 int main(int argc, char* argv[]) {
   xmaho::container::string_map<int> map {};
