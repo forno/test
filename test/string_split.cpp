@@ -3,9 +3,28 @@
 #include <iostream>
 
 int main(int argc, char* argv[]) {
-  auto result = xmaho::string::split(std::string("hoge"), "o");
-  for (auto& x : result) std::cout << x << std::endl;
-  std::cout << "othor test" << std::endl;
-  auto othertest = xmaho::string::split(("nyan"), "a");
-  for (auto& x : othertest) std::cout << x << std::endl;
+  {
+    std::cout << "[[test]]" << std::endl;
+    std::string text("hogehogehoge");
+    std::regex delim("o");
+    auto result = xmaho::string::split(text, delim);
+    for (auto& x : result) std::cout << x << std::endl;
+  }
+  {
+    std::cout << "[[test]]" << std::endl;
+    std::string text("hogehogehoge");
+    std::string delim("o");
+    auto result = xmaho::string::split(text, delim);
+    for (auto& x : result) std::cout << x << std::endl;
+  }
+  {
+    std::cout << "[[test]]" << std::endl;
+    auto result = xmaho::string::split(std::string("hoge"), "o");
+    for (auto& x : result) std::cout << x << std::endl;
+  }
+  {
+    std::cout << "[[test]]" << std::endl;
+    auto result = xmaho::string::split(("nyan"), "a");
+    for (auto& x : result) std::cout << x << std::endl;
+  }
 }
