@@ -14,7 +14,7 @@ namespace container
 {
 
 /**
- * \brief Speedy string map.
+ * @brief Speedy string map.
  *
  * This is unordered map.
  */
