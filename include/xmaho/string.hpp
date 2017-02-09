@@ -7,7 +7,7 @@
  */
 
 /**
- * @namespace string
+ * @namespace xmaho::string
  * @brief The namespace for string library.
  */
 
