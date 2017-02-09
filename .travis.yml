@@ -1,5 +1,4 @@
 language: cpp
-group: beta
 dist: trusty
 sudo: false
 compiler:
