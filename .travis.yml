@@ -12,15 +12,15 @@ matrix:
         - g++-6
     env:
     - COMPILER=g++-6
-  - compiler: clang++
-    addons:
-      apt:
-        sourtces:
-        - llvm-toolchain-precise-3.8
-        packages:
-        - clang-3.8
-    env:
-    - COMPILER=clang++-3.8
+#  - compiler: clang++
+#    addons:
+#      apt:
+#        sourtces:
+#        - llvm-toolchain-precise-3.8
+#        packages:
+#        - clang-3.8
+#    env:
+#    - COMPILER=clang++-3.8
 before_install:
 - cd thirdparty/googletest/googletest
 - cmake -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_CXX_COMPILER=$COMPILER .
