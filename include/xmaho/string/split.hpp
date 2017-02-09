@@ -59,6 +59,17 @@ inline auto split(const CharT (&base_text)[N], DelimiterT&& delimiter) -> declty
   return split(std::basic_string<CharT>(base_text), std::forward<DelimiterT>(delimiter));
 }
 
+/**
+ * \brief xmaho::string::split for char pointer
+ *
+ * Call xmaho::string::split with std::basic_string<CharT> on const CharT* (&).
+ */
+template<typename CharT, typename DelimiterT>
+inline auto split(const CharT*& base_text, DelimiterT&& delimiter) -> decltype(split(std::basic_string<CharT>{}, std::forward<DelimiterT>(delimiter)))
+{
+  return split(std::basic_string<CharT>(base_text), std::forward<DelimiterT>(delimiter));
+}
+
 }
 }
 
