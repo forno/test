@@ -8,7 +8,12 @@
 
 /**
  * @namespace xmaho
- * @brief All-includesive namespace of xmaho library.
+ * @brief All-inclusive namespace of xmaho library.
+ */
+
+/**
+ * @dir xmaho
+ * @brief All-inclusive directory of xmaho librarys.
  */
 
 #include "xmaho/container.hpp"
