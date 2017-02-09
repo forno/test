@@ -1,6 +1,11 @@
 #ifndef XMAHO_XMAHO_TRAITS_ENABLE_IF_H
 #define XMAHO_XMAHO_TRAITS_ENABLE_IF_H
 
+/**
+ * @file traits/enable_if.hpp
+ * @brief This have definition of Enable_if.
+ */
+
 #include <type_traits>
 
 namespace xmaho
