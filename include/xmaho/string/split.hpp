@@ -40,8 +40,8 @@ split(const StringT& base_text, const DelimiterT& delimiter_regex)
  */
 template<typename StringT, typename DelimiterT>
 inline traits::Enable_if<!std::is_same<typename std::remove_reference<DelimiterT>::type,
-                               std::basic_regex<typename StringT::value_type>>{},
-                 decltype(split(StringT{}, std::basic_regex<typename StringT::value_type>{}))>
+                                       std::basic_regex<typename StringT::value_type>>{},
+                         decltype(split(StringT{}, std::basic_regex<typename StringT::value_type>{}))>
 split(const StringT& base_text, DelimiterT&& delimiter)
 {
   std::basic_regex<typename StringT::value_type> delimiter_regex {std::forward<DelimiterT>(delimiter)};
