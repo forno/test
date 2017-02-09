@@ -1,6 +1,16 @@
 #ifndef XMAHO_XMAHO_TRAITS_H
 #define XMAHO_XMAHO_TRAITS_H
 
-#include <xmaho/traits/enable_if.hpp>
+/**
+ * @file traits.hpp
+ * @brief This call traits/*.hpp.
+ */
+
+/**
+ * @namespace xmaho::traits
+ * @brief The namespace for xmaho::traits library.
+ */
+
+#include "xmaho/traits/enable_if.hpp"
 
 #endif
