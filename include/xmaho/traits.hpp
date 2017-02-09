@@ -11,6 +11,11 @@
  * @brief The namespace for xmaho::traits library.
  */
 
+/**
+ * @dir traits
+ * @brief This have xmaho::traits librarys.
+ */
+
 #include "xmaho/traits/enable_if.hpp"
 
 #endif
