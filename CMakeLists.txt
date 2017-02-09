@@ -43,7 +43,7 @@ if(ENABLE_TEST)
 
   include_directories(${GTEST_INCLUDE_DIRS})
   add_executable(string_split "test/string/split.cpp")
-  target_link_libraries(string_split xmaho ${GTEST_BOTH_LIBRARIES})
+  target_link_libraries(string_split ${GTEST_BOTH_LIBRARIES})
   if(THREADS_HAVE_PTHREAD_ARG)
     target_compile_options(PUBLIC string_split "-pthread")
   endif()
