@@ -11,6 +11,11 @@
  * @brief The namespace for xmaho::string library.
  */
 
+/**
+ * @dir string
+ * @brief This have xmaho::string librarys.
+ */
+
 #include "xmaho/string/split.hpp"
 
 #endif

@@ -14,7 +14,7 @@ namespace traits
 {
 
 /**
- * @brief The syntactic suger of std::enable_if\<B,T\>::type.
+ * @brief The syntactic suger of `std::enable_if::type`.
  */
 template<bool B, typename T>
 using Enable_if = typename std::enable_if<B, T>::type;
