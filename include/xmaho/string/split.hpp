@@ -7,6 +7,8 @@
 #include <utility>
 #include <vector>
 
+#include "xmaho/traits.hpp"
+
 namespace xmaho
 {
 namespace string
@@ -19,9 +21,9 @@ namespace string
  * On Javascript, It is know as String.split().
  */
 template<typename StringT, typename DelimiterT>
-inline typename std::enable_if<std::is_same<DelimiterT,
-                                            std::basic_regex<typename StringT::value_type>>{},
-                               std::vector<StringT>>::type
+inline traits::Enable_if<std::is_same<DelimiterT,
+                                      std::basic_regex<typename StringT::value_type>>{},
+                         std::vector<StringT>>
 split(const StringT& base_text, const DelimiterT& delimiter_regex)
 {
   std::regex_token_iterator<typename StringT::const_iterator>
@@ -37,9 +39,9 @@ split(const StringT& base_text, const DelimiterT& delimiter_regex)
  * On Javascript, It is know as String.split().
  */
 template<typename StringT, typename DelimiterT>
-inline typename std::enable_if<!std::is_same<typename std::remove_reference<DelimiterT>::type,
-                                             std::basic_regex<typename StringT::value_type>>{},
-                               decltype(split(StringT{}, std::basic_regex<typename StringT::value_type>{}))>::type
+inline traits::Enable_if<!std::is_same<typename std::remove_reference<DelimiterT>::type,
+                                       std::basic_regex<typename StringT::value_type>>{},
+                         decltype(split(StringT{}, std::basic_regex<typename StringT::value_type>{}))>
 split(const StringT& base_text, DelimiterT&& delimiter)
 {
   std::basic_regex<typename StringT::value_type> delimiter_regex {std::forward<DelimiterT>(delimiter)};
