@@ -17,13 +17,13 @@ env:
 #- COMPILER=clang-3.9
 before_install:
 - cd thirdparty/googletest/googletest
-- cmake -DCMAKE_BUILD_TYPE=RELEASE .
+- cmake -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_CXX_COMPILER=$COMPILER .
 - make
 - cd -
 - mkdir build
 - cd build
 install:
-- cmake .. -DCMAKE_INSTALL_PREFIX=install -DENABLE_TEST=ON -DCMAKE_BUILD_TYPE=DEBUG
+- cmake -DCMAKE_INSTALL_PREFIX=install -DENABLE_TEST=ON -DCMAKE_BUILD_TYPE=DEBUG -DCMAKE_CXX_COMPILER=$COMPILER .. 
 - make
 - make install
 script:
