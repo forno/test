@@ -1,4 +1,5 @@
 <map id="include/xmaho/traits.hpp" name="include/xmaho/traits.hpp">
-<area shape="rect" id="node2" href="$split_8hpp.html" title="include/xmaho/string\l/split.hpp" alt="" coords="17,80,160,121"/>
-<area shape="rect" id="node3" href="$string_8hpp.html" title="include/xmaho/string.hpp" alt="" coords="5,169,172,196"/>
+<area shape="rect" id="node2" href="$split_8hpp.html" title="This have definition of xmaho::string::split function. " alt="" coords="23,80,165,121"/>
+<area shape="rect" id="node4" href="$xmaho_8hpp.html" title="All&#45;inclusive header file of xmaho library. " alt="" coords="61,244,236,271"/>
+<area shape="rect" id="node3" href="$string_8hpp.html" title="This call string/*.hpp. " alt="" coords="5,169,172,196"/>
 </map>
