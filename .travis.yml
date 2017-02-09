@@ -1,9 +1,20 @@
 language: cpp
 dist: trusty
 sudo: false
+addons:
+  apt:
+    sources:
+    - ubuntu-toolchain-r-test
+#    - llvm-toolchain-precise-3.9
+    packages:
+    - gcc-6
+#    - clang-3.9
 compiler:
 - g++
-- clang++
+#- clang++
+env:
+- COMPILER=g++-6
+#- COMPILER=clang-3.9
 before_install:
 - cd thirdparty/googletest/googletest
 - cmake -DCMAKE_BUILD_TYPE=RELEASE .
