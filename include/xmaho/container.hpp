@@ -11,6 +11,11 @@
  * @brief The namespace for xmaho::container library.
  */
 
+/**
+ * @dir container
+ * @brief This have xmaho::container librarys.
+ */
+
 #include "xmaho/container/string_map.hpp"
 
 #endif
