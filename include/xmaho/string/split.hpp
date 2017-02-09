@@ -1,6 +1,11 @@
 #ifndef XMAHO_XMAHO_STRING_SPLIT_H
 #define XMAHO_XMAHO_STRING_SPLIT_H
 
+/**
+ * @file string/split.hpp
+ * @brief This have definition of string::split.
+ */
+
 #include <regex>
 #include <string>
 #include <type_traits>
