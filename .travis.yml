@@ -20,7 +20,7 @@ matrix:
         packages:
         - clang-3.8
     env:
-    - COMPILER=clang-3.8
+    - COMPILER=clang++-3.8
 before_install:
 - cd thirdparty/googletest/googletest
 - cmake -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_CXX_COMPILER=$COMPILER .
