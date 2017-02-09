@@ -14,8 +14,7 @@ endif()
 option(BUILD_SHARED_LIBS "Build shared (ON) or static (OFF) libraries" OFF)
 option(ENABLE_TEST "Enable test program building" OFF)
 
-add_definitions(-std=c++11)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++11")
 
 set(MY_DIR ${xmaho_SOURCE_DIR})
 
@@ -42,12 +41,17 @@ if(ENABLE_TEST)
   find_package(Threads)
 
   include_directories(${GTEST_INCLUDE_DIRS})
+#  add_executable(string_split "test/string/split.cpp")
+#  target_link_libraries(string_split ${GTEST_BOTH_LIBRARIES})
   if(THREADS_HAVE_PTHREAD_ARG)
+#    target_compile_options(PUBLIC string_split "-pthread")
   endif()
   if(CMAKE_THREAD_LIBS_INIT)
+#    target_link_libraries(string_split "${CMAKE_THREAD_LIBS_INIT}")
   endif()
 
   enable_testing()
+#  add_test(StringSplit ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/string_split)
 endif()
 
 install(DIRECTORY "${MY_DIR}/include/${PROJECT_NAME}" DESTINATION include)
