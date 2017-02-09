@@ -8,7 +8,7 @@
 
 /**
  * @namespace xmaho::container
- * @brief The namespace for container library.
+ * @brief The namespace for xmaho::container library.
  */
 
 #include "xmaho/container/string_map.hpp"

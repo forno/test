@@ -8,7 +8,7 @@
 
 /**
  * @namespace xmaho::traits
- * @brief The namespace for traits library.
+ * @brief The namespace for xmaho::traits library.
  */
 
 #include "xmaho/traits/enable_if.hpp"

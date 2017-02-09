@@ -8,7 +8,7 @@
 
 /**
  * @namespace xmaho::string
- * @brief The namespace for string library.
+ * @brief The namespace for xmaho::string library.
  */
 
 #include "xmaho/string/split.hpp"

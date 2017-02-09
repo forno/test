@@ -3,7 +3,7 @@
 
 /**
  * @file traits/enable_if.hpp
- * @brief This have definition of Enable_if.
+ * @brief This have definition of xmaho::traits::Enable_if.
  */
 
 #include <type_traits>
