@@ -10,7 +10,7 @@ TEST(BaseTest, HandlesNullInput)
   std::string base {};
   std::regex delimiter {};
   auto result = xmaho::string::split(base, delimiter);
-  ASSERT_EQ(result, std::vector<std::string>{});
+  ASSERT_EQ(result, std::vector<std::string>{""});
 }
 
 TEST(BaseTest, HandlesNormalInput)
@@ -27,7 +27,7 @@ TEST(DelimiterForwardTest, HandlesNullInput)
   std::string base {};
   std::string delimiter {};
   auto result = xmaho::string::split(base, delimiter);
-  ASSERT_EQ(result, std::vector<std::string>{});
+  ASSERT_EQ(result, std::vector<std::string>{""});
 }
 
 TEST(DelimiterForwardTest, HandlesNormalInput)
@@ -44,7 +44,7 @@ TEST(StringLiteralTest, HandlesNullInput)
   auto base = "";
   auto delimiter = "";
   auto result = xmaho::string::split(base, delimiter);
-  ASSERT_EQ(result, std::vector<std::string>{});
+  ASSERT_EQ(result, std::vector<std::string>{""});
 }
 
 TEST(StringLiteralTest, HandleNormalInput)
