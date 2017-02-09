@@ -3,7 +3,7 @@
 
 /**
  * @file string/split.hpp
- * @brief This have definition of string::split.
+ * @brief This have definition of string::split function.
  */
 
 #include <regex>
