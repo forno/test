@@ -14,8 +14,7 @@ endif()
 option(BUILD_SHARED_LIBS "Build shared (ON) or static (OFF) libraries" OFF)
 option(ENABLE_TEST "Enable test program building" OFF)
 
-add_definitions(-std=c++11)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++11")
 
 set(MY_DIR ${xmaho_SOURCE_DIR})
 
