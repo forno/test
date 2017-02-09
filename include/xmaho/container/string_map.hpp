@@ -3,7 +3,7 @@
 
 /**
  * @file container/string_map.hpp
- * @brief This have definition of container/string_map\<T\>
+ * @brief This have definition of xmaho::container::string_map
  */
 
 #include <unordered_map>
