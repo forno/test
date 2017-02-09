@@ -20,7 +20,7 @@ namespace string
 {
 
 /**
- * \brief Vector of string is splited by delimiter that is regex.
+ * @brief Vector of string is splited by delimiter that is regex.
  *
  * The string is splited by delimiter to std::vector.
  * On Javascript, It is know as String.split().
@@ -38,7 +38,7 @@ split(const StringT& base_text, const DelimiterT& delimiter_regex)
 }
 
 /**
- * \brief Vector of string is splited by delimiter that is string
+ * @brief Vector of string is splited by delimiter that is string
  *
  * The string is splited by delimiter to std::vector.
  * On Javascript, It is know as String.split().
@@ -54,9 +54,9 @@ split(const StringT& base_text, DelimiterT&& delimiter)
 }
 
 /**
- * \brief xmaho::string::split for string literal
+ * @brief xmaho::string::split for string literal
  *
- * Call xmaho::string::split with std::basic_string<CharT> on const CharT (&)[N].
+ * Call xmaho::string::split with std::basic_string\<CharT\> on const CharT (\&)[N].
  */
 template<typename CharT, size_t N, typename DelimiterT>
 inline auto split(const CharT (&base_text)[N], DelimiterT&& delimiter) -> decltype(split(std::basic_string<CharT>{}, std::forward<DelimiterT>(delimiter)))
@@ -65,9 +65,9 @@ inline auto split(const CharT (&base_text)[N], DelimiterT&& delimiter) -> declty
 }
 
 /**
- * \brief xmaho::string::split for char pointer
+ * @brief xmaho::string::split for char pointer
  *
- * Call xmaho::string::split with std::basic_string<CharT> on const CharT* (&).
+ * Call xmaho::string::split with std::basic_string\<CharT\> on const CharT* (\&).
  */
 template<typename CharT, typename DelimiterT>
 inline auto split(const CharT*& base_text, DelimiterT&& delimiter) -> decltype(split(std::basic_string<CharT>{}, std::forward<DelimiterT>(delimiter)))
