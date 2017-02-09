@@ -3,7 +3,7 @@
 
 /**
  * @file string/split.hpp
- * @brief This have definition of string::split function.
+ * @brief This have definition of xmaho::string::split function.
  */
 
 #include <regex>
