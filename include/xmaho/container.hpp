@@ -3,7 +3,7 @@
 
 /**
  * @file container.hpp
- * @brief This call container/*.hpp.
+ * @brief This call xmaho::container libraries.
  */
 
 /**
