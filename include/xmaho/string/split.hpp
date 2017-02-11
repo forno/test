@@ -26,10 +26,7 @@ namespace string
  * On Javascript, It is know as String.split().
  */
 template<typename StringT, typename DelimiterT>
-inline traits::Enable_if<std::is_same<DelimiterT,
-                                      std::basic_regex<typename StringT::value_type>>{},
-                         std::vector<StringT>>
-split(const StringT& base_text, const DelimiterT& delimiter_regex)
+inline std::vector<StringT> split(const StringT& base_text, const DelimiterT& delimiter_regex)
 {
   std::regex_token_iterator<typename StringT::const_iterator>
       first {base_text.cbegin(), base_text.cend(), delimiter_regex, -1},
