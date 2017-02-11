@@ -3,7 +3,7 @@
 
 /**
  * @file string.hpp
- * @brief This call string/*.hpp.
+ * @brief This call xmaho::string libraries.
  */
 
 /**
