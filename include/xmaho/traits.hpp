@@ -3,7 +3,7 @@
 
 /**
  * @file traits.hpp
- * @brief This call traits/*.hpp.
+ * @brief This call xmaho::traits libraries.
  */
 
 /**
