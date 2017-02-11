@@ -40,11 +40,10 @@ inline std::vector<StringT> split(const StringT& base_text, const DelimiterT& de
  * The string is splited by delimiter to std::vector.
  * On Javascript, It is know as String.split().
  */
-template<typename StringT, typename DelimiterT>
-inline traits::Enable_if<!std::is_same<typename std::remove_reference<DelimiterT>::type,
-                                       std::basic_regex<typename StringT::value_type>>{},
-                         decltype(split(StringT{}, std::basic_regex<typename StringT::value_type>{}))>
-split(const StringT& base_text, DelimiterT&& delimiter)
+template<typename StringT,
+         typename DelimiterT,
+         typename =traits::Enable_if<!std::is_same<typename std::remove_reference<DelimiterT>::type, std::basic_regex<typename StringT::value_type>>{}>>
+inline decltype(split(StringT{}, std::basic_regex<typename StringT::value_type>{})) split(const StringT& base_text, DelimiterT&& delimiter)
 {
   std::basic_regex<typename StringT::value_type> delimiter_regex {std::forward<DelimiterT>(delimiter)};
   return split(base_text, delimiter_regex);
