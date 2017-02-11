@@ -16,7 +16,7 @@ namespace traits
 /**
  * @brief The syntactic suger of `std::enable_if::type`.
  */
-template<bool B, typename T>
+template<bool B, typename T = void>
 using Enable_if = typename std::enable_if<B, T>::type;
 
 }
