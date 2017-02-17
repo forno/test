@@ -17,6 +17,7 @@
  */
 
 #include "xmaho/traits/enable_if.hpp"
+#include "xmaho/traits/iterator.hpp"
 #include "xmaho/traits/type_alias.hpp"
 
 #endif
