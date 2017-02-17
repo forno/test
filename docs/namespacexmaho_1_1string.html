@@ -96,84 +96,51 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a221a7cb4bb6210dba187ef5a5093b927"><td class="memTemplParams" colspan="2">template&lt;typename StringT , typename DelimiterT &gt; </td></tr>
-<tr class="memitem:a221a7cb4bb6210dba187ef5a5093b927"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacexmaho_1_1traits.html#a4f01a2aac3cb189cd882de3bf97ac548">traits::Enable_if</a>&lt; std::is_same&lt; DelimiterT, std::basic_regex&lt; typename StringT::value_type &gt; &gt;{}, std::vector&lt; StringT &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacexmaho_1_1string.html#a221a7cb4bb6210dba187ef5a5093b927">split</a> (const StringT &amp;base_text, const DelimiterT &amp;delimiter_regex)</td></tr>
-<tr class="memdesc:a221a7cb4bb6210dba187ef5a5093b927"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vector of string is splited by delimiter that is regex.  <a href="#a221a7cb4bb6210dba187ef5a5093b927">More...</a><br /></td></tr>
-<tr class="separator:a221a7cb4bb6210dba187ef5a5093b927"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aacd093bc92ae57ce9ab35fe8ce6fa3d1"><td class="memTemplParams" colspan="2">template&lt;typename StringT , typename DelimiterT &gt; </td></tr>
-<tr class="memitem:aacd093bc92ae57ce9ab35fe8ce6fa3d1"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacexmaho_1_1traits.html#a4f01a2aac3cb189cd882de3bf97ac548">traits::Enable_if</a>&lt;!std::is_same&lt; typename std::remove_reference&lt; DelimiterT &gt;::type, std::basic_regex&lt; typename StringT::value_type &gt; &gt;{}, decltype(split(StringT{}, std::basic_regex&lt; typename StringT::value_type &gt;{}))&gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacexmaho_1_1string.html#aacd093bc92ae57ce9ab35fe8ce6fa3d1">split</a> (const StringT &amp;base_text, DelimiterT &amp;&amp;delimiter)</td></tr>
-<tr class="memdesc:aacd093bc92ae57ce9ab35fe8ce6fa3d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vector of string is splited by delimiter that is string.  <a href="#aacd093bc92ae57ce9ab35fe8ce6fa3d1">More...</a><br /></td></tr>
-<tr class="separator:aacd093bc92ae57ce9ab35fe8ce6fa3d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad528ea61d8f999c4f3693b1080b93b13"><td class="memTemplParams" colspan="2">template&lt;typename CharT , size_t N, typename DelimiterT &gt; </td></tr>
-<tr class="memitem:ad528ea61d8f999c4f3693b1080b93b13"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacexmaho_1_1string.html#ad528ea61d8f999c4f3693b1080b93b13">split</a> (const CharT(&amp;base_text)[N], DelimiterT &amp;&amp;delimiter) -&gt; decltype(split(std::basic_string&lt; CharT &gt;</td></tr>
-<tr class="memdesc:ad528ea61d8f999c4f3693b1080b93b13"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="namespacexmaho_1_1string.html#a221a7cb4bb6210dba187ef5a5093b927" title="Vector of string is splited by delimiter that is regex. ">xmaho::string::split</a> for string literal  <a href="#ad528ea61d8f999c4f3693b1080b93b13">More...</a><br /></td></tr>
-<tr class="separator:ad528ea61d8f999c4f3693b1080b93b13"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a39ed401e6d0b22d8f5137c21196b4ce5"><td class="memTemplParams" colspan="2">template&lt;typename CharT , typename DelimiterT &gt; </td></tr>
-<tr class="memitem:a39ed401e6d0b22d8f5137c21196b4ce5"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacexmaho_1_1string.html#a39ed401e6d0b22d8f5137c21196b4ce5">split</a> (const CharT *&amp;base_text, DelimiterT &amp;&amp;delimiter) -&gt; decltype(split(std::basic_string&lt; CharT &gt;</td></tr>
-<tr class="memdesc:a39ed401e6d0b22d8f5137c21196b4ce5"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="namespacexmaho_1_1string.html#a221a7cb4bb6210dba187ef5a5093b927" title="Vector of string is splited by delimiter that is regex. ">xmaho::string::split</a> for char pointer  <a href="#a39ed401e6d0b22d8f5137c21196b4ce5">More...</a><br /></td></tr>
-<tr class="separator:a39ed401e6d0b22d8f5137c21196b4ce5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0c06646333b96d53dd3fc72e20f7b685"><td class="memTemplParams" colspan="2">template&lt;typename BidirIter , typename Delimiter &gt; </td></tr>
+<tr class="memitem:a0c06646333b96d53dd3fc72e20f7b685"><td class="memTemplItemLeft" align="right" valign="top">std::vector&lt; std::basic_string&lt; typename std::iterator_traits&lt; BidirIter &gt;::value_type &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacexmaho_1_1string.html#a0c06646333b96d53dd3fc72e20f7b685">split</a> (BidirIter &amp;&amp;first, BidirIter &amp;&amp;last, Delimiter &amp;&amp;delimiter)</td></tr>
+<tr class="memdesc:a0c06646333b96d53dd3fc72e20f7b685"><td class="mdescLeft">&#160;</td><td class="mdescRight">split string by regex.  <a href="#a0c06646333b96d53dd3fc72e20f7b685">More...</a><br /></td></tr>
+<tr class="separator:a0c06646333b96d53dd3fc72e20f7b685"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abad9393e4bf4a5ba4192192adbff0618"><td class="memTemplParams" colspan="2">template&lt;typename String , typename Delimiter &gt; </td></tr>
+<tr class="memitem:abad9393e4bf4a5ba4192192adbff0618"><td class="memTemplItemLeft" align="right" valign="top">std::vector&lt; String &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacexmaho_1_1string.html#abad9393e4bf4a5ba4192192adbff0618">split</a> (const String &amp;target, Delimiter &amp;&amp;delimiter)</td></tr>
+<tr class="memdesc:abad9393e4bf4a5ba4192192adbff0618"><td class="mdescLeft">&#160;</td><td class="mdescRight">split string by regex.  <a href="#abad9393e4bf4a5ba4192192adbff0618">More...</a><br /></td></tr>
+<tr class="separator:abad9393e4bf4a5ba4192192adbff0618"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a26c65b50096256f29b93790659cc6674"><td class="memTemplParams" colspan="2">template&lt;typename CharT , size_t N, typename Delimiter &gt; </td></tr>
+<tr class="memitem:a26c65b50096256f29b93790659cc6674"><td class="memTemplItemLeft" align="right" valign="top">std::vector&lt; typename std::basic_string&lt; CharT &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacexmaho_1_1string.html#a26c65b50096256f29b93790659cc6674">split</a> (const CharT(&amp;target)[N], Delimiter &amp;&amp;delimiter)</td></tr>
+<tr class="memdesc:a26c65b50096256f29b93790659cc6674"><td class="mdescLeft">&#160;</td><td class="mdescRight">split string by regex.  <a href="#a26c65b50096256f29b93790659cc6674">More...</a><br /></td></tr>
+<tr class="separator:a26c65b50096256f29b93790659cc6674"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6355bb4636212ecf41cec4d1f96ed57e"><td class="memTemplParams" colspan="2">template&lt;typename CharT , typename Delimiter &gt; </td></tr>
+<tr class="memitem:a6355bb4636212ecf41cec4d1f96ed57e"><td class="memTemplItemLeft" align="right" valign="top">std::vector&lt; typename std::basic_string&lt; CharT &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacexmaho_1_1string.html#a6355bb4636212ecf41cec4d1f96ed57e">split</a> (const CharT *target, Delimiter &amp;&amp;delimiter)</td></tr>
+<tr class="memdesc:a6355bb4636212ecf41cec4d1f96ed57e"><td class="mdescLeft">&#160;</td><td class="mdescRight">split string by regex.  <a href="#a6355bb4636212ecf41cec4d1f96ed57e">More...</a><br /></td></tr>
+<tr class="separator:a6355bb4636212ecf41cec4d1f96ed57e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The namespace for <a class="el" href="namespacexmaho_1_1string.html" title="The namespace for xmaho::string library. ">xmaho::string</a> library. </p>
 </div><h2 class="groupheader">Function Documentation</h2>
-<a class="anchor" id="a221a7cb4bb6210dba187ef5a5093b927"></a>
+<a class="anchor" id="a0c06646333b96d53dd3fc72e20f7b685"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename StringT , typename DelimiterT &gt; </div>
+template&lt;typename BidirIter , typename Delimiter &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespacexmaho_1_1traits.html#a4f01a2aac3cb189cd882de3bf97ac548">traits::Enable_if</a>&lt;std::is_same&lt;DelimiterT, std::basic_regex&lt;typename StringT::value_type&gt; &gt;{}, std::vector&lt;StringT&gt; &gt; xmaho::string::split </td>
+          <td class="memname">std::vector&lt;std::basic_string&lt;typename std::iterator_traits&lt;BidirIter&gt;::value_type&gt; &gt; xmaho::string::split </td>
           <td>(</td>
-          <td class="paramtype">const StringT &amp;&#160;</td>
-          <td class="paramname"><em>base_text</em>, </td>
+          <td class="paramtype">BidirIter &amp;&amp;&#160;</td>
+          <td class="paramname"><em>first</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const DelimiterT &amp;&#160;</td>
-          <td class="paramname"><em>delimiter_regex</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Vector of string is splited by delimiter that is regex. </p>
-<p>The string is splited by delimiter to std::vector. On Javascript, It is know as <a class="el" href="namespacexmaho_1_1string.html#a39ed401e6d0b22d8f5137c21196b4ce5" title="xmaho::string::split for char pointer ">String.split()</a>. </p>
-
-</div>
-</div>
-<a class="anchor" id="aacd093bc92ae57ce9ab35fe8ce6fa3d1"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename StringT , typename DelimiterT &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="namespacexmaho_1_1traits.html#a4f01a2aac3cb189cd882de3bf97ac548">traits::Enable_if</a>&lt;!std::is_same&lt;typename std::remove_reference&lt;DelimiterT&gt;::type, std::basic_regex&lt;typename StringT::value_type&gt; &gt;{}, decltype(split(StringT{}, std::basic_regex&lt;typename StringT::value_type&gt;{}))&gt; xmaho::string::split </td>
-          <td>(</td>
-          <td class="paramtype">const StringT &amp;&#160;</td>
-          <td class="paramname"><em>base_text</em>, </td>
+          <td class="paramtype">BidirIter &amp;&amp;&#160;</td>
+          <td class="paramname"><em>last</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">DelimiterT &amp;&amp;&#160;</td>
+          <td class="paramtype">Delimiter &amp;&amp;&#160;</td>
           <td class="paramname"><em>delimiter</em>&#160;</td>
         </tr>
         <tr>
@@ -189,36 +156,75 @@ template&lt;typename StringT , typename DelimiterT &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Vector of string is splited by delimiter that is string. </p>
-<p>The string is splited by delimiter to std::vector. On Javascript, It is know as <a class="el" href="namespacexmaho_1_1string.html#a39ed401e6d0b22d8f5137c21196b4ce5" title="xmaho::string::split for char pointer ">String.split()</a>. </p>
+<p>split string by regex. </p>
+<p>The string is splited by delimiter to std::vector. On Javascript, It is know as <a class="el" href="namespacexmaho_1_1string.html#a6355bb4636212ecf41cec4d1f96ed57e" title="split string by regex. ">String.split()</a>. </p>
 
 </div>
 </div>
-<a class="anchor" id="ad528ea61d8f999c4f3693b1080b93b13"></a>
+<a class="anchor" id="abad9393e4bf4a5ba4192192adbff0618"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename CharT , size_t N, typename DelimiterT &gt; </div>
+template&lt;typename String , typename Delimiter &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">auto xmaho::string::split </td>
+          <td class="memname">std::vector&lt;String&gt; xmaho::string::split </td>
+          <td>(</td>
+          <td class="paramtype">const String &amp;&#160;</td>
+          <td class="paramname"><em>target</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Delimiter &amp;&amp;&#160;</td>
+          <td class="paramname"><em>delimiter</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>split string by regex. </p>
+<p>The string is splited by delimiter to std::vector. On Javascript, It is know as <a class="el" href="namespacexmaho_1_1string.html#a6355bb4636212ecf41cec4d1f96ed57e" title="split string by regex. ">String.split()</a>. </p>
+
+</div>
+</div>
+<a class="anchor" id="a26c65b50096256f29b93790659cc6674"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CharT , size_t N, typename Delimiter &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;typename std::basic_string&lt;CharT&gt; &gt; xmaho::string::split </td>
           <td>(</td>
           <td class="paramtype">const CharT(&amp;)&#160;</td>
-          <td class="paramname"><em>base_text</em>[N], </td>
+          <td class="paramname"><em>target</em>[N], </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">DelimiterT &amp;&amp;&#160;</td>
+          <td class="paramtype">Delimiter &amp;&amp;&#160;</td>
           <td class="paramname"><em>delimiter</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td> -&gt; decltype(split(std::basic_string&lt;CharT&gt;</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -228,36 +234,36 @@ template&lt;typename CharT , size_t N, typename DelimiterT &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p><a class="el" href="namespacexmaho_1_1string.html#a221a7cb4bb6210dba187ef5a5093b927" title="Vector of string is splited by delimiter that is regex. ">xmaho::string::split</a> for string literal </p>
-<p>Call <a class="el" href="namespacexmaho_1_1string.html#a221a7cb4bb6210dba187ef5a5093b927" title="Vector of string is splited by delimiter that is regex. ">xmaho::string::split</a> with std::basic_string&lt;CharT&gt; on const CharT (&amp;)[N]. </p>
+<p>split string by regex. </p>
+<p>The string is splited by delimiter to std::vector. On Javascript, It is know as <a class="el" href="namespacexmaho_1_1string.html#a6355bb4636212ecf41cec4d1f96ed57e" title="split string by regex. ">String.split()</a>. </p>
 
 </div>
 </div>
-<a class="anchor" id="a39ed401e6d0b22d8f5137c21196b4ce5"></a>
+<a class="anchor" id="a6355bb4636212ecf41cec4d1f96ed57e"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename CharT , typename DelimiterT &gt; </div>
+template&lt;typename CharT , typename Delimiter &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">auto xmaho::string::split </td>
+          <td class="memname">std::vector&lt;typename std::basic_string&lt;CharT&gt; &gt; xmaho::string::split </td>
           <td>(</td>
-          <td class="paramtype">const CharT *&amp;&#160;</td>
-          <td class="paramname"><em>base_text</em>, </td>
+          <td class="paramtype">const CharT *&#160;</td>
+          <td class="paramname"><em>target</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">DelimiterT &amp;&amp;&#160;</td>
+          <td class="paramtype">Delimiter &amp;&amp;&#160;</td>
           <td class="paramname"><em>delimiter</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td> -&gt; decltype(split(std::basic_string&lt;CharT&gt;</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -267,8 +273,8 @@ template&lt;typename CharT , typename DelimiterT &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p><a class="el" href="namespacexmaho_1_1string.html#a221a7cb4bb6210dba187ef5a5093b927" title="Vector of string is splited by delimiter that is regex. ">xmaho::string::split</a> for char pointer </p>
-<p>Call <a class="el" href="namespacexmaho_1_1string.html#a221a7cb4bb6210dba187ef5a5093b927" title="Vector of string is splited by delimiter that is regex. ">xmaho::string::split</a> with std::basic_string&lt;CharT&gt; on const CharT* (&amp;). </p>
+<p>split string by regex. </p>
+<p>The string is splited by delimiter to std::vector. On Javascript, It is know as <a class="el" href="namespacexmaho_1_1string.html#a6355bb4636212ecf41cec4d1f96ed57e" title="split string by regex. ">String.split()</a>. </p>
 
 </div>
 </div>
