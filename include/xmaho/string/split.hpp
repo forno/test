@@ -35,7 +35,6 @@ split(BidirIter&& first, BidirIter&& last, Delimiter&& delimiter)
 
   Regex delim {std::forward<Delimiter>(delimiter)};
   return {TokenIter{std::forward<BidirIter>(first), std::forward<BidirIter>(last), delim, -1}, TokenIter{}};
-  return {};
 }
 
 /**
