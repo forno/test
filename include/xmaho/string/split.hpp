@@ -6,6 +6,7 @@
  * @brief This have definition of xmaho::string::split functions.
  */
 
+#include <iterator>
 #include <regex>
 #include <string>
 #include <type_traits>
@@ -20,55 +21,56 @@ namespace string
 {
 
 /**
- * @brief Vector of string is splited by delimiter that is regex.
+ * @brief split string by regex.
  *
  * The string is splited by delimiter to std::vector.
  * On Javascript, It is know as String.split().
  */
-template<typename StringT, typename DelimiterT>
-inline std::vector<StringT> split(const StringT& base_text, const DelimiterT& delimiter_regex)
+template<typename BidirIter, typename Delimiter>
+inline std::vector<std::basic_string<typename std::iterator_traits<BidirIter>::value_type>>
+split(BidirIter&& first, BidirIter&& last, Delimiter&& delimiter)
 {
-  std::regex_token_iterator<typename StringT::const_iterator>
-      first {base_text.cbegin(), base_text.cend(), delimiter_regex, -1},
-      last {};
-  return {first, last};
+  using Regex = std::basic_regex<typename std::iterator_traits<BidirIter>::value_type>;
+  using TokenIter = std::regex_token_iterator<BidirIter>;
+
+  Regex delim {std::forward<Delimiter>(delimiter)};
+  return {TokenIter{std::forward<BidirIter>(first), std::forward<BidirIter>(last), delim, -1}, TokenIter{}};
 }
 
 /**
- * @brief Vector of string is splited by delimiter that is string
+ * @brief split string by regex.
  *
  * The string is splited by delimiter to std::vector.
  * On Javascript, It is know as String.split().
  */
-template<typename StringT,
-         typename DelimiterT,
-         typename =traits::Enable_if<!std::is_same<typename std::remove_reference<DelimiterT>::type, std::basic_regex<typename StringT::value_type>>{}>>
-inline decltype(split(StringT{}, std::basic_regex<typename StringT::value_type>{})) split(const StringT& base_text, DelimiterT&& delimiter)
+template<typename String, typename Delimiter>
+inline std::vector<String> split(const String& target, Delimiter&& delimiter)
 {
-  std::basic_regex<typename StringT::value_type> delimiter_regex {std::forward<DelimiterT>(delimiter)};
-  return split(base_text, delimiter_regex);
+  return split(target.cbegin(), target.cend(), std::forward<Delimiter>(delimiter));
 }
 
 /**
- * @brief xmaho::string::split for string literal
+ * @brief split string by regex.
  *
- * Call xmaho::string::split with std::basic_string\<CharT\> on const CharT (\&)[N].
+ * The string is splited by delimiter to std::vector.
+ * On Javascript, It is know as String.split().
  */
-template<typename CharT, size_t N, typename DelimiterT>
-inline auto split(const CharT (&base_text)[N], DelimiterT&& delimiter) -> decltype(split(std::basic_string<CharT>{}, std::forward<DelimiterT>(delimiter)))
+template<typename CharT, size_t N, typename Delimiter>
+inline std::vector<typename std::basic_string<CharT>> split(const CharT (&target)[N], Delimiter&& delimiter)
 {
-  return split(std::basic_string<CharT>(base_text), std::forward<DelimiterT>(delimiter));
+  return split(target, target + N, std::forward<Delimiter>(delimiter));
 }
 
 /**
- * @brief xmaho::string::split for char pointer
+ * @brief split string by regex.
  *
- * Call xmaho::string::split with std::basic_string\<CharT\> on const CharT* (\&).
+ * The string is splited by delimiter to std::vector.
+ * On Javascript, It is know as String.split().
  */
-template<typename CharT, typename DelimiterT>
-inline auto split(const CharT*& base_text, DelimiterT&& delimiter) -> decltype(split(std::basic_string<CharT>{}, std::forward<DelimiterT>(delimiter)))
+template<typename CharT, typename Delimiter>
+inline std::vector<typename std::basic_string<CharT>> split(const CharT* target, Delimiter&& delimiter)
 {
-  return split(std::basic_string<CharT>(base_text), std::forward<DelimiterT>(delimiter));
+  return split(typename std::basic_string<CharT> {target}, std::forward<Delimiter>(delimiter));
 }
 
 }
