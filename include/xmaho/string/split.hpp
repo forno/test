@@ -33,6 +33,20 @@ inline std::vector<std::basic_string<CharT>> split(BidirIter&& first, BidirIter&
   return {start, end};
 }
 
+/**
+ * @brief split string by regex.
+ *
+ * The string is splited by delimiter to std::vector.
+ * On Javascript, It is know as String.split().
+ */
+template<typename String, typename CharT>
+inline std::vector<String> split(const String& target, const std::basic_regex<CharT>& delimiter)
+{
+  static_assert(!std::is_same<String::value_type, CharT>{},
+                "Error: difference charT between String and Regex");
+  return split(target.cbegin(), target.cend(), delimiter);
+}
+
 }
 }
 
