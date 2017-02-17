@@ -20,13 +20,13 @@ namespace string
 {
 
 /**
- * @brief Vector of string is splited by delimiter that is regex.
+ * @brief split string by regex.
  *
  * The string is splited by delimiter to std::vector.
  * On Javascript, It is know as String.split().
  */
-template<typename BidirIter, typename Regex>
-inline std::vector<typename Regex::string_type> split(BidirIter&& first, BidirIter&& last, const Regex& delimiter)
+template<typename BidirIter, typename CharT>
+inline std::vector<std::basic_string<CharT>> split(BidirIter&& first, BidirIter&& last, const std::basic_regex<CharT>& delimiter)
 {
   std::regex_token_iterator start {std::forward<BidirIter>(first), std::forward<BidirIter>(last), delimiter, -1},
                             end {};
