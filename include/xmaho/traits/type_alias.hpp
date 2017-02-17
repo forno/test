@@ -17,7 +17,7 @@ namespace traits
  * @brief remove_const_t for c++11.
  */
 template<typename T>
-using remove_const_t<T> = std::remove_const<T>::type;
+using remove_const_t = typename std::remove_const<T>::type;
 
 }
 }
