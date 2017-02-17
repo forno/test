@@ -62,6 +62,12 @@ inline std::vector<typename std::basic_string<CharT>> split(const CharT (&target
   return split(target, target + N, std::forward<Delimiter>(delimiter));
 }
 
+template<typename CharT, typename Delimiter>
+inline std::vector<typename std::basic_string<CharT>> split(const CharT* target, Delimiter&& delimiter)
+{
+  return split(typename std::basic_string<CharT> {target}, std::forward<Delimiter>(delimiter));
+}
+
 }
 }
 
