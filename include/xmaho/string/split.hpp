@@ -62,6 +62,12 @@ inline std::vector<typename std::basic_string<CharT>> split(const CharT (&target
   return split(target, target + N, std::forward<Delimiter>(delimiter));
 }
 
+/**
+ * @brief split string by regex.
+ *
+ * The string is splited by delimiter to std::vector.
+ * On Javascript, It is know as String.split().
+ */
 template<typename CharT, typename Delimiter>
 inline std::vector<typename std::basic_string<CharT>> split(const CharT* target, Delimiter&& delimiter)
 {
