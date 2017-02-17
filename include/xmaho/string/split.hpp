@@ -6,6 +6,7 @@
  * @brief This have definition of xmaho::string::split functions.
  */
 
+#include <iterator>
 #include <regex>
 #include <string>
 #include <type_traits>
@@ -25,12 +26,16 @@ namespace string
  * The string is splited by delimiter to std::vector.
  * On Javascript, It is know as String.split().
  */
-template<typename BidirIter, typename CharT>
-inline std::vector<std::basic_string<CharT>> split(BidirIter&& first, BidirIter&& last, const std::basic_regex<CharT>& delimiter)
+template<typename BidirIter, typename Delimiter>
+inline std::vector<std::basic_string<typename std::iterator_traits<BidirIter>::value_type>>
+split(BidirIter&& first, BidirIter&& last, Delimiter&& delimiter)
 {
-  std::regex_token_iterator start {std::forward<BidirIter>(first), std::forward<BidirIter>(last), delimiter, -1},
-                            end {};
-  return {start, end};
+  using Regex = std::basic_regex<typename std::iterator_traits<BidirIter>::value_type>;
+  using TokenIter = std::regex_token_iterator<BidirIter>;
+
+  Regex delim {std::forward<Delimiter>(delimiter)};
+  return {TokenIter{std::forward<BidirIter>(first), std::forward<BidirIter>(last), delim, -1}, TokenIter{}};
+  return {};
 }
 
 /**
@@ -39,12 +44,22 @@ inline std::vector<std::basic_string<CharT>> split(BidirIter&& first, BidirIter&
  * The string is splited by delimiter to std::vector.
  * On Javascript, It is know as String.split().
  */
-template<typename String, typename CharT>
-inline std::vector<String> split(const String& target, const std::basic_regex<CharT>& delimiter)
+template<typename String, typename Delimiter>
+inline std::vector<String> split(const String& target, Delimiter&& delimiter)
 {
-  static_assert(!std::is_same<String::value_type, CharT>{},
-                "Error: difference charT between String and Regex");
-  return split(target.cbegin(), target.cend(), delimiter);
+  return split(target.cbegin(), target.cend(), std::forward<Delimiter>(delimiter));
+}
+
+/**
+ * @brief split string by regex.
+ *
+ * The string is splited by delimiter to std::vector.
+ * On Javascript, It is know as String.split().
+ */
+template<typename CharT, size_t N, typename Delimiter>
+inline std::vector<typename std::basic_string<CharT>> split(const CharT (&target)[N], Delimiter&& delimiter)
+{
+  return split(target, target + N, std::forward<Delimiter>(delimiter));
 }
 
 }
