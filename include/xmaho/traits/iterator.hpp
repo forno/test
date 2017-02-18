@@ -3,7 +3,7 @@
 
 /**
  * @file traits/iterator.hpp
- * @brief This have some convertion to **_t from **::type.
+ * @brief This have syntactic sugar from iterator_traits.
  */
 
 #include <iterator>
@@ -14,7 +14,7 @@ namespace traits
 {
 
 /**
- * @brief sintactic sugar of std::iterator_traits::value_type
+ * @brief syntactic sugar of std::iterator_traits::value_type.
  */
 template<typename T>
 using Value_type = typename std::iterator_traits<T>::value_type;
