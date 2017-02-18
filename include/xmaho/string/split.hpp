@@ -27,10 +27,10 @@ namespace string
  * On Javascript, It is know as String.split().
  */
 template<typename BidirIter, typename Delimiter>
-inline std::vector<std::basic_string<traits::remove_const_t<typename std::iterator_traits<BidirIter>::value_type>>>
+inline std::vector<std::basic_string<traits::remove_const_t<traits::Value_type<BidirIter>>>>
 split(BidirIter&& first, BidirIter&& last, Delimiter&& delimiter)
 {
-  using Regex = std::basic_regex<typename std::iterator_traits<BidirIter>::value_type>;
+  using Regex = std::basic_regex<traits::Value_type<BidirIter>>;
   using TokenIter = std::regex_token_iterator<BidirIter>;
 
   Regex delim {std::forward<Delimiter>(delimiter)};
