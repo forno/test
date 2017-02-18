@@ -3,7 +3,7 @@
 
 /**
  * @file traits/type_alias.hpp
- * @brief This have some convertion to **_t from **::type.
+ * @brief This have some convertion to **_t from ** member type.
  */
 
 #include <type_traits>
