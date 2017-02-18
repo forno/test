@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['string_5fmap',['string_map',['../namespacexmaho_1_1container.html#abad496b0c03dc86fe977d5e1fd5625b6',1,'xmaho::container']]]
+  ['remove_5fconst_5ft',['remove_const_t',['../namespacexmaho_1_1traits.html#a6457ae36f2cc38540d68fe4c82a2b627',1,'xmaho::traits']]]
 ];
