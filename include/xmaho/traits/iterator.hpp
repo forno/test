@@ -17,7 +17,7 @@ namespace traits
  * @brief sintactic sugar of std::iterator_traits::value_type
  */
 template<typename T>
-using Value_type = std::iterator_traits<T>::value_type;
+using Value_type = typename std::iterator_traits<T>::value_type;
 
 }
 }
