@@ -9,12 +9,13 @@ addons:
 compiler: g++
 env:
 - COMPILER=g++-6 C_COMPILER=gcc-6 BUILD_TYPE=Debug
-install:
+before_install:
 - cd thirdparty/googletest/googletest
+install:
 - cmake -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_CXX_COMPILER=$COMPILER -DCMAKE_C_COMPILER=$C_COMPILER -DCMAKE_CXX_FLAGS="${EXTRA_FLAGS}" .
 - make
-- cd -
 before_script:
+- cd -
 - mkdir build && cd build
 script:
 - cmake -DENABLE_TEST=ON -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_CXX_COMPILER=$COMPILER -DCMAKE_C_COMPILER=$C_COMPILER -DCMAKE_CXX_FLAGS="${EXTRA_FLAGS}" ..
