@@ -66,7 +66,7 @@ inline std::vector<typename std::basic_string<CharT>> split(const CharT (&target
  * On Javascript, It is know as String.split().
  */
 template<typename CharT, typename Delimiter>
-inline std::vector<typename std::basic_string<CharT>> split(const CharT* target, Delimiter&& delimiter)
+inline std::vector<typename std::basic_string<CharT>> split(const CharT*& target, Delimiter&& delimiter)
 {
   return split(typename std::basic_string<CharT>{target}, std::forward<Delimiter>(delimiter));
 }
