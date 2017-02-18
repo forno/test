@@ -40,7 +40,7 @@ TEST(DelimiterForwardTest, HandlesNormalInput)
   ASSERT_EQ(result, ans);
 }
 
-TEST(StringLiteralTest, HandlesNullInput)
+TEST(StringPointerTest, HandlesNullInput)
 {
   auto base = "";
   auto delimiter = "";
@@ -48,7 +48,7 @@ TEST(StringLiteralTest, HandlesNullInput)
   ASSERT_EQ(result, std::vector<std::string>{""});
 }
 
-TEST(StringLiteralTest, HandleNormalInput)
+TEST(StringPointerTest, HandleNormalInput)
 {
   auto base = "a,b,c";
   auto delimiter = ",";
@@ -57,7 +57,7 @@ TEST(StringLiteralTest, HandleNormalInput)
   ASSERT_EQ(result, ans);
 }
 
-TEST(StringPointerTest, HandlesNullInput)
+TEST(StringLiteralTest, HandlesNoConstNullInput)
 {
   char base[] {'\0'};
   auto delimiter = "";
@@ -65,7 +65,7 @@ TEST(StringPointerTest, HandlesNullInput)
   ASSERT_EQ(result, std::vector<std::string>{""});
 }
 
-TEST(StringPointerTest, HandleNormalInput)
+TEST(StringLiteralTest, HandleNoConstNormalInput)
 {
   std::string base_context("a,b,c");
   char base[6];
