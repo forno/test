@@ -12,8 +12,7 @@ if(NOT DEFINED CMAKE_BUILD_TYPE)
 endif()
 
 option(ENABLE_TEST "Enable test program building" OFF)
-
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++14")
+option(ENABLE_CXX17 "Enable C++17 support" OFF)
 
 set(MY_DIR ${xmaho_SOURCE_DIR})
 
@@ -23,6 +22,14 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/bin)
 #set the default path for built libraries to the "lib" directory
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib)
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Winit-self -Wno-missing-dield-initializers")
+
+if(ENABLE_CXX17)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
+else()
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
+endif()
 
 # Add includes
 include_directories(
