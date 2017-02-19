@@ -56,7 +56,7 @@ inline auto split(const String& target, Delimiter&& delimiter)
  * On Javascript, It is know as String.split().
  */
 template<typename CharT, size_t N, typename Delimiter>
-inline auto split(const CharT (&target)[N], Delimiter&& delimiter)
+inline auto split(CharT (&target)[N], Delimiter&& delimiter)
 {
   return split(std::begin(target), target + N - 1, std::forward<Delimiter>(delimiter)); // N - 1 for ignore \0
 }
