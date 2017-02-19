@@ -6,6 +6,7 @@
  * @brief This have definition of xmaho::string::split functions.
  */
 
+#include <iterator>
 #include <regex>
 #include <string>
 #include <utility>
@@ -44,7 +45,7 @@ split(BidirIter&& first, BidirIter&& last, Delimiter&& delimiter)
 template<typename String, typename Delimiter>
 inline std::vector<String> split(const String& target, Delimiter&& delimiter)
 {
-  return split(target.cbegin(), target.cend(), std::forward<Delimiter>(delimiter));
+  return split(std::begin(target), std::end(target), std::forward<Delimiter>(delimiter));
 }
 
 /**
@@ -56,7 +57,7 @@ inline std::vector<String> split(const String& target, Delimiter&& delimiter)
 template<typename CharT, size_t N, typename Delimiter>
 inline std::vector<typename std::basic_string<CharT>> split(const CharT (&target)[N], Delimiter&& delimiter)
 {
-  return split(static_cast<const CharT*>(target), target + N - 1, std::forward<Delimiter>(delimiter)); // N - 1 for ignore \0
+  return split(std::begin(target), target + N - 1, std::forward<Delimiter>(delimiter)); // N - 1 for ignore \0
 }
 
 /**
