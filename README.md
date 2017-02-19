@@ -22,7 +22,7 @@ sudo make install
 You write `#include <xmaho/xmaho.hpp>` onto top of your source code.
 
 ### Compile
-Compile with c++11 or newer.
+Compile with c++14 or newer.
 
 ## LICENSE
 This software is released under the BSD 2-Clause License, see LICENSE.txt.
