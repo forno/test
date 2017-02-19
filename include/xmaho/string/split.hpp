@@ -13,7 +13,7 @@
 #include <utility>
 #include <vector>
 
-#include "xmaho/traits.hpp"
+#include "xmaho/traits/iterator.hpp"
 
 namespace xmaho
 {
