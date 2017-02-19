@@ -9,6 +9,7 @@
 #include <iterator>
 #include <regex>
 #include <string>
+#include <type_traits>
 #include <utility>
 #include <vector>
 
@@ -26,7 +27,7 @@ namespace string
  * On Javascript, It is know as String.split().
  */
 template<typename BidirIter, typename Delimiter>
-inline std::vector<std::basic_string<traits::remove_const_t<traits::Value_type<BidirIter>>>>
+inline std::vector<std::basic_string<std::remove_const_t<traits::Value_type<BidirIter>>>>
 split(BidirIter&& first, BidirIter&& last, Delimiter&& delimiter)
 {
   using Regex = std::basic_regex<traits::Value_type<BidirIter>>;
