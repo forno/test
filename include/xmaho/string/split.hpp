@@ -43,7 +43,7 @@ split(BidirIter&& first, BidirIter&& last, Delimiter&& delimiter)
  * On Javascript, It is know as String.split().
  */
 template<typename String, typename Delimiter>
-inline std::vector<String> split(const String& target, Delimiter&& delimiter)
+inline auto split(const String& target, Delimiter&& delimiter)
 {
   return split(std::begin(target), std::end(target), std::forward<Delimiter>(delimiter));
 }
@@ -55,7 +55,7 @@ inline std::vector<String> split(const String& target, Delimiter&& delimiter)
  * On Javascript, It is know as String.split().
  */
 template<typename CharT, size_t N, typename Delimiter>
-inline std::vector<typename std::basic_string<CharT>> split(const CharT (&target)[N], Delimiter&& delimiter)
+inline auto split(const CharT (&target)[N], Delimiter&& delimiter)
 {
   return split(std::begin(target), target + N - 1, std::forward<Delimiter>(delimiter)); // N - 1 for ignore \0
 }
@@ -67,7 +67,7 @@ inline std::vector<typename std::basic_string<CharT>> split(const CharT (&target
  * On Javascript, It is know as String.split().
  */
 template<typename CharT, typename Delimiter>
-inline std::vector<typename std::basic_string<CharT>> split(const CharT*& target, Delimiter&& delimiter)
+inline auto split(const CharT*& target, Delimiter&& delimiter)
 {
   return split(typename std::basic_string<CharT>{target}, std::forward<Delimiter>(delimiter));
 }
