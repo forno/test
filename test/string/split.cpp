@@ -111,6 +111,21 @@ TEST(StringLiteralTest, HandleNoConstNormalInput)
   ASSERT_EQ(result, ans);
 }
 
+TEST(StringLiteralTest, HandlesRawNullInput)
+{
+  const char delimiter[] {""};
+  auto result = xmaho::string::split("", delimiter);
+  ASSERT_EQ(result, std::vector<std::string>{""});
+}
+
+TEST(StringLiteralTest, HandleRawNormalInput)
+{
+  const char delimiter[] {","};
+  auto result = xmaho::string::split("a,b,c", delimiter);
+  std::vector<std::string> ans {"a", "b", "c"};
+  ASSERT_EQ(result, ans);
+}
+
 TEST(StringLiteralForwardTest, HandlesNullInput)
 {
   const char base[] {""};
