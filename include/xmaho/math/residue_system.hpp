@@ -1,6 +1,8 @@
 #ifndef XMAHO_XMAHO_MATH_RESIDUE_SYSTEM_H
 #define XMAHO_XMAHO_MATH_RESIDUE_SYSTEM_H
 
+#include <stdexcept>
+
 /**
  * @file math/residue_system.hpp
  * @brief This have definition of xmaho::math::residue_system class.
