@@ -63,9 +63,9 @@ public:
   template<typename T>
   constexpr const residue_system operator-(const T& rhs) const noexcept
   {
-    value_ < rhs ?
+    return value_ < rhs ?
       throw std::invalid_argument{"Now cannot operate on LHS < RHS"} :
-      return residue_system{value_ - rhs};
+      residue_system{value_ - rhs};
   }
 
 private:
