@@ -31,7 +31,7 @@ public:
   {
   }
 
-  constexpr ValueType operator ValueType() const noexcept
+  constexpr operator ValueType() const noexcept
   {
     return value_;
   }
@@ -68,7 +68,7 @@ public:
 
 private:
   ValueType value_;
-}
+};
 
 }
 }
