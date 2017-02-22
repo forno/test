@@ -54,14 +54,12 @@ public:
     return *this;
   }
 
-  template<typename T>
-  constexpr const residue_system operator+(const T& rhs) const noexcept
+  constexpr const residue_system operator+(const residue_system& rhs) const noexcept
   {
     return residue_system{value_ + rhs};
   }
 
-  template<typename T>
-  constexpr const residue_system operator-(const T& rhs) const noexcept
+  constexpr const residue_system operator-(const residue_system& rhs) const noexcept
   {
     return value_ < rhs ?
       throw std::invalid_argument{"Now cannot operate on LHS < RHS"} :
