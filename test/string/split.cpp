@@ -4,7 +4,7 @@
 
 #include <gtest/gtest.h>
 
-#include "xmaho/string.hpp"
+#include "xmaho/string/split.hpp"
 
 TEST(BaseTest, HandlesNullInput)
 {
