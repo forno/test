@@ -21,6 +21,8 @@ namespace math
 template<std::size_t Modulo, typename ValueType = std::size_t>
 class residue_system
 {
+  ValueType value_;
+
 public:
   template<typename T>
   static constexpr ValueType limit(const T& value) noexcept
@@ -60,15 +62,12 @@ public:
     return residue_system{value_ + rhs.value_};
   }
 
-  constexpr const residue_system operator-(const residue_system& rhs) const noexcept
+  constexpr const residue_system operator-(const residue_system& rhs) const
   {
     return value_ < rhs.value_ ?
       throw std::invalid_argument{"Now cannot operate on LHS < RHS"} :
       residue_system{value_ - rhs.value_};
   }
-
-private:
-  ValueType value_;
 };
 
 }

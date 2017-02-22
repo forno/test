@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['remove_5fconst_5ft',['remove_const_t',['../namespacexmaho_1_1traits.html#a6457ae36f2cc38540d68fe4c82a2b627',1,'xmaho::traits']]]
+  ['limit',['limit',['../classxmaho_1_1math_1_1residue__system.html#a4abce8274238327529d791a2a3b189aa',1,'xmaho::math::residue_system']]]
 ];

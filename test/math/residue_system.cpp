@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "xmaho/math.hpp"
+#include "xmaho/math/residue_system.hpp"
 
 TEST(BaseModulo1Test, NullInput)
 {

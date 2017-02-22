@@ -17,6 +17,7 @@
  */
 
 #include "xmaho/container.hpp"
+#include "xmaho/math.hpp"
 #include "xmaho/string.hpp"
 #include "xmaho/traits.hpp"
 
