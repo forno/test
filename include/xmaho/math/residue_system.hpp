@@ -23,7 +23,7 @@ class residue_system
 {
 public:
   template<typename T>
-  static constexpr ValueType limit(const T& value)
+  static constexpr ValueType limit(const T& value) noexcept
   {
     return value % Modulo;
   }
