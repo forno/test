@@ -4,27 +4,31 @@
 
 TEST(BaseModulo1Test, NullInput)
 {
-  xmaho::math::residue_system<1> residue_number {};
-  ASSERT_EQ(residue_number, 0u);
+  xmaho::math::residue_system<1> null_number {};
+  xmaho::math::residue_system<1> once_again {};
+  ASSERT_EQ(null_number, once_again);
 }
 
 TEST(BaseModulo1Test, LeastResidueNumber)
 {
-  xmaho::math::residue_system<1> residue_number {0};
-  ASSERT_EQ(residue_number, 0u);
+  xmaho::math::residue_system<1> zero_number {0};
+  xmaho::math::residue_system<1> once_again {0};
+  ASSERT_EQ(zero_number, once_again);
 }
 
 
 TEST(BaseModulo1Test, EqualModuloNumber)
 {
-  xmaho::math::residue_system<1> residue_number {1};
-  ASSERT_EQ(residue_number, 0u);
+  xmaho::math::residue_system<1> modulo_number {1};
+  xmaho::math::residue_system<1> least_residue_number {0};
+  ASSERT_EQ(modulo_number, least_residue_number);
 }
 
 TEST(BaseModulo1Test, OverModuloNumber)
 {
   xmaho::math::residue_system<1> residue_number {2};
-  ASSERT_EQ(residue_number, 0u);
+  xmaho::math::residue_system<1> least_residue_number {0};
+  ASSERT_EQ(residue_number, least_residue_number);
 }
 
 TEST(BaseModulo1Test, Addition)
@@ -41,29 +45,18 @@ TEST(BaseModulo1Test, Subtraction)
   ASSERT_EQ(num1 - num2, xmaho::math::residue_system<1>{});
 }
 
-TEST(BaseModulo2Test, NullInput)
-{
-  xmaho::math::residue_system<2> residue_number {};
-  ASSERT_EQ(residue_number, 0u);
-}
-
-TEST(BaseModulo2Test, LeastResidueNumber)
-{
-  xmaho::math::residue_system<2> residue_number {1};
-  ASSERT_EQ(residue_number, 1u);
-}
-
-
 TEST(BaseModulo2Test, EqualModuloNumber)
 {
   xmaho::math::residue_system<2> residue_number {2};
-  ASSERT_EQ(residue_number, 0u);
+  xmaho::math::residue_system<2> least_residue_number {0};
+  ASSERT_EQ(residue_number, least_residue_number);
 }
 
 TEST(BaseModulo2Test, OverModuloNumber)
 {
   xmaho::math::residue_system<2> residue_number {3};
-  ASSERT_EQ(residue_number, 1u);
+  xmaho::math::residue_system<2> least_residue_number {1};
+  ASSERT_EQ(residue_number, least_residue_number);
 }
 
 TEST(BaseModulo2Test, NormalAddition)

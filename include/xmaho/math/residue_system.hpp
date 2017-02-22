@@ -34,6 +34,11 @@ public:
   {
   }
 
+  bool operator==(const residue_system& rhs) const noexcept
+  {
+    return value_ == rhs.value_;
+  }
+
   residue_system& operator++() noexcept
   {
     ++value_;
