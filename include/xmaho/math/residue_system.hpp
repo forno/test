@@ -62,7 +62,7 @@ public:
     return residue_system{value_ + rhs.value_};
   }
 
-  constexpr const residue_system operator-(const residue_system& rhs) const noexcept
+  constexpr const residue_system operator-(const residue_system& rhs) const
   {
     return value_ < rhs.value_ ?
       throw std::invalid_argument{"Now cannot operate on LHS < RHS"} :
