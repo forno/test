@@ -1,6 +1,7 @@
 #ifndef XMAHO_XMAHO_MATH_RESIDUE_SYSTEM_H
 #define XMAHO_XMAHO_MATH_RESIDUE_SYSTEM_H
 
+#include <cstddef>
 #include <stdexcept>
 
 /**
@@ -17,7 +18,7 @@ namespace math
  *
  * The least residue system modulo "Modulo".
  */
-template<size_t Modulo, typename ValueType = size_t>
+template<std::size_t Modulo, typename ValueType = std::size_t>
 class residue_system
 {
 public:
