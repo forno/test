@@ -6,6 +6,7 @@
  * @brief This have definition of xmaho::string::split functions.
  */
 
+#include <cstddef>
 #include <iterator>
 #include <regex>
 #include <string>
@@ -55,7 +56,7 @@ inline auto split(const String& target, Delimiter&& delimiter)
  * The string is splited by delimiter to std::vector.
  * On Javascript, It is know as String.split().
  */
-template<typename CharT, size_t N, typename Delimiter>
+template<typename CharT, std::size_t N, typename Delimiter>
 inline auto split(const CharT (&target)[N], Delimiter&& delimiter)
 {
   return split(std::begin(target), target + N - 1, std::forward<Delimiter>(delimiter)); // N - 1 for ignore \0
