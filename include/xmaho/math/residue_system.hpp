@@ -34,11 +34,6 @@ public:
   {
   }
 
-  constexpr operator ValueType() const noexcept
-  {
-    return value_;
-  }
-
   residue_system& operator++() noexcept
   {
     ++value_;
@@ -57,14 +52,14 @@ public:
 
   constexpr const residue_system operator+(const residue_system& rhs) const noexcept
   {
-    return residue_system{value_ + rhs};
+    return residue_system{value_ + rhs.value_};
   }
 
   constexpr const residue_system operator-(const residue_system& rhs) const noexcept
   {
-    return value_ < rhs ?
+    return value_ < rhs.value_ ?
       throw std::invalid_argument{"Now cannot operate on LHS < RHS"} :
-      residue_system{value_ - rhs};
+      residue_system{value_ - rhs.value_};
   }
 
 private:
