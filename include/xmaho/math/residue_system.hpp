@@ -51,7 +51,7 @@ public:
   residue_system& operator--() noexcept
   {
     if (value_ <= 0)
-      value_ = Modulo;
+      value_ = Modulo - 1;
     else
       --value_;
     return *this;
