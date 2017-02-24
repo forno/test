@@ -18,57 +18,73 @@ namespace math
  *
  * The least residue system modulo "Modulo".
  */
-template<std::size_t Modulo, typename ValueType = std::size_t>
-class residue_system
+template<typename ValueType, std::size_t Modulo>
+class basic_residue_system
 {
+  static_assert(Modulo > 0, "Error: Modulo is negative number. It must be positive number");
   ValueType value_;
 
 public:
-  template<typename T>
-  static constexpr ValueType limit(const T& value) noexcept
-  {
-    return value % Modulo;
-  }
-
-  explicit constexpr residue_system() noexcept = default;
-  explicit constexpr residue_system(const ValueType& value) noexcept
-    : value_ {limit(value)}
+  constexpr basic_residue_system() noexcept = default;
+  explicit constexpr basic_residue_system(const ValueType& value) noexcept
+    : value_ {value % Modulo}
   {
   }
 
-  bool operator==(const residue_system& rhs) const noexcept
+  constexpr basic_residue_system(const basic_residue_system&) noexcept = default;
+  constexpr basic_residue_system(basic_residue_system&&) noexcept = default;
+  basic_residue_system& operator=(const basic_residue_system&) noexcept = default;
+  basic_residue_system& operator=(basic_residue_system&&) noexcept = default;
+  ~basic_residue_system() noexcept = default;
+
+  bool operator==(const basic_residue_system& rhs) const noexcept
   {
     return value_ == rhs.value_;
   }
 
-  residue_system& operator++() noexcept
+  basic_residue_system& operator++() noexcept
   {
     ++value_;
     value_ %= Modulo;
     return *this;
   }
 
-  residue_system& operator--() noexcept
+  basic_residue_system& operator--() noexcept
   {
-    if (value_ == 0)
-      value_ = Modulo;
+    if (value_ <= 0)
+      value_ = Modulo - 1;
     else
       --value_;
     return *this;
   }
 
-  constexpr const residue_system operator+(const residue_system& rhs) const noexcept
+  basic_residue_system operator++(int) noexcept
   {
-    return residue_system{value_ + rhs.value_};
+    basic_residue_system tmp{*this};
+    ++*this;
+    return tmp;
   }
 
-  constexpr const residue_system operator-(const residue_system& rhs) const
+  basic_residue_system& operator--(int) noexcept
   {
-    return value_ < rhs.value_ ?
-      throw std::invalid_argument{"Now cannot operate on LHS < RHS"} :
-      residue_system{value_ - rhs.value_};
+    basic_residue_system tmp{*this};
+    ++*this;
+    return tmp;
+  }
+
+  constexpr const basic_residue_system operator+(const basic_residue_system& rhs) const noexcept
+  {
+    return basic_residue_system{value_ + rhs.value_};
+  }
+
+  constexpr const basic_residue_system operator-(const basic_residue_system& rhs) const
+  {
+    return basic_residue_system{value_ + Modulo - rhs.value_};
   }
 };
+
+template<std::size_t Modulo>
+using residue_system = basic_residue_system<std::size_t, Modulo>;
 
 }
 }

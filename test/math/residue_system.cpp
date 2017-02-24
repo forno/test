@@ -79,3 +79,31 @@ TEST(MathResidueSystemBaseModulo2, Subtraction)
   xmaho::math::residue_system<2> num2 {1};
   ASSERT_EQ(num1 - num2, xmaho::math::residue_system<2>{});
 }
+
+TEST(MathResidueSystemBaseModulo2, NormalPrefixIncrement)
+{
+  xmaho::math::residue_system<2> residue_number {};
+  ++residue_number;
+  ASSERT_EQ(residue_number, xmaho::math::residue_system<2>{1});
+}
+
+TEST(MathResidueSystemBaseModulo2, OverPrefixIncrement)
+{
+  xmaho::math::residue_system<2> residue_number {1};
+  ++residue_number;
+  ASSERT_EQ(residue_number, xmaho::math::residue_system<2>{});
+}
+
+TEST(MathResidueSystemBaseModulo2, NormalPrefixDecrement)
+{
+  xmaho::math::residue_system<2> residue_number {1};
+  --residue_number;
+  ASSERT_EQ(residue_number, xmaho::math::residue_system<2>{});
+}
+
+TEST(MathResidueSystemBaseModulo2, UnderPrefixDecrepemt)
+{
+  xmaho::math::residue_system<2> residue_number {};
+  --residue_number;
+  ASSERT_EQ(residue_number, xmaho::math::residue_system<2>{1});
+}
