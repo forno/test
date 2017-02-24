@@ -25,11 +25,16 @@ class residue_system
   ValueType value_;
 
 public:
-  explicit constexpr residue_system() noexcept = default;
+  constexpr residue_system() noexcept = default;
   explicit constexpr residue_system(const ValueType& value) noexcept
     : value_ {value % Modulo}
   {
   }
+
+  residue_system(const residue_system&) noexcept = default;
+  residue_system(residue_system&&) noexcept = default;
+  residue_system& operator=(const residue_system&) noexcept = default;
+  residue_system& operator=(residue_system&&) noexcept = default;
 
   bool operator==(const residue_system& rhs) const noexcept
   {
