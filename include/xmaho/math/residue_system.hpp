@@ -18,7 +18,7 @@ namespace math
  *
  * The least residue system modulo "Modulo".
  */
-template<typename ValueType, std::size_t Modulo>
+template<typename ValueType, ValueType Modulo>
 class basic_residue_system
 {
   static_assert(Modulo > 0, "Error: Modulo is negative number. It must be positive number");
