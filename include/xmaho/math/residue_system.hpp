@@ -57,6 +57,20 @@ public:
     return *this;
   }
 
+  residue_system operator++(int) noexcept
+  {
+    residue_system tmp{*this};
+    ++*this;
+    return tmp;
+  }
+
+  residue_system& operator--(int) noexcept
+  {
+    residue_system tmp{*this};
+    ++*this;
+    return tmp;
+  }
+
   constexpr const residue_system operator+(const residue_system& rhs) const noexcept
   {
     return residue_system{value_ + rhs.value_};
