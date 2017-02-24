@@ -31,8 +31,8 @@ public:
   {
   }
 
-  residue_system(const residue_system&) noexcept = default;
-  residue_system(residue_system&&) noexcept = default;
+  constexpr residue_system(const residue_system&) noexcept = default;
+  constexpr residue_system(residue_system&&) noexcept = default;
   residue_system& operator=(const residue_system&) noexcept = default;
   residue_system& operator=(residue_system&&) noexcept = default;
 
