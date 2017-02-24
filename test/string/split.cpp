@@ -6,7 +6,7 @@
 
 #include "xmaho/string/split.hpp"
 
-TEST(BaseTest, HandlesNullInput)
+TEST(StringSplitBase, HandlesNullInput)
 {
   std::string base {};
   std::regex delimiter {};
@@ -14,7 +14,7 @@ TEST(BaseTest, HandlesNullInput)
   ASSERT_EQ(result, std::vector<std::string>{""});
 }
 
-TEST(BaseTest, HandlesNormalInput)
+TEST(StringSplitBase, HandlesNormalInput)
 {
   std::string base("a,b,c");
   std::regex delimiter(",");
@@ -23,7 +23,7 @@ TEST(BaseTest, HandlesNormalInput)
   ASSERT_EQ(result, ans);
 }
 
-TEST(DelimiterForwardTest, HandlesNullInput)
+TEST(StringSplitDelimiterForward, HandlesNullInput)
 {
   std::string base {};
   std::string delimiter {};
@@ -31,7 +31,7 @@ TEST(DelimiterForwardTest, HandlesNullInput)
   ASSERT_EQ(result, std::vector<std::string>{""});
 }
 
-TEST(DelimiterForwardTest, HandlesNormalInput)
+TEST(StringSplitDelimiterForward, HandlesNormalInput)
 {
   std::string base("a,b,c");
   std::string delimiter(",");
@@ -40,7 +40,7 @@ TEST(DelimiterForwardTest, HandlesNormalInput)
   ASSERT_EQ(result, ans);
 }
 
-TEST(StringPointerTest, HandlesNullInput)
+TEST(StringSplitStringPointer, HandlesNullInput)
 {
   auto base = "";
   auto delimiter = "";
@@ -48,7 +48,7 @@ TEST(StringPointerTest, HandlesNullInput)
   ASSERT_EQ(result, std::vector<std::string>{""});
 }
 
-TEST(StringPointerTest, HandleNormalInput)
+TEST(StringSplitStringPointer, HandleNormalInput)
 {
   auto base = "a,b,c";
   auto delimiter = ",";
@@ -57,7 +57,7 @@ TEST(StringPointerTest, HandleNormalInput)
   ASSERT_EQ(result, ans);
 }
 
-TEST(StringPointerForwardTest, HandlesNullInput)
+TEST(StringSplitStringPointerForward, HandlesNullInput)
 {
   auto base = "";
   auto delimiter = "";
@@ -65,7 +65,7 @@ TEST(StringPointerForwardTest, HandlesNullInput)
   ASSERT_EQ(result, std::vector<std::string>{""});
 }
 
-TEST(StringPointerForwardTest, HandleNormalInput)
+TEST(StringSplitStringPointerForward, HandleNormalInput)
 {
   auto base = "a,b,c";
   auto delimiter = ",";
@@ -74,7 +74,7 @@ TEST(StringPointerForwardTest, HandleNormalInput)
   ASSERT_EQ(result, ans);
 }
 
-TEST(StringLiteralTest, HandlesNullInput)
+TEST(StringSplitStringLiteral, HandlesNullInput)
 {
   const char base[] {""};
   const char delimiter[] {""};
@@ -82,7 +82,7 @@ TEST(StringLiteralTest, HandlesNullInput)
   ASSERT_EQ(result, std::vector<std::string>{""});
 }
 
-TEST(StringLiteralTest, HandleNormalInput)
+TEST(StringSplitStringLiteral, HandleNormalInput)
 {
   const char base[] {"a,b,c"};
   const char delimiter[] {","};
@@ -91,7 +91,7 @@ TEST(StringLiteralTest, HandleNormalInput)
   ASSERT_EQ(result, ans);
 }
 
-TEST(StringLiteralTest, HandlesNoConstNullInput)
+TEST(StringSplitStringLiteral, HandlesNoConstNullInput)
 {
   char base[] {'\0'};
   auto delimiter = "";
@@ -99,7 +99,7 @@ TEST(StringLiteralTest, HandlesNoConstNullInput)
   ASSERT_EQ(result, std::vector<std::string>{""});
 }
 
-TEST(StringLiteralTest, HandleNoConstNormalInput)
+TEST(StringSplitStringLiteral, HandleNoConstNormalInput)
 {
   std::string base_context("a,b,c");
   char base[6];
@@ -111,14 +111,14 @@ TEST(StringLiteralTest, HandleNoConstNormalInput)
   ASSERT_EQ(result, ans);
 }
 
-TEST(StringLiteralTest, HandlesRawNullInput)
+TEST(StringSplitStringLiteral, HandlesRawNullInput)
 {
   const char delimiter[] {""};
   auto result = xmaho::string::split("", delimiter);
   ASSERT_EQ(result, std::vector<std::string>{""});
 }
 
-TEST(StringLiteralTest, HandleRawNormalInput)
+TEST(StringSplitStringLiteral, HandleRawNormalInput)
 {
   const char delimiter[] {","};
   auto result = xmaho::string::split("a,b,c", delimiter);
@@ -126,7 +126,7 @@ TEST(StringLiteralTest, HandleRawNormalInput)
   ASSERT_EQ(result, ans);
 }
 
-TEST(StringLiteralForwardTest, HandlesNullInput)
+TEST(StringSplitStringLiteralForward, HandlesNullInput)
 {
   const char base[] {""};
   const char delimiter[] {""};
@@ -134,7 +134,7 @@ TEST(StringLiteralForwardTest, HandlesNullInput)
   ASSERT_EQ(result, std::vector<std::string>{""});
 }
 
-TEST(StringLiteralForwardTest, HandleNormalInput)
+TEST(StringSplitStringLiteralForward, HandleNormalInput)
 {
   const char base[] {"a,b,c"};
   const char delimiter[] {","};
@@ -143,7 +143,7 @@ TEST(StringLiteralForwardTest, HandleNormalInput)
   ASSERT_EQ(result, ans);
 }
 
-TEST(StringLiteralForwardTest, HandlesNoConstNullInput)
+TEST(StringSplitStringLiteralForward, HandlesNoConstNullInput)
 {
   char base[] {'\0'};
   auto delimiter = "";
@@ -151,7 +151,7 @@ TEST(StringLiteralForwardTest, HandlesNoConstNullInput)
   ASSERT_EQ(result, std::vector<std::string>{""});
 }
 
-TEST(StringLiteralForwardTest, HandleNoConstNormalInput)
+TEST(StringSplitStringLiteralForward, HandleNoConstNormalInput)
 {
   std::string base_context("a,b,c");
   char base[6];
