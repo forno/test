@@ -37,7 +37,7 @@ public:
   basic_residue_system& operator=(basic_residue_system&&) noexcept = default;
   ~basic_residue_system() noexcept = default;
 
-  bool operator==(const basic_residue_system& rhs) const noexcept
+  constexpr bool operator==(const basic_residue_system& rhs) const noexcept
   {
     return value_ == rhs.value_;
   }
