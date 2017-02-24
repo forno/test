@@ -35,6 +35,7 @@ public:
   constexpr residue_system(residue_system&&) noexcept = default;
   residue_system& operator=(const residue_system&) noexcept = default;
   residue_system& operator=(residue_system&&) noexcept = default;
+  ~residue_system() noexcept = default;
 
   bool operator==(const residue_system& rhs) const noexcept
   {
