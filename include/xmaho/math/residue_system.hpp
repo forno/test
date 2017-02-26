@@ -68,7 +68,7 @@ public:
   constexpr basic_residue_system& operator--(int) noexcept
   {
     basic_residue_system tmp{*this};
-    ++*this;
+    --*this;
     return tmp;
   }
 
