@@ -77,7 +77,7 @@ public:
     return basic_residue_system{value_ + rhs.value_};
   }
 
-  constexpr const basic_residue_system operator-(const basic_residue_system& rhs) const
+  constexpr const basic_residue_system operator-(const basic_residue_system& rhs) const noexcept
   {
     return basic_residue_system{value_ + Modulo - rhs.value_};
   }
