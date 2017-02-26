@@ -33,23 +33,23 @@ public:
 
   constexpr basic_residue_system(const basic_residue_system&) noexcept = default;
   constexpr basic_residue_system(basic_residue_system&&) noexcept = default;
-  basic_residue_system& operator=(const basic_residue_system&) noexcept = default;
-  basic_residue_system& operator=(basic_residue_system&&) noexcept = default;
+  constexpr basic_residue_system& operator=(const basic_residue_system&) noexcept = default;
+  constexpr basic_residue_system& operator=(basic_residue_system&&) noexcept = default;
   ~basic_residue_system() noexcept = default;
 
-  bool operator==(const basic_residue_system& rhs) const noexcept
+  constexpr bool operator==(const basic_residue_system& rhs) const noexcept
   {
     return value_ == rhs.value_;
   }
 
-  basic_residue_system& operator++() noexcept
+  constexpr basic_residue_system& operator++() noexcept
   {
     ++value_;
     value_ %= Modulo;
     return *this;
   }
 
-  basic_residue_system& operator--() noexcept
+  constexpr basic_residue_system& operator--() noexcept
   {
     if (value_ <= 0)
       value_ = Modulo - 1;
@@ -58,17 +58,17 @@ public:
     return *this;
   }
 
-  basic_residue_system operator++(int) noexcept
+  constexpr basic_residue_system operator++(int) noexcept
   {
     basic_residue_system tmp{*this};
     ++*this;
     return tmp;
   }
 
-  basic_residue_system& operator--(int) noexcept
+  constexpr basic_residue_system& operator--(int) noexcept
   {
     basic_residue_system tmp{*this};
-    ++*this;
+    --*this;
     return tmp;
   }
 
@@ -77,7 +77,7 @@ public:
     return basic_residue_system{value_ + rhs.value_};
   }
 
-  constexpr const basic_residue_system operator-(const basic_residue_system& rhs) const
+  constexpr const basic_residue_system operator-(const basic_residue_system& rhs) const noexcept
   {
     return basic_residue_system{value_ + Modulo - rhs.value_};
   }
