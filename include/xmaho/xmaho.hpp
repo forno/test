@@ -16,9 +16,9 @@
  * @brief All-inclusive directory of xmaho librarys.
  */
 
-#include "xmaho/container.hpp"
-#include "xmaho/math.hpp"
-#include "xmaho/string.hpp"
-#include "xmaho/traits.hpp"
+#include "xmaho/container/container.hpp"
+#include "xmaho/math/math.hpp"
+#include "xmaho/string/string.hpp"
+#include "xmaho/traits/traits.hpp"
 
 #endif

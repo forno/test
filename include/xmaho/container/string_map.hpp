@@ -6,6 +6,7 @@
  * @brief This have definition of xmaho::container::string_map
  */
 
+#include <string>
 #include <unordered_map>
 
 namespace xmaho
