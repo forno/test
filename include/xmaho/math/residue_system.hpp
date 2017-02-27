@@ -22,11 +22,11 @@ template<typename ValueType, ValueType Modulo>
 class basic_residue_system
 {
   static_assert(Modulo > 0, "Error: Modulo is negative number. It must be positive number");
-  ValueType value_;
 
 public:
+  using value_type = ValueType;
   constexpr basic_residue_system() noexcept = default;
-  explicit constexpr basic_residue_system(const ValueType& value) noexcept
+  explicit constexpr basic_residue_system(const value_type& value) noexcept
     : value_ {value % Modulo}
   {
   }
@@ -36,6 +36,11 @@ public:
   constexpr basic_residue_system& operator=(const basic_residue_system&) noexcept = default;
   constexpr basic_residue_system& operator=(basic_residue_system&&) noexcept = default;
   ~basic_residue_system() noexcept = default;
+
+  explicit constexpr operator value_type() const noexcept
+  {
+    return value_;
+  }
 
   constexpr bool operator==(const basic_residue_system& rhs) const noexcept
   {
@@ -81,6 +86,9 @@ public:
   {
     return basic_residue_system{value_ + Modulo - rhs.value_};
   }
+
+private:
+  value_type value_;
 };
 
 template<std::size_t Modulo>
