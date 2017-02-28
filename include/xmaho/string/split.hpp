@@ -20,7 +20,7 @@ namespace xmaho
 {
 namespace string
 {
-
+template<typename T> class show_type;
 /**
  * @brief split string by regex.
  *
@@ -30,7 +30,7 @@ namespace string
 template<template<typename...> class Container = std::vector,
          typename BidirIter,
          typename Delimiter,
-         typename ResultValue = std::basic_string<std::remove_const_t<traits::Value_type<BidirIter>>>>
+         typename ResultValue = std::basic_string<traits::Value_type<BidirIter>>>
 inline Container<ResultValue> split(BidirIter&& first, BidirIter&& last, Delimiter&& delimiter)
 {
   using Regex = std::basic_regex<traits::Value_type<BidirIter>>;
