@@ -12,9 +12,11 @@ auto f(T v)
 template<typename T, typename... Rests>
 auto f(T v, Rests... rests)
 {
-  return std::tuple_cat(std::tuple<T>{v}, f(rests...));
+  if (v)
+    return std::tuple_cat(std::tuple<T>{v}, f(rests...));
+  return f(rests...);
 }
 
 int main(int argc, char** argv) {
-  f(5, 3.3, 31, 'v') != f(1, 2, 3, 'a', 23.4);
+  f(5, 3.3, 2, 31, 'v') != f(3, 2, 3, 'a', 23.4);
 }
