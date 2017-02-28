@@ -20,7 +20,7 @@ namespace xmaho
 {
 namespace string
 {
-template<typename T> class show_type;
+
 /**
  * @brief split string by regex.
  *
