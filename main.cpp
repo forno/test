@@ -1,8 +1,10 @@
 #include <xmaho/xmaho.hpp>
 
-template<typename T> class show_type;
-
 int main(int argc, char** argv) {
-  show_type<xmaho::traits::Value_type<std::string::const_iterator>>{};
-  show_type<std::string::const_iterator>{};
+  using test_type = std::regex_token_iterator<std::string::iterator>;
+  show_type<test_type>{};
+
+  static_assert(std::is_same<test_type,
+                             std::sregex_token_iterator>{},
+                "Check type of regex_token_iterator");
 }
