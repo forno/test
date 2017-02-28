@@ -30,11 +30,11 @@ template<typename T> class show_type;
 template<template<typename...> class Container = std::vector,
          typename BidirIter,
          typename Delimiter,
-         typename ResultValue = std::basic_string<traits::Value_type<BidirIter>>>
+         typename ResultValue = std::basic_string<traits::Value_type<std::remove_reference_t<BidirIter>>>>
 inline Container<ResultValue> split(BidirIter&& first, BidirIter&& last, Delimiter&& delimiter)
 {
-  using Regex = std::basic_regex<traits::Value_type<BidirIter>>;
-  using TokenIter = std::regex_token_iterator<BidirIter>;
+  using Regex = std::basic_regex<traits::Value_type<std::remove_reference_t<BidirIter>>>;
+  using TokenIter = std::regex_token_iterator<std::remove_reference_t<BidirIter>>;
 
   Regex delim {std::forward<Delimiter>(delimiter)};
   return {TokenIter{std::forward<BidirIter>(first), std::forward<BidirIter>(last), delim, -1}, TokenIter{}};
