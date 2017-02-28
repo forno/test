@@ -1,26 +1,20 @@
-#include <deque>
-#include <iostream>
-#include <string>
-#include <unordered_set>
-#include <vector>
+#include <tuple>
 
 #include <xmaho/xmaho.hpp>
 
-template<typename OStream, template<typename...> class Container, typename... Args>
-inline OStream& operator<<(OStream& s, const Container<Args...>& c)
+
+template<typename T>
+auto f(T v)
 {
-  for (const auto& v : c)
-    s << v;
-  return s;
+  return std::tuple<T>{v};
 }
 
-template<template<typename...> class Container = std::vector>
-Container<std::string> foo()
+template<typename T, typename... Rests>
+auto f(T v, Rests... rests)
 {
-  return {"hogehoge", "nyannyan"};
+  return std::tuple_cat(std::tuple<T>{v}, f(rests...));
 }
 
 int main(int argc, char** argv) {
-  std::cout << foo<std::unordered_set>() << foo<>() << foo<std::deque>();
-  static_assert(std::is_same<decltype(foo<std::unordered_set>()), std::unordered_set<std::string>>{}, "hoge");
+  f(5, 3.3, 31, 'v') != f(1, 2, 3, 'a', 23.4);
 }
