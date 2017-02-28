@@ -1,6 +1,8 @@
+#include <deque>
 #include <iostream>
 #include <string>
 #include <unordered_set>
+#include <vector>
 
 #include <xmaho/xmaho.hpp>
 
@@ -19,5 +21,6 @@ Container<std::string> foo()
 }
 
 int main(int argc, char** argv) {
-  std::cout << foo<std::unordered_set>();
+  std::cout << foo<std::unordered_set>() << foo<>() << foo<std::deque>();
+  static_assert(std::is_same<decltype(foo<std::unordered_set>()), std::unordered_set<std::string>>{}, "hoge");
 }
