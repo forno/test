@@ -46,10 +46,14 @@ inline Container<ResultValue> split(BidirIter&& first, BidirIter&& last, Delimit
  * The string is splited by delimiter to std::vector.
  * On Javascript, It is know as String.split().
  */
-template<typename String, typename Delimiter>
+template<template<typename...> class Container = std::vector,
+         typename String,
+         typename Delimiter,
+         typename ResultValue = String>
 inline auto split(const String& target, Delimiter&& delimiter)
 {
-  return split(std::begin(target), std::end(target), std::forward<Delimiter>(delimiter));
+  return split<Container, typename String::const_iterator, Delimiter, ResultValue>
+             (std::cbegin(target), std::cend(target), std::forward<Delimiter>(delimiter));
 }
 
 /**
