@@ -6,6 +6,27 @@
 
 #include "xmaho/string/split.hpp"
 
+TEST(StringSplitOriginal, ConstIteratorNull)
+{
+  std::string base {};
+  std::regex delimiter {};
+  auto start {base.cbegin()};
+  auto end {base.cend()};
+  auto result = xmaho::string::split(start, end, delimiter);
+  ASSERT_EQ(result, std::vector<std::string>{""});
+}
+
+TEST(StringSplitOriginal, ConstIteratorNormal)
+{
+  std::string base("a,b,c");
+  std::regex delimiter(",");
+  auto start {base.cbegin()};
+  auto end {base.cend()};
+  auto result = xmaho::string::split(start, end, delimiter);
+  std::vector<std::string> ans {"a", "b", "c"};
+  ASSERT_EQ(result, ans);
+}
+
 TEST(StringSplitOriginal, HandlesNullInput)
 {
   std::string base {};
