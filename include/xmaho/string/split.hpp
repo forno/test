@@ -33,8 +33,9 @@ template<template<typename...> class Container = std::vector,
          typename ResultValue = std::basic_string<traits::Value_type<std::remove_reference_t<BidirIter>>>>
 inline Container<ResultValue> split(BidirIter&& first, BidirIter&& last, Delimiter&& delimiter)
 {
-  using Regex = std::basic_regex<traits::Value_type<std::remove_reference_t<BidirIter>>>;
-  using TokenIter = std::regex_token_iterator<std::remove_reference_t<BidirIter>>;
+  using OriginalIter = std::remove_reference_t<BidirIter>;
+  using Regex = std::basic_regex<traits::Value_type<OriginalIter>>;
+  using TokenIter = std::regex_token_iterator<OriginalIter>;
 
   Regex delim {std::forward<Delimiter>(delimiter)};
   return {TokenIter{std::forward<BidirIter>(first), std::forward<BidirIter>(last), delim, -1}, TokenIter{}};
