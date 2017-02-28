@@ -1,11 +1,12 @@
-#include <iostream>
-#include <iterator>
 #include <string>
 
 #include <xmaho/xmaho.hpp>
 
+template<typename String = std::basic_string<CharT>, typename CharT>
+auto f(CharT v)
+{
+}
+
 int main(int argc, char** argv) {
-  const char a[] {'a', 'v', '\0'};
-  std::cout << std::string {std::begin(a), std::end(a)}.size() <<
-    ':' << std::string {a}.size();
+  f<std::basic_string>('a');
 }
