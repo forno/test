@@ -27,8 +27,8 @@ namespace string
  * The string is splited by delimiter to std::vector.
  * On Javascript, It is know as String.split().
  */
-template<typename BidirIter, typename Delimiter>
-inline std::vector<std::basic_string<std::remove_const_t<traits::Value_type<BidirIter>>>>
+template<typename BidirIter, typename Delimiter, template<typename...> class Container = std::vector>
+inline Container<std::basic_string<std::remove_const_t<traits::Value_type<BidirIter>>>>
 split(BidirIter&& first, BidirIter&& last, Delimiter&& delimiter)
 {
   using Regex = std::basic_regex<traits::Value_type<BidirIter>>;
