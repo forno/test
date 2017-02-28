@@ -1,12 +1,7 @@
-#include <string>
-
 #include <xmaho/xmaho.hpp>
 
-template<typename String = std::basic_string<CharT>, typename CharT>
-auto f(CharT v)
-{
-}
+template<typename T> class show_type;
 
 int main(int argc, char** argv) {
-  f<std::basic_string>('a');
+  show_type<xmaho::traits::Value_type<const char*>>{};
 }
