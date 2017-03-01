@@ -78,7 +78,7 @@ inline auto split(const CharT (&target)[N], Delimiter&& delimiter)
 template<template<typename...> class Container = std::vector, typename CharT, typename Delimiter>
 inline auto split(const CharT* const& target, Delimiter&& delimiter)
 {
-  return split<Container>(typename std::basic_string<CharT>{target}, std::forward<Delimiter>(delimiter));
+  return split<Container>(std::basic_string<CharT>{target}, std::forward<Delimiter>(delimiter));
 }
 
 }
