@@ -2,7 +2,6 @@
 #define XMAHO_XMAHO_MATH_RESIDUE_SYSTEM_H
 
 #include <cstddef>
-#include <stdexcept>
 
 /**
  * @file math/residue_system.hpp
