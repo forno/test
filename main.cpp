@@ -1,5 +1,19 @@
-#include <utility>
+#include <stdexcept>
+#include <string>
 #include <type_traits>
+#include <utility>
+
+struct n {
+  n() noexcept(false)
+    : s {}
+  {
+    throw std::logic_error {"Error"};
+  }
+
+  n(n&&) noexcept = default;
+
+  std::string s;
+};
 
 class c {
 public:
@@ -10,14 +24,17 @@ private:
   char m3;
   int* m4;
   bool m5;
+  n m6;
 };
 
 int main(int argc, char** argv) {
-  constexpr c o {};
-  constexpr c co(o);
-  constexpr c mo(std::move(o));
+//  constexpr c o {};
+//  constexpr c co(o);
+//  constexpr c mo(std::move(o));
+  try {
+    c o {};
+  } catch (...) {}
 
-  static_assert(noexcept(c::c), "default constructor except");
-  static_assert(noexcept(c::operator=), "default copy constructor");
+  static_assert(noexcept(c()), "default constructor except");
   static_assert(std::is_nothrow_move_constructible<c>{}, "default move constructor");
 }
