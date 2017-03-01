@@ -2,6 +2,13 @@
 
 #include "xmaho/math/residue_system.hpp"
 
+TEST(MathResidueSystemBaseModulo1, ConstexprNullInput)
+{
+  constexpr xmaho::math::residue_system<1> null_number {};
+  constexpr xmaho::math::residue_system<1> once_again {};
+  ASSERT_EQ(null_number, once_again);
+}
+
 TEST(MathResidueSystemBaseModulo1, NullInput)
 {
   xmaho::math::residue_system<1> null_number {};
