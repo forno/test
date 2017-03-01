@@ -25,17 +25,13 @@ class basic_residue_system
 
 public:
   using value_type = ValueType;
-  constexpr basic_residue_system() noexcept = default;
-  explicit constexpr basic_residue_system(const value_type& value) noexcept
+
+  basic_residue_system() = default;
+
+  explicit constexpr basic_residue_system(const value_type& value)
     : value_ {value % Modulo}
   {
   }
-
-  constexpr basic_residue_system(const basic_residue_system&) noexcept = default;
-  constexpr basic_residue_system(basic_residue_system&&) noexcept = default;
-  constexpr basic_residue_system& operator=(const basic_residue_system&) noexcept = default;
-  constexpr basic_residue_system& operator=(basic_residue_system&&) noexcept = default;
-  ~basic_residue_system() noexcept = default;
 
   explicit constexpr operator value_type() const noexcept
   {
@@ -47,14 +43,14 @@ public:
     return value_ == rhs.value_;
   }
 
-  constexpr basic_residue_system& operator++() noexcept
+  constexpr basic_residue_system& operator++()
   {
     ++value_;
     value_ %= Modulo;
     return *this;
   }
 
-  constexpr basic_residue_system& operator--() noexcept
+  constexpr basic_residue_system& operator--()
   {
     if (value_ <= 0)
       value_ = Modulo - 1;
@@ -63,26 +59,26 @@ public:
     return *this;
   }
 
-  constexpr basic_residue_system operator++(int) noexcept
+  constexpr basic_residue_system operator++(int)
   {
     basic_residue_system tmp{*this};
     ++*this;
     return tmp;
   }
 
-  constexpr basic_residue_system& operator--(int) noexcept
+  constexpr basic_residue_system& operator--(int)
   {
     basic_residue_system tmp{*this};
     --*this;
     return tmp;
   }
 
-  constexpr const basic_residue_system operator+(const basic_residue_system& rhs) const noexcept
+  constexpr const basic_residue_system operator+(const basic_residue_system& rhs) const
   {
     return basic_residue_system{value_ + rhs.value_};
   }
 
-  constexpr const basic_residue_system operator-(const basic_residue_system& rhs) const noexcept
+  constexpr const basic_residue_system operator-(const basic_residue_system& rhs) const
   {
     return basic_residue_system{value_ + Modulo - rhs.value_};
   }
