@@ -4,15 +4,13 @@
 #include <utility>
 
 struct n {
-  n() noexcept(false)
+  n() // user definition are not noexcept
     : s {}
   {
-    throw std::logic_error {"Error"};
+//    throw std::logic_error {"Error"};
   }
 
-  n(n&&) noexcept = default;
-
-  std::string s;
+  char s;
 };
 
 class c {
