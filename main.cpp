@@ -1,10 +1,23 @@
-#include <xmaho/xmaho.hpp>
+#include <utility>
+#include <type_traits>
+
+class c {
+public:
+  c() = default;
+private:
+  int m1;
+  double m2;
+  char m3;
+  int* m4;
+  bool m5;
+};
 
 int main(int argc, char** argv) {
-  using test_type = std::regex_token_iterator<std::string::iterator>;
-  show_type<test_type>{};
+  constexpr c o {};
+  constexpr c co(o);
+  constexpr c mo(std::move(o));
 
-  static_assert(std::is_same<test_type,
-                             std::sregex_token_iterator>{},
-                "Check type of regex_token_iterator");
+  static_assert(noexcept(c::c), "default constructor except");
+  static_assert(noexcept(c::operator=), "default copy constructor");
+  static_assert(std::is_nothrow_move_constructible<c>{}, "default move constructor");
 }
