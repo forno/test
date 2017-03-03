@@ -26,6 +26,11 @@ namespace string
  *
  * The string is splited by delimiter to std::vector.
  * On Javascript, It is know as String.split().
+ *
+ * @tparam    Container The result container type.
+ * @param[in] first     The begin iterator of range for target string.
+ * @param[in] last      The end iterator of range for target string.
+ * @param[in] delimiter The delimiter of split.
  */
 template<template<typename...> class Container = std::vector>
 inline auto split(auto&& first, auto&& last, auto&& delimiter)
