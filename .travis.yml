@@ -10,10 +10,12 @@ compiler: g++
 env:
 - COMPILER=g++-6 C_COMPILER=gcc-6 BUILD_TYPE=Debug
 - COMPILER=g++-6 C_COMPILER=gcc-6 BUILD_TYPE=Debug CXX17=ON
+- COMPILER=g++-6 C_COMPILER=gcc-6 BUILD_TYPE=Release
+- COMPILER=g++-6 C_COMPILER=gcc-6 BUILD_TYPE=Release CXX17=ON
 before_install:
-- cd thirdparty/googletest/googletest
+- cd test/thirdparty/googletest/googletest
 install:
-- cmake -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_CXX_COMPILER=$COMPILER -DCMAKE_C_COMPILER=$C_COMPILER -DCMAKE_CXX_FLAGS="${EXTRA_FLAGS}" .
+- cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_COMPILER=$COMPILER -DCMAKE_C_COMPILER=$C_COMPILER -DCMAKE_CXX_FLAGS="${EXTRA_FLAGS}" .
 - make
 before_script:
 - cd -
