@@ -64,6 +64,7 @@ inline auto split(auto&& first, auto&& last, auto&& delimiter)
  * @tparam    Container The result container type.
  * @param[in] target    The string of splitting target.
  * @param[in] delimiter The delimiter of split.
+ * @return The container has strings that are splited by delimiter.
  */
 template<template<typename...> class Container = std::vector>
 inline auto split(const auto& target, auto&& delimiter)
@@ -88,6 +89,7 @@ inline auto split(const auto& target, auto&& delimiter)
  * @tparam    N         The size of target.
  * @param[in] target    The string of splitting target.
  * @param[in] delimiter The delimiter of split.
+ * @return The container has strings that are splited by delimiter.
  */
 template<template<typename...> class Container = std::vector,
          typename CharT,
@@ -109,6 +111,7 @@ inline auto split(const CharT (&target)[N], auto&& delimiter)
  * @tparam    CharT     The value type of target.
  * @param[in] target    The string of splitting target.
  * @param[in] delimiter The delimiter of split.
+ * @return The container has strings that are splited by delimiter.
  */
 template<template<typename...> class Container = std::vector,
          typename CharT>
