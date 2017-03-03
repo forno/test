@@ -31,6 +31,7 @@ namespace string
  * @param[in] first     The begin iterator of range for target string.
  * @param[in] last      The end iterator of range for target string.
  * @param[in] delimiter The delimiter of split.
+ * @return The container has strings that are splited by delimiter.
  */
 template<template<typename...> class Container = std::vector>
 inline auto split(auto&& first, auto&& last, auto&& delimiter)
