@@ -26,7 +26,9 @@ namespace math
 template<typename ValueType, ValueType Modulo>
 class basic_residue_system
 {
-  static_assert(Modulo > 0, "Error: Modulo is negative number. It must be positive number");
+  static_assert(Modulo > 0,
+                "Error: Modulo is negative number or zero."
+                       "It must be positive number.");
 
 public:
 
@@ -68,11 +70,19 @@ public:
     return value_;
   }
 
+  /**
+   * @brief check equivalent number on the least residue system.
+   *
+   * @param[in] rhs The right hand side value.
+   */
   constexpr bool operator==(const basic_residue_system& rhs) const noexcept
   {
     return value_ == rhs.value_;
   }
 
+  /**
+   * @brief increment on the least residue system.
+   */
   constexpr basic_residue_system& operator++()
   {
     ++value_;
@@ -80,6 +90,9 @@ public:
     return *this;
   }
 
+  /**
+   * @brief decrement on the least residue system.
+   */
   constexpr basic_residue_system& operator--()
   {
     if (value_ <= 0)
@@ -89,32 +102,48 @@ public:
     return *this;
   }
 
+  /**
+   * @brief increment on the least residue system.
+   */
   constexpr basic_residue_system operator++(int)
   {
-    basic_residue_system tmp{*this};
+    basic_residue_system tmp {*this};
     ++*this;
     return tmp;
   }
 
+  /**
+   * @brief decrement on the least residue system.
+   */
   constexpr basic_residue_system operator--(int)
   {
-    basic_residue_system tmp{*this};
+    basic_residue_system tmp {*this};
     --*this;
     return tmp;
   }
 
+  /**
+   * @brief addition on the least residue system.
+   *
+   * @param[in] rhs The right hand side value.
+   */
   constexpr basic_residue_system operator+(const basic_residue_system& rhs) const
   {
     return basic_residue_system{value_ + rhs.value_};
   }
 
+  /**
+   * @brief subtraction on the least residue system.
+   *
+   * @param[in] rhs The right hand side value.
+   */
   constexpr basic_residue_system operator-(const basic_residue_system& rhs) const
   {
     return basic_residue_system{value_ + Modulo - rhs.value_};
   }
 
 private:
-  value_type value_;
+  value_type value_; //!< @brief Now guarantee next expression: 0 < value_ < Modulo
 };
 
 template<std::size_t Modulo>
