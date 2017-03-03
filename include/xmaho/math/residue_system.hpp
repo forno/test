@@ -36,7 +36,7 @@ public:
   using value_type = ValueType;
 
   /**
-   * @brief Create this equivalent to default value_type number.
+   * @brief Create this equivalent to default number of value_type.
    */
   basic_residue_system() = default;
 
@@ -50,6 +50,19 @@ public:
   {
   }
 
+  /**
+   * @brief The explicit cast for value_type.
+   *
+   * This cast are explicit. ex)
+   *
+   * @code
+   *   basic_residue_system<size_t, 2>{0} == 2; // Compile error
+   * @endcode
+   * 
+   * If non-explicit on example of the above, a compile succeeded.
+   * But result of the operator== are false.
+   * So, this cast must be explicit.
+   */
   explicit constexpr operator value_type() const noexcept
   {
     return value_;
