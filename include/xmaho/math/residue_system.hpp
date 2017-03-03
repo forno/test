@@ -72,12 +72,12 @@ public:
     return tmp;
   }
 
-  constexpr const basic_residue_system operator+(const basic_residue_system& rhs) const
+  constexpr basic_residue_system operator+(const basic_residue_system& rhs) const
   {
     return basic_residue_system{value_ + rhs.value_};
   }
 
-  constexpr const basic_residue_system operator-(const basic_residue_system& rhs) const
+  constexpr basic_residue_system operator-(const basic_residue_system& rhs) const
   {
     return basic_residue_system{value_ + Modulo - rhs.value_};
   }
