@@ -14,7 +14,7 @@ namespace math
 {
 
 /**
- * @brief The roop number under a modulo.
+ * @brief The loop number under a modulo.
  *
  * This class doing under the least residue system.
  * The modulo must be a positive number,
