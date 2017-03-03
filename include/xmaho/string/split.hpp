@@ -27,18 +27,20 @@ namespace string
  * The string is splited by delimiter to std::vector.
  * On Javascript, It is know as String.split().
  */
-template<template<typename...> class Container = std::vector,
-         typename BidirIter,
-         typename Delimiter,
-         typename ResultValue = std::basic_string<traits::Value_type<std::remove_reference_t<BidirIter>>>>
-inline Container<ResultValue> split(BidirIter&& first, BidirIter&& last, Delimiter&& delimiter)
+template<template<typename...> class Container = std::vector>
+inline auto split(auto&& first, auto&& last, auto&& delimiter)
 {
-  using OriginalIter = std::remove_reference_t<BidirIter>;
-  using Regex = std::basic_regex<traits::Value_type<OriginalIter>>;
-  using TokenIter = std::regex_token_iterator<OriginalIter>;
+  static_assert(std::is_same<traits::Value_type<std::remove_reference_t<decltype(first)>>,
+                             traits::Value_type<std::remove_reference_t<decltype(last)>>>{},
+                "Defference value type of split target");
+  using Iter = std::remove_reference_t<decltype(first)>;
+  using TokenIter = std::regex_token_iterator<Iter>;
+  using Regex = typename TokenIter::regex_type;
+  using Result = Container<typename Regex::string_type>;
 
-  Regex delim {std::forward<Delimiter>(delimiter)};
-  return {TokenIter{std::forward<BidirIter>(first), std::forward<BidirIter>(last), delim, -1}, TokenIter{}};
+  Regex delim {std::forward<decltype(delimiter)>(delimiter)};
+  return Result{TokenIter{std::forward<decltype(first)>(first), std::forward<decltype(last)>(last), delim, -1},
+                TokenIter{}};
 }
 
 /**
@@ -47,14 +49,13 @@ inline Container<ResultValue> split(BidirIter&& first, BidirIter&& last, Delimit
  * The string is splited by delimiter to std::vector.
  * On Javascript, It is know as String.split().
  */
-template<template<typename...> class Container = std::vector,
-         typename String,
-         typename Delimiter,
-         typename ResultValue = String>
-inline auto split(const String& target, Delimiter&& delimiter)
+template<template<typename...> class Container = std::vector>
+inline auto split(const auto& target, auto&& delimiter)
 {
-  return split<Container, typename String::const_iterator, Delimiter, ResultValue>
-             (std::cbegin(target), std::cend(target), std::forward<Delimiter>(delimiter));
+  using std::begin;
+  using std::end;
+
+  return split<Container>(begin(target), end(target), std::forward<decltype(delimiter)>(delimiter));
 }
 
 /**
@@ -63,10 +64,10 @@ inline auto split(const String& target, Delimiter&& delimiter)
  * The string is splited by delimiter to std::vector.
  * On Javascript, It is know as String.split().
  */
-template<template<typename...> class Container = std::vector, typename CharT, std::size_t N, typename Delimiter>
-inline auto split(const CharT (&target)[N], Delimiter&& delimiter)
+template<template<typename...> class Container = std::vector, typename CharT, std::size_t N>
+inline auto split(const CharT (&target)[N], auto&& delimiter)
 {
-  return split<Container>(std::basic_string<CharT>{target}, std::forward<Delimiter>(delimiter));
+  return split<Container>(std::basic_string<CharT>{target}, std::forward<decltype(delimiter)>(delimiter));
 }
 
 /**
@@ -75,10 +76,10 @@ inline auto split(const CharT (&target)[N], Delimiter&& delimiter)
  * The string is splited by delimiter to std::vector.
  * On Javascript, It is know as String.split().
  */
-template<template<typename...> class Container = std::vector, typename CharT, typename Delimiter>
-inline auto split(const CharT* const& target, Delimiter&& delimiter)
+template<template<typename...> class Container = std::vector, typename CharT>
+inline auto split(const CharT* const& target, auto&& delimiter)
 {
-  return split<Container>(std::basic_string<CharT>{target}, std::forward<Delimiter>(delimiter));
+  return split<Container>(std::basic_string<CharT>{target}, std::forward<decltype(delimiter)>(delimiter));
 }
 
 }
