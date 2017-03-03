@@ -146,6 +146,9 @@ private:
   value_type value_; //!< @brief Now guarantee next expression: 0 < value_ < Modulo
 };
 
+/**
+ * @brief The normal residue_system.
+ */
 template<std::size_t Modulo>
 using residue_system = basic_residue_system<std::size_t, Modulo>;
 
