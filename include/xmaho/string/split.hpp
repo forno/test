@@ -24,7 +24,7 @@ namespace string
 /**
  * @brief split string by regex.
  *
- * The string is splited by delimiter to std::vector.
+ * The string is splited by delimiter to Container<string>.
  * On Javascript, It is know as String.split().
  *
  * @tparam    Container The result container type.
