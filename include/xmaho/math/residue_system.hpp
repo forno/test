@@ -7,15 +7,21 @@
  * @file math/residue_system.hpp
  * @brief This have definition of xmaho::math::residue_system class.
  */
+
 namespace xmaho
 {
 namespace math
 {
 
 /**
- * @brief the roop number under Modulo
+ * @brief The roop number under a modulo.
  *
- * The least residue system modulo "Modulo".
+ * This class doing under the least residue system.
+ * The modulo must be a positive number,
+ * it mean that equivalent value are positive number.
+ *
+ * @tparam ValueType The equivalent type.
+ * @tparam Modulo    The modulo of residue system.
  */
 template<typename ValueType, ValueType Modulo>
 class basic_residue_system
@@ -65,7 +71,7 @@ public:
     return tmp;
   }
 
-  constexpr basic_residue_system& operator--(int)
+  constexpr basic_residue_system operator--(int)
   {
     basic_residue_system tmp{*this};
     --*this;
