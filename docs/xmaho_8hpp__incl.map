@@ -1,12 +1,8 @@
 <map id="include/xmaho/xmaho.hpp" name="include/xmaho/xmaho.hpp">
-<area shape="rect" id="node2" href="$container_8hpp.html" title="This call xmaho::container libraries. " alt="" coords="61,80,203,107"/>
-<area shape="rect" id="node5" href="$math_8hpp.html" title="This call xmaho::math libraries. " alt="" coords="235,80,354,107"/>
-<area shape="rect" id="node9" href="$string_8hpp.html" title="This call xmaho::string libraries. " alt="" coords="415,80,537,107"/>
-<area shape="rect" id="node18" href="$traits_8hpp.html" title="This call xmaho::traits libraries. " alt="" coords="705,80,823,107"/>
-<area shape="rect" id="node3" href="$string__map_8hpp.html" title="This have definition of xmaho::container::string_map. " alt="" coords="5,155,160,196"/>
-<area shape="rect" id="node6" href="$residue__system_8hpp.html" title="This have definition of xmaho::math::residue_system class. " alt="" coords="206,155,346,196"/>
-<area shape="rect" id="node10" href="$split_8hpp.html" title="This have definition of xmaho::string::split functions. " alt="" coords="419,162,570,189"/>
-<area shape="rect" id="node17" href="$iterator_8hpp.html" title="This have syntactic sugar from iterator_traits. " alt="" coords="703,244,865,271"/>
-<area shape="rect" id="node19" href="$enable__if_8hpp.html" title="This have definition of xmaho::traits::Enable_if. " alt="" coords="749,155,885,196"/>
-<area shape="rect" id="node20" href="$type__alias_8hpp.html" title="This have some convertion to **_t from ** member type. " alt="" coords="910,162,1093,189"/>
+<area shape="rect" id="node2" href="$math_8hpp.html" title="This call xmaho::math libraries. " alt="" coords="55,80,207,107"/>
+<area shape="rect" id="node5" href="$string_8hpp.html" title="This call xmaho::string libraries. " alt="" coords="249,80,408,107"/>
+<area shape="rect" id="node14" href="$traits_8hpp.html" title="This call xmaho::traits libraries. " alt="" coords="541,162,693,189"/>
+<area shape="rect" id="node3" href="$residue__system_8hpp.html" title="This have definition of xmaho::math::residue_system class. " alt="" coords="5,155,145,196"/>
+<area shape="rect" id="node6" href="$split_8hpp.html" title="This have definition of xmaho::string::split functions. " alt="" coords="253,162,404,189"/>
+<area shape="rect" id="node13" href="$iterator_8hpp.html" title="This have syntactic sugar from iterator_traits. " alt="" coords="601,244,763,271"/>
 </map>

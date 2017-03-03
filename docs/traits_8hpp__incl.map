@@ -1,5 +1,3 @@
-<map id="include/xmaho/traits.hpp" name="include/xmaho/traits.hpp">
-<area shape="rect" id="node2" href="$enable__if_8hpp.html" title="This have definition of xmaho::traits::Enable_if. " alt="" coords="5,80,141,121"/>
-<area shape="rect" id="node4" href="$iterator_8hpp.html" title="This have syntactic sugar from iterator_traits. " alt="" coords="373,87,536,114"/>
-<area shape="rect" id="node6" href="$type__alias_8hpp.html" title="This have some convertion to **_t from ** member type. " alt="" coords="166,87,349,114"/>
+<map id="include/xmaho/traits/traits.hpp" name="include/xmaho/traits/traits.hpp">
+<area shape="rect" id="node2" href="$iterator_8hpp.html" title="This have syntactic sugar from iterator_traits. " alt="" coords="5,95,168,121"/>
 </map>

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['enable_5fif',['Enable_if',['../namespacexmaho_1_1traits.html#a4f01a2aac3cb189cd882de3bf97ac548',1,'xmaho::traits']]]
+  ['residue_5fsystem',['residue_system',['../d7/d02/namespacexmaho_1_1math.html#ad35710e5e200f7d9b6c2959f3aa2dacd',1,'xmaho::math']]]
 ];
