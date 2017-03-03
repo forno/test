@@ -29,6 +29,10 @@ class basic_residue_system
   static_assert(Modulo > 0, "Error: Modulo is negative number. It must be positive number");
 
 public:
+
+  /**
+   * @brief The alias of equivalent type.
+   */
   using value_type = ValueType;
 
   basic_residue_system() = default;
