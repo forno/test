@@ -59,6 +59,10 @@ inline auto split(auto&& first, auto&& last, auto&& delimiter)
  *
  * The string is splited by delimiter to std::vector.
  * On Javascript, It is know as String.split().
+ *
+ * @tparam    Container The result container type.
+ * @param[in] target    The string of splitting target.
+ * @param[in] delimiter The delimiter of split.
  */
 template<template<typename...> class Container = std::vector>
 inline auto split(const auto& target, auto&& delimiter)
@@ -77,6 +81,12 @@ inline auto split(const auto& target, auto&& delimiter)
  *
  * The string is splited by delimiter to std::vector.
  * On Javascript, It is know as String.split().
+ *
+ * @tparam    Container The container type of result.
+ * @tparam    CharT     The value type of target.
+ * @tparam    N         The size of target.
+ * @param[in] target    The string of splitting target.
+ * @param[in] delimiter The delimiter of split.
  */
 template<template<typename...> class Container = std::vector,
          typename CharT,
@@ -93,6 +103,11 @@ inline auto split(const CharT (&target)[N], auto&& delimiter)
  *
  * The string is splited by delimiter to std::vector.
  * On Javascript, It is know as String.split().
+ *
+ * @tparam    Container The result container type.
+ * @tparam    CharT     The value type of target.
+ * @param[in] target    The string of splitting target.
+ * @param[in] delimiter The delimiter of split.
  */
 template<template<typename...> class Container = std::vector,
          typename CharT>
