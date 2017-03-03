@@ -49,13 +49,13 @@ inline auto split(auto&& first, auto&& last, auto&& delimiter)
  * The string is splited by delimiter to std::vector.
  * On Javascript, It is know as String.split().
  */
-template<template<typename...> class Container = std::vector,
-         typename String,
-         typename Delimiter,
-         typename ResultValue = String>
-inline auto split(const String& target, Delimiter&& delimiter)
+template<template<typename...> class Container = std::vector>
+inline auto split(const auto& target, auto&& delimiter)
 {
-  return split<Container>(std::cbegin(target), std::cend(target), std::forward<Delimiter>(delimiter));
+  using std::begin;
+  using std::end;
+
+  return split<Container>(begin(target), end(target), std::forward<decltype(delimiter)>(delimiter));
 }
 
 /**
