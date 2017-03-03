@@ -35,6 +35,9 @@ public:
    */
   using value_type = ValueType;
 
+  /**
+   * @brief Create this equivalent to default value_type number.
+   */
   basic_residue_system() = default;
 
   explicit constexpr basic_residue_system(const value_type& value)
