@@ -20,7 +20,7 @@ namespace math
  * The modulo must be a positive number,
  * it mean that equivalent value are positive number.
  *
- * @tparam ValueType The equivalent type.
+ * @tparam ValueType The equivalent type. it must be constexpr.
  * @tparam Modulo    The modulo of residue system.
  */
 template<typename ValueType, ValueType Modulo>
@@ -40,6 +40,11 @@ public:
    */
   basic_residue_system() = default;
 
+  /**
+   * @brief Create this equivalent to value number.
+   *
+   * @param[in] value The equivalent number.
+   */
   explicit constexpr basic_residue_system(const value_type& value)
     : value_ {value % Modulo}
   {
