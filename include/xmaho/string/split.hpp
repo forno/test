@@ -64,10 +64,10 @@ inline auto split(const auto& target, auto&& delimiter)
  * The string is splited by delimiter to std::vector.
  * On Javascript, It is know as String.split().
  */
-template<template<typename...> class Container = std::vector, typename CharT, std::size_t N, typename Delimiter>
-inline auto split(const CharT (&target)[N], Delimiter&& delimiter)
+template<template<typename...> class Container = std::vector, typename CharT, std::size_t N>
+inline auto split(const CharT (&target)[N], auto&& delimiter)
 {
-  return split<Container>(std::basic_string<CharT>{target}, std::forward<Delimiter>(delimiter));
+  return split<Container>(std::basic_string<CharT>{target}, std::forward<decltype(delimiter)>(delimiter));
 }
 
 /**
@@ -76,10 +76,10 @@ inline auto split(const CharT (&target)[N], Delimiter&& delimiter)
  * The string is splited by delimiter to std::vector.
  * On Javascript, It is know as String.split().
  */
-template<template<typename...> class Container = std::vector, typename CharT, typename Delimiter>
-inline auto split(const CharT* const& target, Delimiter&& delimiter)
+template<template<typename...> class Container = std::vector, typename CharT>
+inline auto split(const CharT* const& target, auto&& delimiter)
 {
-  return split<Container>(std::basic_string<CharT>{target}, std::forward<Delimiter>(delimiter));
+  return split<Container>(std::basic_string<CharT>{target}, std::forward<decltype(delimiter)>(delimiter));
 }
 
 }
