@@ -33,23 +33,26 @@ namespace string
  * @param[in] delimiter The delimiter of split.
  * @return The container has strings that are splited by delimiter.
  */
-template<template<typename...> class Container = std::vector>
-inline auto split(auto&& first, auto&& last, auto&& delimiter)
+template<template<typename...> class Container = std::vector,
+         typename BidirIter1,
+         typename BidirIter2,
+         typename Delimiter>
+inline auto split(BidirIter1&& first, BidirIter2&& last, Delimiter&& delimiter)
 {
   static_assert(
     std::is_same<
-      traits::Value_type<std::remove_reference_t<decltype(first)>>,
-      traits::Value_type<std::remove_reference_t<decltype(last)>>>{},
+      traits::Value_type<std::remove_reference_t<BidirIter1>>,
+      traits::Value_type<std::remove_reference_t<BidirIter2>>>{},
     "Defference value type of split target");
-  using Iter = std::remove_reference_t<decltype(first)>;
+  using Iter = std::remove_reference_t<BidirIter1>;
   using TokenIter = std::regex_token_iterator<Iter>;
   using Regex = typename TokenIter::regex_type;
   using Result = Container<typename Regex::string_type>;
 
-  Regex delim {std::forward<decltype(delimiter)>(delimiter)};
+  Regex delim {std::forward<Delimiter>(delimiter)};
   return Result{TokenIter{
-                  std::forward<decltype(first)>(first),
-                  std::forward<decltype(last)>(last),
+                  std::forward<BidirIter1>(first),
+                  std::forward<BidirIter2>(last),
                   delim,
                   -1},
                 TokenIter{}};
