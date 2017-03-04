@@ -1,38 +1,31 @@
+#include <iostream>
 #include <stdexcept>
 #include <string>
 #include <type_traits>
 #include <utility>
 
-struct n {
-  n() // user definition are not noexcept
-    : s {}
+template<typename T> [[deprecated]] void show_type(T&&){};
+
+namespace ns
+{
+  struct s {
+  };
+
+  void swap(s&, s&)
   {
-//    throw std::logic_error {"Error"};
+    std::cout << "user swap" << std::endl;
   }
+}
 
-  char s;
-};
-
-class c {
-public:
-  c() = default;
-private:
-  int m1;
-  double m2;
-  char m3;
-  int* m4;
-  bool m5;
-  n m6;
-};
+template<typename T>
+void f(T&& lhs, T&& rhs)
+{
+  using std::swap;
+  swap(lhs, rhs);
+}
 
 int main(int argc, char** argv) {
-//  constexpr c o {};
-//  constexpr c co(o);
-//  constexpr c mo(std::move(o));
-  try {
-    c o {};
-  } catch (...) {}
-
-  static_assert(noexcept(c()), "default constructor except");
-  static_assert(std::is_nothrow_move_constructible<c>{}, "default move constructor");
+  ns::s s1 {};
+  ns::s s2 {};
+  f(s1, s2);
 }
