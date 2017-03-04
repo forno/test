@@ -2,7 +2,7 @@
 #define XMAHO_XMAHO_STRING_H
 
 /**
- * @file string.hpp
+ * @file string/string.hpp
  * @brief This call xmaho::string libraries.
  */
 

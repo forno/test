@@ -2,7 +2,7 @@
 #define XMAHO_XMAHO_TRAITS_H
 
 /**
- * @file traits.hpp
+ * @file traits/traits.hpp
  * @brief This call xmaho::traits libraries.
  */
 
