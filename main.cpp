@@ -8,6 +8,9 @@
 
 template<typename T> [[deprecated]] void show_type(T&&){};
 
+void f(std::string) {}
+
 int main(int argc, char** argv) {
-  auto p {std::make_unique<int>(3)};
+  std::string{'a'};
+  f('b');
 }
