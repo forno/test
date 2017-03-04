@@ -12,5 +12,5 @@ void f(std::string) {}
 
 int main(int argc, char** argv) {
   std::string{'a'};
-  f('b');
+  f({1, 'b'});
 }
