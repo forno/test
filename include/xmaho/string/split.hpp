@@ -33,23 +33,26 @@ namespace string
  * @param[in] delimiter The delimiter of split.
  * @return The container has strings that are splited by delimiter.
  */
-template<template<typename...> class Container = std::vector>
-inline auto split(auto&& first, auto&& last, auto&& delimiter)
+template<template<typename...> class Container = std::vector,
+         typename BidirIter1,
+         typename BidirIter2,
+         typename Delimiter>
+inline auto split(BidirIter1&& first, BidirIter2&& last, Delimiter&& delimiter)
 {
   static_assert(
     std::is_same<
-      traits::Value_type<std::remove_reference_t<decltype(first)>>,
-      traits::Value_type<std::remove_reference_t<decltype(last)>>>{},
+      traits::Value_type<std::remove_reference_t<BidirIter1>>,
+      traits::Value_type<std::remove_reference_t<BidirIter2>>>{},
     "Defference value type of split target");
-  using Iter = std::remove_reference_t<decltype(first)>;
+  using Iter = std::remove_reference_t<BidirIter1>;
   using TokenIter = std::regex_token_iterator<Iter>;
   using Regex = typename TokenIter::regex_type;
   using Result = Container<typename Regex::string_type>;
 
-  Regex delim {std::forward<decltype(delimiter)>(delimiter)};
+  Regex delim {std::forward<Delimiter>(delimiter)};
   return Result{TokenIter{
-                  std::forward<decltype(first)>(first),
-                  std::forward<decltype(last)>(last),
+                  std::forward<BidirIter1>(first),
+                  std::forward<BidirIter2>(last),
                   delim,
                   -1},
                 TokenIter{}};
@@ -66,8 +69,10 @@ inline auto split(auto&& first, auto&& last, auto&& delimiter)
  * @param[in] delimiter The delimiter of split.
  * @return The container has strings that are splited by delimiter.
  */
-template<template<typename...> class Container = std::vector>
-inline auto split(const auto& target, auto&& delimiter)
+template<template<typename...> class Container = std::vector,
+         typename String,
+         typename Delimiter>
+inline auto split(const String& target, Delimiter&& delimiter)
 {
   using std::begin;
   using std::end;
@@ -75,7 +80,7 @@ inline auto split(const auto& target, auto&& delimiter)
   return split<Container>(
            begin(target),
            end(target),
-           std::forward<decltype(delimiter)>(delimiter));
+           std::forward<Delimiter>(delimiter));
 }
 
 /**
@@ -93,12 +98,13 @@ inline auto split(const auto& target, auto&& delimiter)
  */
 template<template<typename...> class Container = std::vector,
          typename CharT,
-         std::size_t N>
-inline auto split(const CharT (&target)[N], auto&& delimiter)
+         std::size_t N,
+         typename Delimiter>
+inline auto split(const CharT (&target)[N], Delimiter&& delimiter)
 {
   return split<Container>(
            std::basic_string<CharT>{target},
-           std::forward<decltype(delimiter)>(delimiter));
+           std::forward<Delimiter>(delimiter));
 }
 
 /**
@@ -114,12 +120,13 @@ inline auto split(const CharT (&target)[N], auto&& delimiter)
  * @return The container has strings that are splited by delimiter.
  */
 template<template<typename...> class Container = std::vector,
-         typename CharT>
-inline auto split(const CharT* const& target, auto&& delimiter)
+         typename CharT,
+         typename Delimiter>
+inline auto split(const CharT* const& target, Delimiter&& delimiter)
 {
   return split<Container>(
            std::basic_string<CharT>{target},
-           std::forward<decltype(delimiter)>(delimiter));
+           std::forward<Delimiter>(delimiter));
 }
 
 }
