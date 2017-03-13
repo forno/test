@@ -28,3 +28,10 @@ TEST(StringStringSizeMethod, Normal)
   constexpr xmaho::string::basic_string<char, 10> s{"hoge"};
   ASSERT_EQ(s.size(), 4ul);
 }
+
+TEST(StringStringIteratorMethod, Normal)
+{
+  constexpr xmaho::string::basic_string<char, 10> s{"hoge"};
+  ASSERT_EQ(*s.begin(), 'h');
+  ASSERT_EQ(*s.end(), '\0');
+}

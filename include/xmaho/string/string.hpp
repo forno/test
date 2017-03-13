@@ -63,6 +63,16 @@ public:
     return size_;
   }
 
+  constexpr const_iterator begin() const noexcept
+  {
+    return data_.begin();
+  }
+
+  constexpr const_iterator end() const noexcept
+  {
+    return std::next(data_.begin(), size_);
+  }
+
 private:
   std::array<value_type, N + 1> data_ {};
   size_type size_ {};
