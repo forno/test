@@ -17,6 +17,11 @@ TEST(StringStringOriginal, ConstexprConstructWithArgs)
   constexpr xmaho::string::basic_string<char, 10> s{"hoge"};
 }
 
+TEST(StringStringOriginal, ConstexprConstructWithNullArgs)
+{
+  constexpr xmaho::string::basic_string<char, 10> s{"hoge\0hoge"};
+}
+
 TEST(StringStringSizeMethod, Null)
 {
   constexpr xmaho::string::basic_string<char, 10> s{};
@@ -26,6 +31,12 @@ TEST(StringStringSizeMethod, Null)
 TEST(StringStringSizeMethod, Normal)
 {
   constexpr xmaho::string::basic_string<char, 10> s{"hoge"};
+  ASSERT_EQ(s.size(), 4ul);
+}
+
+TEST(StringStringSizeMethod, NullArg)
+{
+  constexpr xmaho::string::basic_string<char, 10> s{"hoge\0hoge"};
   ASSERT_EQ(s.size(), 4ul);
 }
 
