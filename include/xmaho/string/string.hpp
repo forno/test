@@ -171,6 +171,16 @@ public:
     return copy_length;
   }
 
+  template<size_type N2>
+  constexpr int compare(const basic_string<charT, N2, traits> rhs) const noexcept
+  {
+    if (auto r {traits::compare(data(), rhs.data(), std::min(size(), rhs.size()))})
+      return r;
+    return (size() < rhs.size()) ? -1 :
+           (size() == rhs.size()) ? 0 :
+           1;
+  }
+
   constexpr const_iterator begin() const noexcept
   {
     return data();

@@ -108,3 +108,31 @@ TEST(StringStringIteratorMethod, Normal)
   ASSERT_EQ(*s.begin(), 'h');
   ASSERT_EQ(*s.end(), '\0');
 }
+
+TEST(StringStringCompareMethod, Null)
+{
+  constexpr xmaho::string::basic_string<char, 10> s1{};
+  constexpr xmaho::string::basic_string<char, 1> s2{};
+  ASSERT_EQ(s1.compare(s2), 0);
+}
+
+TEST(StringStringCompareMethod, Normal)
+{
+  constexpr xmaho::string::basic_string<char, 10> s1{"hoge"};
+  constexpr xmaho::string::basic_string<char, 5> s2{"hoge"};
+  ASSERT_EQ(s1.compare(s2), 0);
+}
+
+TEST(StringStringCompareMethod, NullArg)
+{
+  constexpr xmaho::string::basic_string<char, 10> s1{"hoge\0hoge"};
+  constexpr xmaho::string::basic_string<char, 10> s2{"hoge"};
+  ASSERT_EQ(s1.compare(s2), 0);
+}
+
+TEST(StringStringCompareMethod, Difference)
+{
+  constexpr xmaho::string::basic_string<char, 10> s1{"hoge\0hoge"};
+  constexpr xmaho::string::basic_string<char, 10> s2{"nyan\0nyan"};
+  ASSERT_LT(s1.compare(s2), 0);
+}
