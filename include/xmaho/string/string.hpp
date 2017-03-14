@@ -6,7 +6,6 @@
  * @brief This have definition of xmaho::string::string class.
  */
 
-#include <array>
 #include <cstddef>
 #include <string>
 
@@ -44,8 +43,8 @@ public:
 private:
   template<typename T, T... Seq>
   constexpr basic_string(const const_pointer& str, std::integer_sequence<T, Seq...>)
-    : data_ {{str[Seq]...}},
-      size_ {strlen(str, sizeof...(Seq))}
+    : data_ {str[Seq]...},
+      length_ {strlen(str, sizeof...(Seq))}
   {
     static_assert(sizeof...(Seq) <= N, "string: max_size < your string size");
   }
@@ -58,24 +57,67 @@ public:
     static_assert(N2 <= N, "string: max_size < your string size.");
   }
 
+  template<size_type N2, size_type N3, typename T, T... Seq>
+  constexpr basic_string(const basic_string<charT, N2, traits>& lhs,
+                         const basic_string<charT, N3, traits>& rhs,
+                         std::integer_sequence<T, Seq...>)
+    : data_ {(Seq < lhs.size() ? lhs[Seq] :
+              Seq < lhs.size() + rhs.size() ? rhs[Seq - lhs.size()] :
+              charT{})...},
+      length_ {lhs.size() + rhs.size()}
+  {
+    static_assert(N2 + N3 <= N, "string: max_size < your string size.");
+  }
+
+  constexpr value_type operator[](size_type index) const
+  {
+    return data_[index];
+  }
+
+  template<std::size_t N2>
+  constexpr auto operator+(basic_string<charT, N2, traits> rhs) const
+  {
+    return basic_string<charT, N + N2, traits>(*this, rhs, std::make_index_sequence<N+N2>{});
+  }
+
   constexpr size_type size() const noexcept
   {
-    return size_;
+    return length_;
   }
 
   constexpr const_iterator begin() const noexcept
   {
-    return data_.begin();
+    return data_;
   }
 
   constexpr const_iterator end() const noexcept
   {
-    return std::next(data_.begin(), size_);
+    return data_ + length_;
+  }
+
+  constexpr iterator begin() noexcept
+  {
+    return data_;
+  }
+
+  constexpr iterator end() noexcept
+  {
+    return data_ + length_;
+  }
+
+  constexpr const_iterator cbegin() const noexcept
+  {
+    return data_;
+  }
+
+  constexpr const_iterator cend() const noexcept
+  {
+    return data_ + length_;
   }
 
 private:
-  std::array<value_type, N + 1> data_ {};
-  size_type size_ {};
+  value_type data_[N+1] {};
+  size_type length_ {};
 };
 
 }

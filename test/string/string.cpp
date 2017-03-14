@@ -22,6 +22,13 @@ TEST(StringStringOriginal, ConstexprConstructWithNullArgs)
   constexpr xmaho::string::basic_string<char, 10> s{"hoge\0hoge"};
 }
 
+TEST(StringStringOriginal, ConstexprConcat)
+{
+  constexpr xmaho::string::basic_string<char, 10> s1{"hoge\0hoge"};
+  constexpr xmaho::string::basic_string<char, 10> s2{"nyan\0nyan"};
+  s1 + s2;
+}
+
 TEST(StringStringSizeMethod, Null)
 {
   constexpr xmaho::string::basic_string<char, 10> s{};
@@ -38,6 +45,14 @@ TEST(StringStringSizeMethod, NullArg)
 {
   constexpr xmaho::string::basic_string<char, 10> s{"hoge\0hoge"};
   ASSERT_EQ(s.size(), 4ul);
+}
+
+TEST(StringStringSizeMethod, Concat)
+{
+  constexpr xmaho::string::basic_string<char, 10> s1{"hoge\0hoge"};
+  constexpr xmaho::string::basic_string<char, 10> s2{"nyan\0nyan"};
+  constexpr auto s {s1 + s2};
+  ASSERT_EQ(s.size(), 8ul);
 }
 
 TEST(StringStringIteratorMethod, Normal)
