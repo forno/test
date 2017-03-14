@@ -37,11 +37,11 @@ public:
   using size_type       = std::size_t;
   using difference_type = std::ptrdiff_t;
   using reference       = value_type&;
-  using const_reference = const value_type&;
+  using const_reference = std::add_const_t<value_type>&;
   using pointer         = value_type*;
-  using const_pointer   = const value_type*;
+  using const_pointer   = std::add_const_t<value_type>*;
   using iterator        = charT*;
-  using const_iterator  = const charT*;
+  using const_iterator  = std::add_const_t<charT>*;
 
   static constexpr size_type npos {static_cast<size_type>(-1)};
 
