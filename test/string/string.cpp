@@ -29,6 +29,13 @@ TEST(StringStringOriginal, ConstexprConcat)
   s1 + s2;
 }
 
+TEST(StringStringOriginal, RuntimeConcat)
+{
+  xmaho::string::basic_string<char, 10> s1{"hoge\0hoge"};
+  xmaho::string::basic_string<char, 10> s2{"nyan\0nyan"};
+  s1 + s2;
+}
+
 TEST(StringStringSizeMethod, Null)
 {
   constexpr xmaho::string::basic_string<char, 10> s{};

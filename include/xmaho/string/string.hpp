@@ -7,7 +7,9 @@
  */
 
 #include <cstddef>
+#include <stdexcept>
 #include <string>
+#include <type_traits>
 
 namespace xmaho
 {
@@ -37,6 +39,8 @@ public:
   using const_pointer = const value_type*;
   using iterator = charT*;
   using const_iterator = const charT*;
+
+  static constexpr size_type npos = -1;
 
   basic_string() = default;
 
@@ -69,20 +73,82 @@ public:
     static_assert(N2 + N3 <= N, "string: max_size < your string size.");
   }
 
-  constexpr value_type operator[](size_type index) const
+  template<std::size_t N2>
+  constexpr auto operator+(basic_string<charT, N2, traits> rhs) const
+  {
+    return basic_string<charT, N + N2, traits>{*this, rhs, std::make_index_sequence<N+N2>{}};
+  }
+
+  constexpr const_reference operator[](size_type index) const
   {
     return data_[index];
   }
 
-  template<std::size_t N2>
-  constexpr auto operator+(basic_string<charT, N2, traits> rhs) const
+  constexpr reference operator[](size_type index)
   {
-    return basic_string<charT, N + N2, traits>(*this, rhs, std::make_index_sequence<N+N2>{});
+    return const_cast<reference>(const_cast<std::add_const_t<decltype(this)>>(this)->operator[](index));
   }
 
   constexpr size_type size() const noexcept
   {
     return length_;
+  }
+
+  constexpr size_type length() const noexcept
+  {
+    return size();
+  }
+
+  constexpr size_type max_size() const noexcept
+  {
+    return N;
+  }
+
+  constexpr size_type capacity() const noexcept
+  {
+    return max_size();
+  }
+
+  constexpr void clear() noexcept
+  {
+    front() = charT{};
+    length_ = 0;
+  }
+
+  constexpr bool empty() const noexcept
+  {
+    return size() == 0;
+  }
+
+  constexpr const_reference at(size_type pos) const
+  {
+    return pos < size() ? operator[](pos) :
+           throw std::out_of_range("string: index out of range.");
+  }
+
+  constexpr reference at(size_type pos)
+  {
+    return const_cast<reference>(const_cast<std::add_const_t<decltype(this)>>(this)->at(pos));
+  }
+
+  constexpr const_reference front() const noexcept
+  {
+    return operator[](0);
+  }
+
+  constexpr reference front() noexcept
+  {
+    return const_cast<reference>(const_cast<std::add_const_t<decltype(this)>>(this)->front());
+  }
+
+  constexpr const_reference back() const noexcept
+  {
+    return operator[](size() - 1);
+  }
+
+  constexpr reference back() noexcept
+  {
+    return const_cast<reference>(const_cast<std::add_const_t<decltype(this)>>(this)->back());
   }
 
   constexpr const_iterator begin() const noexcept
