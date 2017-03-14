@@ -216,10 +216,16 @@ private:
   size_type length_ {};
 };
 
-template<typename charT, typename traits, std::size_t N, std::size_t N2>
+template<typename charT, std::size_t N, std::size_t N2, typename traits>
 constexpr basic_string<charT, N + N2, traits> operator+(basic_string<charT, N, traits> lhs, basic_string<charT, N2, traits> rhs)
 {
   return {lhs, rhs, std::make_index_sequence<N+N2>{}};
+}
+
+template<typename charT, std::size_t N, std::size_t N2, typename traits>
+constexpr bool operator<(basic_string<charT, N, traits> lhs, basic_string<charT, N2, traits> rhs) noexcept
+{
+  return lhs.compare(rhs) < 0;
 }
 
 }

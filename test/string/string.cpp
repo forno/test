@@ -136,3 +136,31 @@ TEST(StringStringCompareMethod, Difference)
   constexpr xmaho::string::basic_string<char, 10> s2{"nyan\0nyan"};
   ASSERT_LT(s1.compare(s2), 0);
 }
+
+TEST(StringStringLessthanMethod, Null)
+{
+  constexpr xmaho::string::basic_string<char, 10> s1{};
+  constexpr xmaho::string::basic_string<char, 1> s2{};
+  ASSERT_FALSE(s1 < s2);
+}
+
+TEST(StringStringLessthanMethod, Normal)
+{
+  constexpr xmaho::string::basic_string<char, 10> s1{"hoge"};
+  constexpr xmaho::string::basic_string<char, 5> s2{"hoge"};
+  ASSERT_FALSE(s1 < s2);
+}
+
+TEST(StringStringLessthanMethod, NullArg)
+{
+  constexpr xmaho::string::basic_string<char, 10> s1{"hoge\0hoge"};
+  constexpr xmaho::string::basic_string<char, 10> s2{"hoge"};
+  ASSERT_FALSE(s1 < s2);
+}
+
+TEST(StringStringLessthanMethod, Difference)
+{
+  constexpr xmaho::string::basic_string<char, 10> s1{"hoge\0hoge"};
+  constexpr xmaho::string::basic_string<char, 10> s2{"nyan\0nyan"};
+  ASSERT_TRUE(s1 < s2);
+}
