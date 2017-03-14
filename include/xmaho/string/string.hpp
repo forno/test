@@ -56,14 +56,6 @@ private:
     static_assert(sizeof...(Seq) <= N, "string: max_size < your string size");
   }
 
-public:
-  template<size_type N2>
-  constexpr basic_string(const value_type (&str)[N2])
-    : basic_string(str, std::make_index_sequence<N2>{})
-  {
-    static_assert(N2 <= N, "string: max_size < your string size.");
-  }
-
   template<size_type N2, size_type N3, typename T, T... Seq>
   constexpr basic_string(const basic_string<charT, N2, traits>& lhs,
                          const basic_string<charT, N3, traits>& rhs,
@@ -72,6 +64,22 @@ public:
               Seq < lhs.size() + rhs.size() ? rhs[Seq - lhs.size()] :
               charT{})...},
       length_ {lhs.size() + rhs.size()}
+  {
+    static_assert(N2 + N3 <= N, "string: max_size < your string size.");
+  }
+
+public:
+  template<size_type N2>
+  constexpr basic_string(const value_type (&str)[N2])
+    : basic_string(str, std::make_index_sequence<N2>{})
+  {
+    static_assert(N2 <= N, "string: max_size < your string size.");
+  }
+
+  template<size_type N2, size_type N3>
+  constexpr basic_string(const basic_string<charT, N2, traits>& lhs,
+                         const basic_string<charT, N3, traits>& rhs)
+    : basic_string(lhs, rhs, std::make_index_sequence<N2+N3>{})
   {
     static_assert(N2 + N3 <= N, "string: max_size < your string size.");
   }
@@ -220,7 +228,7 @@ private:
 template<typename charT, std::size_t N, std::size_t N2, typename traits>
 constexpr basic_string<charT, N + N2, traits> operator+(basic_string<charT, N, traits> lhs, basic_string<charT, N2, traits> rhs)
 {
-  return {lhs, rhs, std::make_index_sequence<N+N2>{}};
+  return {lhs, rhs};
 }
 
 template<typename charT, std::size_t N, std::size_t N2, typename traits>
