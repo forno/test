@@ -12,6 +12,7 @@
 #include <stdexcept>
 #include <string>
 #include <type_traits>
+#include <utility>
 
 namespace xmaho
 {
@@ -31,18 +32,18 @@ template<typename charT, std::size_t N, typename traits = std::char_traits<charT
 class basic_string
 {
 public:
-  using traits_type = traits;
-  using value_type = typename traits_type::char_type;
-  using size_type = std::size_t;
+  using traits_type     = traits;
+  using value_type      = typename traits_type::char_type;
+  using size_type       = std::size_t;
   using difference_type = std::ptrdiff_t;
-  using reference = value_type&;
-  using const_reference = const value_type&;
-  using pointer = value_type*;
-  using const_pointer = const value_type*;
-  using iterator = charT*;
-  using const_iterator = const charT*;
+  using reference       = value_type&;
+  using const_reference = std::add_const_t<value_type>&;
+  using pointer         = value_type*;
+  using const_pointer   = std::add_const_t<value_type>*;
+  using iterator        = charT*;
+  using const_iterator  = std::add_const_t<charT>*;
 
-  static constexpr size_type npos = -1;
+  static constexpr size_type npos {static_cast<size_type>(-1)};
 
   basic_string() = default;
 
@@ -55,14 +56,6 @@ private:
     static_assert(sizeof...(Seq) <= N, "string: max_size < your string size");
   }
 
-public:
-  template<size_type N2>
-  constexpr basic_string(const value_type (&str)[N2])
-    : basic_string(str, std::make_index_sequence<N2>{})
-  {
-    static_assert(N2 <= N, "string: max_size < your string size.");
-  }
-
   template<size_type N2, size_type N3, typename T, T... Seq>
   constexpr basic_string(const basic_string<charT, N2, traits>& lhs,
                          const basic_string<charT, N3, traits>& rhs,
@@ -71,6 +64,22 @@ public:
               Seq < lhs.size() + rhs.size() ? rhs[Seq - lhs.size()] :
               charT{})...},
       length_ {lhs.size() + rhs.size()}
+  {
+    static_assert(N2 + N3 <= N, "string: max_size < your string size.");
+  }
+
+public:
+  template<size_type N2>
+  constexpr basic_string(const value_type (&str)[N2])
+    : basic_string(str, std::make_index_sequence<N2>{})
+  {
+    static_assert(N2 <= N, "string: max_size < your string size.");
+  }
+
+  template<size_type N2, size_type N3>
+  constexpr basic_string(const basic_string<charT, N2, traits>& lhs,
+                         const basic_string<charT, N3, traits>& rhs)
+    : basic_string(lhs, rhs, std::make_index_sequence<N2+N3>{})
   {
     static_assert(N2 + N3 <= N, "string: max_size < your string size.");
   }
@@ -107,7 +116,7 @@ public:
 
   constexpr size_type capacity() const noexcept
   {
-    return max_size();
+    return N;
   }
 
   constexpr void clear() noexcept
@@ -171,34 +180,44 @@ public:
     return copy_length;
   }
 
+  template<size_type N2>
+  constexpr int compare(const basic_string<charT, N2, traits> rhs) const noexcept
+  {
+    if (auto r {traits::compare(data(), rhs.data(), std::min(size(), rhs.size()))})
+      return r;
+    return (size() < rhs.size()) ? -1 :
+           (size() == rhs.size()) ? 0 :
+           1;
+  }
+
   constexpr const_iterator begin() const noexcept
   {
-    return data_;
+    return data();
   }
 
   constexpr const_iterator end() const noexcept
   {
-    return data_ + length_;
+    return data() + size();
   }
 
   constexpr iterator begin() noexcept
   {
-    return data_;
+    return data();
   }
 
   constexpr iterator end() noexcept
   {
-    return data_ + length_;
+    return data() + size();
   }
 
   constexpr const_iterator cbegin() const noexcept
   {
-    return data_;
+    return data();
   }
 
   constexpr const_iterator cend() const noexcept
   {
-    return data_ + length_;
+    return data() + size();
   }
 
 private:
@@ -206,12 +225,47 @@ private:
   size_type length_ {};
 };
 
-template<typename charT, typename traits, std::size_t N, std::size_t N2>
+template<typename charT, std::size_t N, std::size_t N2, typename traits>
 constexpr basic_string<charT, N + N2, traits> operator+(basic_string<charT, N, traits> lhs, basic_string<charT, N2, traits> rhs)
 {
-  return {lhs, rhs, std::make_index_sequence<N+N2>{}};
+  return {lhs, rhs};
 }
 
+template<typename charT, std::size_t N, std::size_t N2, typename traits>
+constexpr bool operator<(basic_string<charT, N, traits> lhs, basic_string<charT, N2, traits> rhs) noexcept
+{
+  return lhs.compare(rhs) < 0;
+}
+
+template<typename charT, std::size_t N, std::size_t N2, typename traits>
+constexpr bool operator==(basic_string<charT, N, traits> lhs, basic_string<charT, N2, traits> rhs) noexcept
+{
+  return lhs.compare(rhs) == 0;
+}
+
+template<typename charT, std::size_t N, std::size_t N2, typename traits>
+constexpr bool operator!=(basic_string<charT, N, traits> lhs, basic_string<charT, N2, traits> rhs) noexcept
+{
+  return std::rel_ops::operator!=(lhs, rhs);
+}
+
+template<typename charT, std::size_t N, std::size_t N2, typename traits>
+constexpr bool operator>(basic_string<charT, N, traits> lhs, basic_string<charT, N2, traits> rhs) noexcept
+{
+  return std::rel_ops::operator>(lhs, rhs);
+}
+
+template<typename charT, std::size_t N, std::size_t N2, typename traits>
+constexpr bool operator<=(basic_string<charT, N, traits> lhs, basic_string<charT, N2, traits> rhs) noexcept
+{
+  return std::rel_ops::operator<=(lhs, rhs);
+}
+
+template<typename charT, std::size_t N, std::size_t N2, typename traits>
+constexpr bool operator>=(basic_string<charT, N, traits> lhs, basic_string<charT, N2, traits> rhs) noexcept
+{
+  return std::rel_ops::operator>=(lhs, rhs);
+}
 
 }
 }
