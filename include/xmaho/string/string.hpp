@@ -31,15 +31,15 @@ template<typename charT, std::size_t N, typename traits = std::char_traits<charT
 class basic_string
 {
 public:
-  using traits_type = traits;
-  using value_type = typename traits_type::char_type;
-  using size_type = std::size_t;
+  using traits_type     = traits;
+  using value_type      = typename traits_type::char_type;
+  using size_type       = std::size_t;
   using difference_type = std::ptrdiff_t;
-  using reference = value_type&;
+  using reference       = value_type&;
   using const_reference = const value_type&;
-  using pointer = value_type*;
-  using const_pointer = const value_type*;
-  using iterator = charT*;
+  using pointer         = value_type*;
+  using const_pointer   = const value_type*;
+  using iterator        = charT*;
   using const_iterator = const charT*;
 
   static constexpr size_type npos = -1;
