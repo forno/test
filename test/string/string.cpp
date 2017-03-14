@@ -192,3 +192,30 @@ TEST(StringStringEqualMethod, Difference)
   constexpr xmaho::string::basic_string<char, 10> s2{"nyan\0nyan"};
   ASSERT_FALSE(s1 == s2);
 }
+
+TEST(StringStringHash, Null)
+{
+  constexpr xmaho::string::basic_string<char, 10> s{};
+  ASSERT_EQ(std::hash<std::remove_const_t<decltype(s)>>{}(s), std::hash<std::remove_const_t<decltype(s)>>{}(s));
+}
+
+TEST(StringStringHash, Normal)
+{
+  constexpr xmaho::string::basic_string<char, 10> s1{"hoge"};
+  constexpr xmaho::string::basic_string<char, 5> s2{"hoge"};
+  ASSERT_EQ(std::hash<std::remove_const_t<decltype(s1)>>{}(s1), std::hash<std::remove_const_t<decltype(s2)>>{}(s2));
+}
+
+TEST(StringStringHash, NullArg)
+{
+  constexpr xmaho::string::basic_string<char, 10> s1{"hoge\0hoge"};
+  constexpr xmaho::string::basic_string<char, 10> s2{"hoge"};
+  ASSERT_EQ(std::hash<std::remove_const_t<decltype(s1)>>{}(s1), std::hash<std::remove_const_t<decltype(s2)>>{}(s2));
+}
+
+TEST(StringStringHash, Difference)
+{
+  constexpr xmaho::string::basic_string<char, 10> s1{"hoge\0hoge"};
+  constexpr xmaho::string::basic_string<char, 10> s2{"nyan\0nyan"};
+  ASSERT_NE(std::hash<std::remove_const_t<decltype(s1)>>{}(s1), std::hash<std::remove_const_t<decltype(s2)>>{}(s2));
+}

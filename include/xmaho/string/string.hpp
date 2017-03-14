@@ -14,6 +14,8 @@
 #include <type_traits>
 #include <utility>
 
+#include "xmaho/functional/hash.hpp"
+
 namespace xmaho
 {
 namespace string
@@ -267,7 +269,35 @@ constexpr bool operator>=(basic_string<charT, N, traits> lhs, basic_string<charT
   return std::rel_ops::operator>=(lhs, rhs);
 }
 
+} // namespace string
+
+namespace functional
+{
+
+template<typename charT, std::size_t N, typename traits>
+std::size_t hash_value(const string::basic_string<charT, N, traits>& value)
+{
+  return hash_range(value.begin(), value.end());
 }
+
+} // namespace functional
+} // namespace xmaho
+
+namespace std
+{
+
+template<typename charT, std::size_t N, typename traits>
+struct hash<xmaho::string::basic_string<charT, N, traits>>
+{
+  using result_type = std::size_t;
+  using argument_type = xmaho::string::basic_string<charT, N, traits>;
+
+  constexpr result_type operator()(argument_type key) const
+  {
+    return xmaho::functional::hash_value(key);
+  }
+};
+
 }
 
 #endif
