@@ -47,7 +47,7 @@ if(ENABLE_TEST)
   find_package(Threads)
 
   include_directories(${GTEST_INCLUDE_DIRS})
-  add_executable(integral_test "test/string/split.cpp" "test/math/residue_system.cpp")
+  add_executable(integral_test "test/string/split.cpp" "test/math/residue_system.cpp" "test/string/string.cpp")
   target_link_libraries(integral_test ${GTEST_BOTH_LIBRARIES})
   if(THREADS_HAVE_PTHREAD_ARG)
     target_compile_options(PUBLIC integral_test "-pthread")
