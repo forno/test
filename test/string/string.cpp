@@ -1,3 +1,5 @@
+#include <string>
+
 #include <gtest/gtest.h>
 
 #include "xmaho/string/string.hpp"
@@ -34,6 +36,44 @@ TEST(StringStringOriginal, RuntimeConcat)
   xmaho::string::basic_string<char, 10> s1{"hoge\0hoge"};
   xmaho::string::basic_string<char, 10> s2{"nyan\0nyan"};
   s1 + s2;
+}
+
+TEST(StringStringCastToString, NormalConstruct)
+{
+  xmaho::string::basic_string<char, 10> s {};
+  ASSERT_EQ(static_cast<std::string>(s), std::string{});
+}
+
+TEST(StringStringCastToString, ConstexprConstruct)
+{
+  constexpr xmaho::string::basic_string<char, 10> s{};
+  ASSERT_EQ(static_cast<std::string>(s), std::string{});
+}
+
+TEST(StringStringCastToString, ConstexprConstructWithArgs)
+{
+  constexpr xmaho::string::basic_string<char, 10> s{"hoge"};
+  ASSERT_EQ(static_cast<std::string>(s), std::string{"hoge"});
+}
+
+TEST(StringStringCastToString, ConstexprConstructWithNullArgs)
+{
+  constexpr xmaho::string::basic_string<char, 10> s{"hoge\0hoge"};
+  ASSERT_EQ(static_cast<std::string>(s), std::string{"hoge"});
+}
+
+TEST(StringStringCastToString, ConstexprConcat)
+{
+  constexpr xmaho::string::basic_string<char, 10> s1{"hoge\0hoge"};
+  constexpr xmaho::string::basic_string<char, 10> s2{"nyan\0nyan"};
+  ASSERT_EQ(static_cast<std::string>(s1 + s2), std::string{"hogenyan"});
+}
+
+TEST(StringStringCastToString, RuntimeConcat)
+{
+  xmaho::string::basic_string<char, 10> s1{"hoge\0hoge"};
+  xmaho::string::basic_string<char, 10> s2{"nyan\0nyan"};
+  ASSERT_EQ(static_cast<std::string>(s1 + s2), std::string{"hogenyan"});
 }
 
 TEST(StringStringSizeMethod, Null)

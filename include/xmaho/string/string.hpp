@@ -85,6 +85,11 @@ public:
     return const_cast<reference>(const_cast<std::add_const_t<decltype(this)>>(this)->operator[](index));
   }
 
+  constexpr operator std::basic_string<charT, traits>() const
+  {
+    return {c_str()};
+  }
+
   constexpr size_type size() const noexcept
   {
     return length_;
