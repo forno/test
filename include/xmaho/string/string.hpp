@@ -40,9 +40,9 @@ public:
   using pointer         = value_type*;
   using const_pointer   = const value_type*;
   using iterator        = charT*;
-  using const_iterator = const charT*;
+  using const_iterator  = const charT*;
 
-  static constexpr size_type npos = -1;
+  static constexpr size_type npos {static_cast<size_type>(-1)};
 
   basic_string() = default;
 
@@ -107,7 +107,7 @@ public:
 
   constexpr size_type capacity() const noexcept
   {
-    return max_size();
+    return N;
   }
 
   constexpr void clear() noexcept
@@ -173,32 +173,32 @@ public:
 
   constexpr const_iterator begin() const noexcept
   {
-    return data_;
+    return data();
   }
 
   constexpr const_iterator end() const noexcept
   {
-    return data_ + length_;
+    return data() + size();
   }
 
   constexpr iterator begin() noexcept
   {
-    return data_;
+    return data();
   }
 
   constexpr iterator end() noexcept
   {
-    return data_ + length_;
+    return data() + size();
   }
 
   constexpr const_iterator cbegin() const noexcept
   {
-    return data_;
+    return data();
   }
 
   constexpr const_iterator cend() const noexcept
   {
-    return data_ + length_;
+    return data() + size();
   }
 
 private:
@@ -211,7 +211,6 @@ constexpr basic_string<charT, N + N2, traits> operator+(basic_string<charT, N, t
 {
   return {lhs, rhs, std::make_index_sequence<N+N2>{}};
 }
-
 
 }
 }
