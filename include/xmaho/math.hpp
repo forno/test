@@ -2,7 +2,7 @@
 #define XMAHO_XMAHO_MATH_H
 
 /**
- * @file math/math.hpp
+ * @file math.hpp
  * @brief This call xmaho::math libraries.
  */
 
