@@ -12,6 +12,7 @@
 #include <stdexcept>
 #include <string>
 #include <type_traits>
+#include <utility>
 
 namespace xmaho
 {
@@ -232,6 +233,12 @@ template<typename charT, std::size_t N, std::size_t N2, typename traits>
 constexpr bool operator==(basic_string<charT, N, traits> lhs, basic_string<charT, N2, traits> rhs) noexcept
 {
   return lhs.compare(rhs) == 0;
+}
+
+template<typename charT, std::size_t N, std::size_t N2, typename traits>
+constexpr bool operator!=(basic_string<charT, N, traits> lhs, basic_string<charT, N2, traits> rhs) noexcept
+{
+  return std::rel_ops::operator!=(lhs, rhs);
 }
 
 }
