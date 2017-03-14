@@ -6,6 +6,8 @@
  * @brief This have definition of xmaho::string::string class.
  */
 
+#include <algorithm>
+#include <cassert>
 #include <cstddef>
 #include <stdexcept>
 #include <string>
@@ -71,12 +73,6 @@ public:
       length_ {lhs.size() + rhs.size()}
   {
     static_assert(N2 + N3 <= N, "string: max_size < your string size.");
-  }
-
-  template<std::size_t N2>
-  constexpr auto operator+(basic_string<charT, N2, traits> rhs) const
-  {
-    return basic_string<charT, N + N2, traits>{*this, rhs, std::make_index_sequence<N+N2>{}};
   }
 
   constexpr const_reference operator[](size_type index) const
@@ -151,6 +147,25 @@ public:
     return const_cast<reference>(const_cast<std::add_const_t<decltype(this)>>(this)->back());
   }
 
+  constexpr const_pointer c_str() const noexcept
+  {
+    return data_;
+  }
+
+  constexpr const_pointer data() const noexcept
+  {
+    return c_str();
+  }
+
+  constexpr size_type copy(pointer s, size_type n, size_type pos = 0) const
+  {
+    if (pos > size()) throw std::out_of_range{"string: cannot copy by pos > size()."};
+    const size_type copy_length {std::min(n, size() - pos)};
+    for (size_type i {}; i < copy_length; ++i)
+      s[i] = operator[](i + pos);
+    return copy_length;
+  }
+
   constexpr const_iterator begin() const noexcept
   {
     return data_;
@@ -185,6 +200,13 @@ private:
   value_type data_[N+1] {};
   size_type length_ {};
 };
+
+template<typename charT, typename traits, std::size_t N, std::size_t N2>
+constexpr basic_string<charT, N + N2, traits> operator+(basic_string<charT, N, traits> lhs, basic_string<charT, N2, traits> rhs)
+{
+  return {lhs, rhs, std::make_index_sequence<N+N2>{}};
+}
+
 
 }
 }
