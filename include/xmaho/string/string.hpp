@@ -249,6 +249,24 @@ constexpr bool operator!=(basic_string<charT, N, traits> lhs, basic_string<charT
   return std::rel_ops::operator!=(lhs, rhs);
 }
 
+template<typename charT, std::size_t N, std::size_t N2, typename traits>
+constexpr bool operator>(basic_string<charT, N, traits> lhs, basic_string<charT, N2, traits> rhs) noexcept
+{
+  return std::rel_ops::operator>(lhs, rhs);
+}
+
+template<typename charT, std::size_t N, std::size_t N2, typename traits>
+constexpr bool operator<=(basic_string<charT, N, traits> lhs, basic_string<charT, N2, traits> rhs) noexcept
+{
+  return std::rel_ops::operator<=(lhs, rhs);
+}
+
+template<typename charT, std::size_t N, std::size_t N2, typename traits>
+constexpr bool operator>=(basic_string<charT, N, traits> lhs, basic_string<charT, N2, traits> rhs) noexcept
+{
+  return std::rel_ops::operator>=(lhs, rhs);
+}
+
 }
 }
 
