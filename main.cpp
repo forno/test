@@ -20,7 +20,9 @@ enum class kind
 };
 
 int main(int argc, char** argv) {
-  std::valarray<kind> val(5);
+  std::valarray<kind> val {5};
+  if (std::end(val) - std::begin(val) == 5)
+    std::cout << "length is correct with uniform init\n";
   if (std::all_of(std::begin(val), std::end(val), [](auto e){return e == kind::a;}))
     std::cout << "default is kind::a\n";
   val = kind::b;
