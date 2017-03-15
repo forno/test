@@ -12,21 +12,8 @@
 
 template<typename T> [[deprecated]] void show_type(T&&){};
 
-enum class kind
-{
-  a,
-  b,
-  c
-};
-
 int main(int argc, char** argv) {
-  std::valarray<kind> val {5};
-  if (std::end(val) - std::begin(val) == 5)
-    std::cout << "length is correct with uniform init\n";
-  if (std::all_of(std::begin(val), std::end(val), [](auto e){return e == kind::a;}))
-    std::cout << "default is kind::a\n";
-  val = kind::b;
-  if (std::all_of(std::begin(val), std::end(val), [](auto e){return e == kind::b;}))
-    std::cout << "operator= is parfect move\n";
-  std::cout << std::flush;
+  std::unique_ptr<int> p1 {std::make_unique<int>(10)};
+  std::unique_ptr<long> p2(std::move(p1));
+  std::cout << *p2 << std::endl;
 }
