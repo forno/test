@@ -12,8 +12,14 @@
 
 template<typename T> [[deprecated]] void show_type(T&&){};
 
+constexpr auto limit {5};
+
 int main(int argc, char** argv) {
-  std::unique_ptr<int> p1 {std::make_unique<int>(10)};
-  std::unique_ptr<long> p2(std::move(p1));
-  std::cout << *p2 << std::endl;
+  std::default_random_engine rand {std::random_device{}()};
+  std::vector<int> counter(limit);
+  for (auto i {0}; i < 10000; ++i) {
+    std::uniform_int_distribution<> dist {0, limit - 1};
+    ++counter[dist(rand)];
+  }
+  std::for_each(counter.begin(), counter.end(), [](auto e){std::cout << e << ' ';});
 }
