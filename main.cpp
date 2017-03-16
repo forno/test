@@ -3,6 +3,7 @@
 #include <functional>
 #include <iomanip>
 #include <iostream>
+#include <iterator>
 #include <memory>
 #include <stdexcept>
 #include <string>
@@ -13,19 +14,40 @@
 
 template<typename T> [[deprecated]] void show_type(T&&){};
 
-const auto f()
+class c
 {
-  std::valarray<int> a(20);
-  std::iota(std::begin(a), std::end(a), 0);
-  return a[std::slice(1, 5, 2)];
+  std::valarray<int> a;
+  friend std::ostream& operator<<(std::ostream&, const c&);
+public:
+  c()
+    : a(20)
+  {
+    std::iota(std::begin(a), std::end(a), 1);
+  }
+
+  auto get() noexcept
+  {
+    return a[std::slice(0, 5, 3)];
+  }
+
+  std::valarray<int> get() const noexcept
+  {
+    return a[std::slice(0, 5, 3)];
+  }
+};
+
+std::ostream& operator<<(std::ostream& out, const c& o)
+{
+  std::copy(std::begin(o.a), std::end(o.a), std::ostream_iterator<int>(out, " "));
 }
 
 int main(int argc, char** argv) {
-  std::valarray<int> a(20);
-  std::iota(std::begin(a), std::end(a), 0);
-  auto b {a.apply([](int e){std::cout << e << ' '; return 0;})};
-  std::cout << "\nb: " << b[0] << '\n';
-  auto c {f()};
-  std::valarray<int> d {c};
-  std::cout << "\nd: " << d[0] << std::endl;
+  c obj {};
+  show_type(obj.get());
+  obj.get() = 2;
+  std::cout << obj;
+  const c obj2 {};
+  show_type(obj2.get());
+  obj2.get() *= 2;
+  std::cout << obj2;
 }
