@@ -16,11 +16,7 @@ template<typename T> [[deprecated]] void show_type(T&&){};
 constexpr auto limit {5};
 
 int main(int argc, char** argv) {
-  std::cout << std::setfill('0') << std::setw(5) << 1 << 2 << 3 << '\n';
-  std::cout << 1 << 2 << 3 << '\n';
-  std::cout << std::setw(8) << "ho" << "ge" << '\n';
-  std::cout << "ho" << "ge" << '\n';
-  std::cout << std::setw(5);
-  std::cout << 0 << "nya" << std::endl;
-  std::cout << 0 << "nya" << std::endl;
+  std::valarray<int> a(10);
+  std::iota(std::begin(a), std::end(a), 0);
+  std::cout << a;
 }
