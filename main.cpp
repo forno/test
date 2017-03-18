@@ -14,7 +14,12 @@
 
 template<typename T> [[deprecated]] void show_type(T&&){};
 
+class cls
+{
+public:
+  cls();
+};
+
 int main(int argc, char** argv) {
-  std::wstring s {L"hogehoge"};
-  std::wcout << s;
+  cls o {};
 }
