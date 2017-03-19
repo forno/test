@@ -14,12 +14,15 @@
 
 template<typename T> [[deprecated]] void show_type(T&&){};
 
-class cls
-{
-public:
-  cls();
-};
-
 int main(int argc, char** argv) {
-  cls o {};
+  int i;
+  std::cin >> i;
+  switch (i) {
+  case 0: case 1:
+  { const int now {i};
+    return now - i;
+  }
+  case 2:
+    return 0;
+  }
 }
