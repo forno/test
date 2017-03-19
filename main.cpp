@@ -15,14 +15,12 @@
 template<typename T> [[deprecated]] void show_type(T&&){};
 
 int main(int argc, char** argv) {
-  int i;
-  std::cin >> i;
+  int i {};
   switch (i) {
-  case 0: case 1:
-  { const int now {i};
-    return now - i;
-  }
-  case 2:
-    return 0;
+    using std::string;
+    using std::cout;
+  case 0:
+    string s {"hoge"};
+    cout << s;
   }
 }
