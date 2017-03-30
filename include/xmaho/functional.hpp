@@ -17,5 +17,6 @@
  */
 
 #include "xmaho/functional/hash.hpp"
+#include "xmaho/functional/cast_hash.hpp"
 
 #endif
