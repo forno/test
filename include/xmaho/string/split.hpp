@@ -28,34 +28,24 @@ namespace string
  * On Javascript, It is know as String.split().
  *
  * @tparam    Container The result container type.
+ * @tparam    BidirIter The string iterator. must be bidirctional or random iterator.
+ * @tparam    Delimiter The delimiter type. must be convertable to regex.
  * @param[in] first     The begin iterator of range for target string.
  * @param[in] last      The end iterator of range for target string.
  * @param[in] delimiter The delimiter of split.
  * @return The container has strings that are splited by delimiter.
  */
 template<template<typename...> class Container = std::vector,
-         typename BidirIter1,
-         typename BidirIter2,
+         typename BidirIter,
          typename Delimiter>
-inline auto split(BidirIter1&& first, BidirIter2&& last, Delimiter&& delimiter)
+inline auto split(BidirIter first, BidirIter last, Delimiter&& delimiter)
 {
-  static_assert(
-    std::is_same<
-      traits::Value_type<std::remove_reference_t<BidirIter1>>,
-      traits::Value_type<std::remove_reference_t<BidirIter2>>>{},
-    "Defference value type of split target");
-  using Iter = std::remove_reference_t<BidirIter1>;
-  using TokenIter = std::regex_token_iterator<Iter>;
+  using TokenIter = std::regex_token_iterator<BidirIter>;
   using Regex = typename TokenIter::regex_type;
   using Result = Container<typename Regex::string_type>;
 
   Regex delim {std::forward<Delimiter>(delimiter)};
-  return Result{TokenIter{
-                  std::forward<BidirIter1>(first),
-                  std::forward<BidirIter2>(last),
-                  delim,
-                  -1},
-                TokenIter{}};
+  return Result{TokenIter{first, last, delim, -1}, TokenIter{}};
 }
 
 /**
@@ -65,6 +55,8 @@ inline auto split(BidirIter1&& first, BidirIter2&& last, Delimiter&& delimiter)
  * On Javascript, It is know as String.split().
  *
  * @tparam    Container The result container type.
+ * @tparam    String    The string container type.
+ * @tparam    Delimiter The delimiter type. must be convertable to regex.
  * @param[in] target    The string of splitting target.
  * @param[in] delimiter The delimiter of split.
  * @return The container has strings that are splited by delimiter.
@@ -74,13 +66,8 @@ template<template<typename...> class Container = std::vector,
          typename Delimiter>
 inline auto split(const String& target, Delimiter&& delimiter)
 {
-  using std::begin;
-  using std::end;
-
-  return split<Container>(
-           begin(target),
-           end(target),
-           std::forward<Delimiter>(delimiter));
+  return split<Container>(target.begin(), target.end(),
+                          std::forward<Delimiter>(delimiter));
 }
 
 /**
@@ -90,21 +77,21 @@ inline auto split(const String& target, Delimiter&& delimiter)
  * On Javascript, It is know as String.split().
  *
  * @tparam    Container The container type of result.
- * @tparam    CharT     The value type of target.
+ * @tparam    charT     The value type of target.
  * @tparam    N         The size of target.
+ * @tparam    Delimiter The delimiter type. must be convertable to regex.
  * @param[in] target    The string of splitting target.
  * @param[in] delimiter The delimiter of split.
  * @return The container has strings that are splited by delimiter.
  */
 template<template<typename...> class Container = std::vector,
-         typename CharT,
+         typename charT,
          std::size_t N,
          typename Delimiter>
-inline auto split(const CharT (&target)[N], Delimiter&& delimiter)
+inline auto split(const charT (&target)[N], Delimiter&& delimiter)
 {
-  return split<Container>(
-           std::basic_string<CharT>{target},
-           std::forward<Delimiter>(delimiter));
+  return split<Container>(std::basic_string<charT>{target},
+                          std::forward<Delimiter>(delimiter));
 }
 
 /**
@@ -114,19 +101,19 @@ inline auto split(const CharT (&target)[N], Delimiter&& delimiter)
  * On Javascript, It is know as String.split().
  *
  * @tparam    Container The result container type.
- * @tparam    CharT     The value type of target.
+ * @tparam    charT     The value type of target.
+ * @tparam    Delimiter The delimiter type. must be convertable to regex.
  * @param[in] target    The string of splitting target.
  * @param[in] delimiter The delimiter of split.
  * @return The container has strings that are splited by delimiter.
  */
 template<template<typename...> class Container = std::vector,
-         typename CharT,
+         typename charT,
          typename Delimiter>
-inline auto split(const CharT* const& target, Delimiter&& delimiter)
+inline auto split(const charT* const& target, Delimiter&& delimiter)
 {
-  return split<Container>(
-           std::basic_string<CharT>{target},
-           std::forward<Delimiter>(delimiter));
+  return split<Container>(std::basic_string<charT>{target},
+                          std::forward<Delimiter>(delimiter));
 }
 
 }

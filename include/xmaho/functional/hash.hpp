@@ -13,16 +13,11 @@ namespace xmaho
 namespace functional
 {
 
-template<typename T>
-constexpr std::size_t hash_value(const T&);
-
-template<>
 constexpr std::size_t hash_value(const std::size_t& value)
 {
   return value;
 }
 
-template<>
 constexpr std::size_t hash_value(const char& value)
 {
   return value;
@@ -37,7 +32,7 @@ constexpr void hash_combine(std::size_t& seed, const T& value)
 template<typename Iterator>
 constexpr std::size_t hash_range(Iterator first, Iterator last)
 {
-  std::size_t seed {};
+  std::size_t seed {0};
   while (first++ != last)
     hash_combine(seed, *first);
   return seed;
