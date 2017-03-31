@@ -1,26 +1,31 @@
-#include <array>
-#include <cstddef>
-#include <functional>
-#include <iomanip>
-#include <complex>
 #include <iostream>
-#include <iterator>
-#include <memory>
-#include <stdexcept>
-#include <string>
-#include <type_traits>
-#include <unordered_set>
 #include <utility>
-#include <valarray>
 
-template<typename T> [[deprecated]] void show_type(T&&){};
+using battle_pair = std::pair<int, int>;
+using time_pair = std::pair<int, int>;
 
-int main(int argc, char** argv) {
-  std::ios_base::sync_with_stdio(false);
+int main(void){
+    battle_pair first_block;
+    std::cin >> first_block.first >> first_block.second;
+    if (first_block.second < first_block.first) std::swap(first_block.first, first_block.second);
+    battle_pair second_block;
+    std::cin >> second_block.first >> second_block.second;
+    if (second_block.second < second_block.first) std::swap(second_block.first, second_block.second);
 
-  std::string s;
-  getline(std::cin, s);
-  auto it {std::find(std::make_reverse_iterator(s.end()), std::make_reverse_iterator(s.begin()), 'a').base()};
-  std::cout << std::distance(s.begin(), it) << '\n';
-  std::cout << s << '\n';
+    battle_pair final_block;
+    time_pair first_block_time;
+    std::cin >> first_block_time.first >> first_block_time.second;
+    final_block.first = first_block_time.first < first_block_time.second ? first_block.first : first_block.second;
+    time_pair second_block_time;
+    std::cin >> second_block_time.first >> second_block_time.second;
+    std::cout << second_block_time.first << second_block_time.second;
+    final_block.second = second_block_time.first < second_block_time.second ? second_block.first : second_block.second;
+    if (final_block.second < final_block.first) std::swap(final_block.first, final_block.second);
+
+    time_pair final_block_time;
+    std::cin >> final_block_time.first >> final_block_time.second;
+    std::cout << (final_block_time.first < final_block_time.second ? final_block.first : final_block.second) << '\n' <<
+                 (final_block_time.first < final_block_time.second ? final_block.second : final_block.first) << '\n';
+    return 0;
 }
+
