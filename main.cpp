@@ -1,15 +1,13 @@
 #include <iostream>
-#include <utility>
-#include <memory>
-
-struct B {};
-struct C1 {};
-struct C2 {};
+#include <string>
 
 int main(int argc, char** argv)
 {
-  std::unique_ptr<B> p1 {std::make_unique<C1>()};
-  std::unique_ptr<B> p2 {std::make_unique<C2>()};
+  std::ios_base::sync_with_stdio(false);
+
+  std::string s;
+  std::cin >> s;
+  std::cout << s << '\n';
 
   return 0;
 }
