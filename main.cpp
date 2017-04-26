@@ -1,33 +1,57 @@
-#include <complex>
+#include <stdlib.h>
 #include <iostream>
-#include <vector>
+#include <sstream>
+#include <stdexcept>
+/* uncomment for applications that use vectors */
+/*#include <vector>*/
 
-using point = std::complex<double>;
+#include "mysql_connection.h"
 
-int main(int argc, char** argv)
+#include <cppconn/driver.h>
+#include <cppconn/exception.h>
+#include <cppconn/resultset.h>
+#include <cppconn/statement.h>
+#include <cppconn/prepared_statement.h>
+
+#define EXAMPLE_HOST "localhost"
+#define EXAMPLE_USER "worlduser"
+#define EXAMPLE_PASS "worldpass"
+#define EXAMPLE_DB "world"
+
+using namespace std;
+
+int main(int argc, const char **argv)
 {
-  std::ios_base::sync_with_stdio(false);
+	string url(argc >= 2 ? argv[1] : EXAMPLE_HOST);
+	const string user(argc >= 3 ? argv[2] : EXAMPLE_USER);
+	const string pass(argc >= 4 ? argv[3] : EXAMPLE_PASS);
+	const string database(argc >= 5 ? argv[4] : EXAMPLE_DB);
 
-  double origin_x, origin_y;
-  int inner_range, outer_range;
-  std::cin >> origin_x >> origin_y >> inner_range >> outer_range;
-  point origin {origin_x, origin_y};
+	cout << "Connector/C++ tutorial framework..." << endl;
+	cout << endl;
 
-  int length;
-  std::cin >> length;
-  std::vector<point> points(length);
-  for (auto& e : points) {
-    double x, y;
-    std::cin >> x >> y;
-    e = point{x, y};
-  }
+	try {
 
-  for (const auto& e : points) {
-    const auto local_point {e - origin};
-    const auto diff_length {std::abs(local_point)};
-    std::cout << (inner_range <= diff_length && diff_length <= outer_range ? "yes" : "no");
-    std::cout.put('\n');
-  }
+		/* INSERT TUTORIAL CODE HERE! */
 
-  return 0;
+	} catch (sql::SQLException &e) {
+		/*
+			 MySQL Connector/C++ throws three different exceptions:
+
+			 - sql::MethodNotImplementedException (derived from sql::SQLException)
+			 - sql::InvalidArgumentException (derived from sql::SQLException)
+			 - sql::SQLException (derived from std::runtime_error)
+		 */
+		cout << "# ERR: SQLException in " << __FILE__;
+		cout << "(" << __FUNCTION__ << ") on line " << __LINE__ << endl;
+		/* what() (derived from std::runtime_error) fetches error message */
+		cout << "# ERR: " << e.what();
+		cout << " (MySQL error code: " << e.getErrorCode();
+		cout << ", SQLState: " << e.getSQLState() << " )" << endl;
+
+		return EXIT_FAILURE;
+	}
+
+	cout << "Done." << endl;
+	return EXIT_SUCCESS;
 }
