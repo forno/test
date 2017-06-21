@@ -1,21 +1,34 @@
 #include <iostream>
-#include <iomanip>
+#include <valarray>
+#include <vector>
 
-int main(void){
-    double min {100}, max {200};
-    int length;
-    std::cin >> length;
-    for (auto i {length}; i > 0; --i) {
-        std::string s;
-        std::cin >> s;
-        double size;
-        std::cin >> size;
-        if (s == "le")
-            max = std::min(max, size);
-        else
-            min = std::max(min, size);
-    }
-    std::cout << std::fixed << std::setprecision(1) << min << ' ' << max;
-    return 0;
+bool check_valid(int target, int min, int max) {
+  return min <= target && target <= max;
 }
 
+int main()
+{
+  int length, center, limit;
+  std::cin >> length >> center >> limit;
+  const auto min {center - limit}, max {center + limit};
+
+  std::vector<std::pair<int, int>> items(length);
+  for (auto& e : items)
+    std::cin >> e.first >> e.second;
+
+  std::valarray<bool> filter(length);
+  for (auto i {0}; i < length; ++i)
+    filter[i] = check_valid(items[i].second, min, max);
+  std::valarray<int> means(length);
+  for (auto i {0}; i < length; ++i)
+    means[i] = items[i].first;
+
+  std::valarray<int> valid_means {means[filter]};
+  auto max_mean {valid_means.max()};
+  for (auto i {0}; i < length; ++i)
+    if (filter[i] && means[i] == max_mean) {
+      std::cout << i + 1 << '\n';
+      return 0;
+    }
+  std::cout << "not found\n";
+}
