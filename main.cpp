@@ -1,31 +1,21 @@
-#include <cmath>
-#include <cstdint>
 #include <iostream>
-#include <limits>
-#include <vector>
+#include <iomanip>
 
-constexpr auto limit {1000000000ul};
-constexpr auto input_max {1000000ul};
-
-int main()
-{
-  std::uintmax_t input;
-  std::cin >> input;
-
-  std::uintmax_t result {1};
-  for (auto i {input}; i > 1; --i) {
-    std::vector<char> values;
-    for (auto j {i}; j != 0; j /= 10)
-      values.push_back(j % 10);
-    const auto last_value {result};
-    result = 0;
-    for (auto j {0}; j < values.size(); ++j) {
-      const auto mask {static_cast<std::uintmax_t>(std::pow(10, j))};
-      result += (last_value % ((limit * input_max * 100) / mask)) * mask * values[j];
+int main(void){
+    double min {100}, max {200};
+    int length;
+    std::cin >> length;
+    for (auto i {length}; i > 0; --i) {
+        std::string s;
+        std::cin >> s;
+        double size;
+        std::cin >> size;
+        if (s == "le")
+            max = std::min(max, size);
+        else
+            min = std::max(min, size);
     }
-    while (!(result % 10)) result /= 10;
-    result %= limit * input_max;
-//    std::cout << i << '\t' << result << '\n';
-  }
-  std::cout << result % limit << '\n';
+    std::cout << std::fixed << std::setprecision(1) << min << ' ' << max;
+    return 0;
 }
+
