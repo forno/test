@@ -1,34 +1,33 @@
 #include <iostream>
-#include <valarray>
-#include <vector>
+int main(void){
+  int width, height, depth, length;
+  std::cin >> width >> height >> depth >> length;
 
-bool check_valid(int target, int min, int max) {
-  return min <= target && target <= max;
+  std::vector<int> w_data {0, width};
+  std::vector<int> h_data {0, height};
+
+  for (auto i {length}; i > 0; --i) {
+    int kind, pos;
+    std::cin >> kind >> pos;
+    if (kind == 0)
+      w_data.push_back(pos);
+    else
+      h_data.push_back(pos);
+  }
+
+  std::sort(w_data.begin(), w_data.end());
+  std::sort(h_data.begin(), h_data.end());
+
+  std::vector<int> w_width(w_data.size());
+  std::adjacent_difference(w_data.begin(), w_data.end(), w_width.begin());
+  const auto min_w_width {*std::min_element(w_width.begin() + 1, w_width.end())};
+
+  std::vector<int> h_width(h_data.size());
+  std::adjacent_difference(h_data.begin(), h_data.end(), h_width.begin());
+  const auto min_h_width {*std::min_element(h_width.begin() + 1, h_width.end())};
+
+  std::cout << min_w_width * min_h_width * depth;
+
+  return 0;
 }
 
-int main()
-{
-  int length, center, limit;
-  std::cin >> length >> center >> limit;
-  const auto min {center - limit}, max {center + limit};
-
-  std::vector<std::pair<int, int>> items(length);
-  for (auto& e : items)
-    std::cin >> e.first >> e.second;
-
-  std::valarray<bool> filter(length);
-  for (auto i {0}; i < length; ++i)
-    filter[i] = check_valid(items[i].second, min, max);
-  std::valarray<int> means(length);
-  for (auto i {0}; i < length; ++i)
-    means[i] = items[i].first;
-
-  std::valarray<int> valid_means {means[filter]};
-  auto max_mean {valid_means.max()};
-  for (auto i {0}; i < length; ++i)
-    if (filter[i] && means[i] == max_mean) {
-      std::cout << i + 1 << '\n';
-      return 0;
-    }
-  std::cout << "not found\n";
-}
