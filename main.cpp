@@ -1,18 +1,13 @@
-#include <iomanip>
-#include <iostream>
-#include <limits>
+#include <boost/network/protocol/http/client.hpp>
 
-constexpr long double PIld {3.141592653589793238L};
-constexpr double PId       {3.141592653589793};
-constexpr float PIf        {3.1415927};
-
-int main(void){
-
-  std::cout << std::setprecision(std::numeric_limits<long double>::max_digits10) <<
-    PIld << '\n' <<
-    PId << '\n' <<
-    PIf << '\n';
-
-  return 0;
+int main()
+{
+  using namespace boost::network;
+  using namespace boost::network::http;
+  client::request request_("http://127.0.0.1:80/");
+  request_ << header("Connection", "close");
+  client client_;
+  client::response response_ = client_.get(request_);
+  std::string body_ = body(response_);
+  std::cout << body_;
 }
-
