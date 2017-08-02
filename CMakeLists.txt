@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8.12.2)
+cmake_minimum_required(VERSION 3.1.3)
 project(xmaho C CXX)
 
 set(PROJECT_VER_MAJOR 0)
@@ -7,8 +7,9 @@ set(PROJECT_VER_PATCH 0)
 set(PROJECT_VER "${PROJECT_VER_MAJOR}.${PROJECT_VER_MINOR}.${PROJECT_VER_PATCH}")
 set(PROJECT_APIVER "${PROJECT_VER_MAJOR}.${PROJECT_VER_MINOR}")
 
-if(NOT DEFINED CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE RelWithDebInfo CACHE STRING "Choose: RelWithDebInfo Release Debug MinSizeRel None")
+set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS RelWithDebInfo RelWithDebInfo Release Debug MinSizeRel None)
+if(NOT CMAKE_BUILD_TYPE)
+  set_property(CACHE CMAKE_BUILD_TYPE PROPERTY VALUE RelWithDebInfo)
 endif()
 
 option(ENABLE_TEST "Enable test program building" OFF)
