@@ -1,0 +1,26 @@
+language: cpp
+dist: trusty
+sudo: false
+cache: ccache
+addons:
+  apt:
+    sources: ubuntu-toolchain-r-test
+    packages: g++-6
+compiler: g++
+env:
+- COMPILER=g++-6 C_COMPILER=gcc-6 BUILD_TYPE=Debug
+- COMPILER=g++-6 C_COMPILER=gcc-6 BUILD_TYPE=Debug CXX17=ON
+- COMPILER=g++-6 C_COMPILER=gcc-6 BUILD_TYPE=Release
+- COMPILER=g++-6 C_COMPILER=gcc-6 BUILD_TYPE=Release CXX17=ON
+before_install:
+- cd test/thirdparty/googletest/googletest
+install:
+- cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_COMPILER=$COMPILER -DCMAKE_C_COMPILER=$C_COMPILER .
+- make
+before_script:
+- cd -
+- mkdir build && cd build
+script:
+- cmake -DENABLE_TEST=ON -DENABLE_CXX17=$CXX17 -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_CXX_COMPILER=$COMPILER -DCMAKE_C_COMPILER=$C_COMPILER ..
+- make
+- ctest
