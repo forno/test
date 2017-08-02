@@ -1,8 +1,0 @@
-<map id="include/xmaho/xmaho.hpp" name="include/xmaho/xmaho.hpp">
-<area shape="rect" id="node2" href="$d4/d78/math_8hpp.html" title="This call xmaho::math libraries. " alt="" coords="55,80,207,107"/>
-<area shape="rect" id="node5" href="$d4/da0/string_8hpp.html" title="This call xmaho::string libraries. " alt="" coords="249,80,408,107"/>
-<area shape="rect" id="node14" href="$df/d73/traits_8hpp.html" title="This call xmaho::traits libraries. " alt="" coords="541,162,693,189"/>
-<area shape="rect" id="node3" href="$d9/d1c/residue__system_8hpp.html" title="This have definition of xmaho::math::residue_system class. " alt="" coords="5,155,145,196"/>
-<area shape="rect" id="node6" href="$d4/d24/split_8hpp.html" title="This have definition of xmaho::string::split functions. " alt="" coords="253,162,404,189"/>
-<area shape="rect" id="node13" href="$d9/dde/iterator_8hpp.html" title="This have syntactic sugar from iterator_traits. " alt="" coords="601,244,763,271"/>
-</map>
