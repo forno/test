@@ -1,10 +1,13 @@
 cmake_minimum_required(VERSION 3.5)
 project(test)
 
-set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} ~/ws/prog/cpp-netlib/build)
-find_package(cppnetlib 0.12.0 REQUIRED)
-include_directories(${CPPNETLIB_INCLUDE_DIRS} ~/ws/prog/ab_connector/include)
+find_package(Boost REQUIRED COMPONENTS system)
+find_package(Threads REQUIRED)
 
-add_executable(test_node main.cpp)
-set_property(TARGET test_node PROPERTY CXX_STANDARD 14)
-target_link_libraries(test_node ${CPPNETLIB_LIBRARIES})
+include_directories(${Boost_INCLUDE_DIRS})
+
+add_executable(client client.cpp)
+target_link_libraries(client ${Boost_LIBRARIES} Threads::Threads)
+add_executable(server server.cpp)
+target_link_libraries(server ${Boost_LIBRARIES} Threads::Threads)
+set_property(TARGET client server PROPERTY CXX_STANDARD 14)
