@@ -6,8 +6,6 @@ find_package(Threads REQUIRED)
 
 include_directories(${Boost_INCLUDE_DIRS})
 
-add_executable(client client.cpp)
-target_link_libraries(client ${Boost_LIBRARIES} Threads::Threads)
-add_executable(server server.cpp)
-target_link_libraries(server ${Boost_LIBRARIES} Threads::Threads)
-set_property(TARGET client server PROPERTY CXX_STANDARD 14)
+add_executable(main main.cpp)
+target_link_libraries(main ${Boost_LIBRARIES} Threads::Threads)
+set_property(TARGET main PROPERTY CXX_STANDARD 14)
