@@ -1,10 +1,18 @@
-#include <iostream>
+#include <Eigen/Dense>
 
-#include <xmaho/ability_bank/connector.hpp>
-
-int main(int argc, char** argv)
+enum class EC
 {
-  xmaho::ability_bank::Connector connector {"localhost", "80", "/"};
-  std::cout << connector("") << "\n\n";
-  std::cout << connector("random-pick.html") << "\n\n";
+  one,
+  two
+};
+
+class C
+{
+
+};
+
+int main()
+{
+  Eigen::Matrix<EC, 10, 10> field1;
+  Eigen::Matrix<C, 10, 10> field2;
 }

@@ -3,8 +3,9 @@ project(test)
 
 find_package(Boost REQUIRED COMPONENTS system)
 find_package(Threads REQUIRED)
+find_package(Eigen3 REQUIRED)
 
-include_directories(Boost::boost)
+include_directories(Boost::boost ${EIGEN3_INCLUDE_DIRS})
 
 add_executable(main main.cpp)
 target_link_libraries(main Boost::system Threads::Threads)
