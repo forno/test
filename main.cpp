@@ -1,31 +1,12 @@
 #include <iostream>
-#include <iterator>
+#include <utility>
 
-#include <Eigen/Dense>
-
-enum class EC
+void func(std::pair<int, int> p)
 {
-  one,
-  two
-};
-
-class C
-{
-
-};
-
-std::ostream& operator<<(std::ostream& os, const EC& v) {
-  os << static_cast<int>(v);
-  return os;
+  std::cout << p.first << " , " << p.second << '\n';
 }
 
-int main()
+int main(int argc, char** argv)
 {
-  Eigen::Matrix<EC, 10, 10> field1 {};
-  Eigen::Matrix<C, 10, 10> field2 {};
-
-  std::copy(field1.data(),
-            field1.data() + field1.size(),
-            std::ostream_iterator<EC>(std::cout, " "));
-  std::cout.put('\n');
+  func({1, 5});
 }
