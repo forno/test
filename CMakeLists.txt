@@ -1,25 +1,16 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.8)
 project(test)
 
 find_package(Boost REQUIRED COMPONENTS system)
 find_package(Threads REQUIRED)
-find_package(Eigen3 REQUIRED)
 
-include_directories(Boost::boost ${EIGEN3_INCLUDE_DIRS})
+include_directories(Boost::boost)
 
 add_executable(main main.cpp)
 target_link_libraries(main Boost::system Threads::Threads)
 
 set(TARGETS main)
 
-include(CheckCXXCompilerFlag)
-CHECK_CXX_COMPILER_FLAG(-std=c++1z HAVE_FLAG_CXX17)
-if(HAVE_FLAG_CXX17)
-  foreach(i IN LISTS TARGETS)
-    target_compile_options(${i} PUBLIC -std=c++1z)
-  endforeach(i IN LISTS TARGETS)
-else(HAVE_FLAG_CXX17)
-  set_property(TARGET ${TARGETS} PROPERTY CXX_STANDARD 14)
-  set_property(TARGET ${TARGETS} PROPERTY CXX_STANDARD_REQUIRED ON)
-  set_property(TARGET ${TARGETS} PROPERTY CXX_EXTENSION OFF)
-endif(HAVE_FLAG_CXX17)
+set_property(TARGET ${TARGETS} PROPERTY CXX_STANDARD 17)
+set_property(TARGET ${TARGETS} PROPERTY CXX_STANDARD_REQUIRED ON)
+set_property(TARGET ${TARGETS} PROPERTY CXX_EXTENSION OFF)

@@ -1,66 +1,21 @@
 #include <iostream>
-#include <utility>
+#include <string_view>
 
-template<typename T>
-void func(T&&)
-{
-  std::cout << "default\n";
-}
-
-const int& func(const int& v)
-{
-  std::cout << "const int&\n";
-  return v;
-}
-
-int& func(int& v)
-{
-  std::cout << "int&\n";
-  return v;
-}
-
-int&& func(int&& v)
-{
-  std::cout << "int&&\n";
-  return std::move(v);
-}
-
-volatile const int& func(volatile const int& v)
-{
-  std::cout << "volatile const int&\n";
-  return v;
-}
-
-volatile int& func(volatile int& v)
-{
-  std::cout << "volatile int&\n";
-  return v;
-}
-
-volatile int&& func(volatile int&& v)
-{
-  std::cout << "volatile int&&\n";
-  return std::move(v);
-}
-
-void call()
-{
-}
-
-template<typename Head, typename... Tail>
-void call(Head&& value, Tail&&... rect)
-{
-  func(std::forward<Head>(value));
-  call(std::forward<Tail>(rect)...);
-}
+#include <boost/asio.hpp>
 
 int main(int argc, char** argv)
 {
-  int i {0};
-  const int ci {0};
-  volatile int vi {0};
-  volatile const int vci {0};
-  volatile int rvi {0};
+  namespace asio = boost::asio;
+  using asio::ip::tcp;
 
-  call(i, ci, 0, vi, vci, std::move(rvi));
+  asio::io_service io_service;
+  tcp::socket socket(io_service);
+
+  boost::system::error_code error;
+  socket.connect(tcp::endpoint(asio::ip::address::from_string("127.0.0.1"), 31400), error);
+
+  if (error)
+    std::cout << "connect failed : " << error.message() << std::endl;
+  else
+    std::cout << "connected" << std::endl;
 }
