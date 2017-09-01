@@ -1,16 +1,44 @@
-#include <cstddef>
+#include <initializer_list>
 #include <iostream>
-#include <limits>
+#include <type_traits>
 #include <utility>
 #include <valarray>
+#include <vector>
 
-int main(int argc, char** argv)
+class MyVector
 {
-  std::cout << "max size: " << std::numeric_limits<std::size_t>::max() << std::endl;
-  std::valarray<int> v1(std::numeric_limits<std::size_t>::max() / 18446744073ul);
-  std::cout << "v1 is created" << std::endl;
-  std::valarray<int> v2 {std::move(v1)};
-  std::cout << "v2 is created" << std::endl;
-  std::valarray<int> v3 {std::move(v2)};
-  std::cout << "v3 is created" << std::endl;
+public:
+  template<typename... Args>
+    MyVector(Args&&... args)
+    : array_(std::forward<Args>(args)...)
+  {
+  }
+
+  MyVector(std::initializer_list<int> init)
+    : array_(init)
+  {
+  }
+
+  template<typename... Args>
+  auto operator[](Args&&... args) -> decltype(std::declval<std::valarray<int>>().operator[](std::forward<Args>(args)...))
+  {
+    return array_.operator[](std::forward<Args>(args)...);
+  }
+
+  decltype(auto) operator[](const std::vector<int>& i)
+  {
+    std::cout << "my extends\n";
+    return array_[i[0]];
+  }
+
+private:
+  std::valarray<int> array_;
+};
+
+
+int main()
+{
+  MyVector v(10);
+  std::vector<int> hoge {2};
+  std::cout << v[hoge] << '\n';
 }
