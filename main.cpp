@@ -1,21 +1,31 @@
+#include <algorithm>
+#include <array>
 #include <iostream>
-#include <string_view>
-
-#include <boost/asio.hpp>
+#include <iterator>
+#include <random>
+#include <valarray>
 
 int main(int argc, char** argv)
 {
-  namespace asio = boost::asio;
-  using asio::ip::tcp;
+  std::ios::sync_with_stdio(false);
+  std::cin.tie(nullptr);
 
-  asio::io_service io_service;
-  tcp::socket socket(io_service);
+  std::random_device seed_gen;
+  std::array<std::seed_seq::result_type, std::mt19937_64::state_size> seed_data;
+  std::generate(seed_data.begin(), seed_data.end(), [&seed_gen]{return seed_gen();});
 
-  boost::system::error_code error;
-  socket.connect(tcp::endpoint(asio::ip::address::from_string("127.0.0.1"), 31400), error);
+  std::seed_seq seq(seed_data.begin(), seed_data.end());
+  std::mt19937_64 rand {seq};
+  std::normal_distribution<> dist {0, 1};
 
-  if (error)
-    std::cout << "connect failed : " << error.message() << std::endl;
-  else
-    std::cout << "connected" << std::endl;
+  std::cout << "make values" << std::endl;
+  std::valarray<double> population(100000000ul); // 500000000ul ok
+  for (auto& e : population)
+    e = dist(rand);
+
+  std::cout << "sample values" << std::endl;
+  std::valarray<double> sample(10000ul);
+  std::sample(std::begin(population), std::end(population), std::begin(sample), sample.size(), rand);
+
+  std::copy(std::begin(sample), std::end(sample), std::ostream_iterator<double>{std::cout, "\n"});
 }
