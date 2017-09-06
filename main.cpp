@@ -1,44 +1,51 @@
-#include <algorithm>
-#include <cstddef>
 #include <iostream>
-#include <iterator>
 #include <utility>
-#include <vector>
+#include <valarray>
+
+class C : std::valarray<int>
+{
+public:
+  using std::valarray<int>::valarray;
+
+  std::gslice_array<int> block(std::pair<std::size_t, std::size_t> pos, std::pair<std::size_t, std::size_t> size)
+  {
+    return (std::valarray<int>::operator[](std::gslice{pos.first * 3 + pos.second, {size.first, size.second}, {3, 1}}));
+  }
+};
+
+std::gslice_array<int> f(std::valarray<int> v)
+{
+  return (v[std::gslice{0, {2, 1}, {3, 1}}]);
+}
 
 int main(int argc, char** argv)
 {
-  std::ios::sync_with_stdio(false);
-  std::cin.tie(nullptr);
-
-  std::size_t super_length;
-  std::cin >> super_length;
-
-  std::vector<int> super(super_length);
-  for (auto& e : super)
-    std::cin >> e;
-  std::sort(super.begin(), super.end());
-
-  std::size_t sub_length;
-  std::cin >> sub_length;
-
-  std::vector<int> sub(sub_length);
-  for (auto& e : sub)
-    std::cin >> e;
-  std::sort(sub.begin(), sub.end());
-
-  std::vector<int> result;
-  std::set_difference(super.begin(), super.end(),
-                      sub.begin(), sub.end(),
-                      std::back_inserter(result));
-
-  if (result.empty())
-    std::cout << "No";
-  else {
-    bool first = true;
-    for (const auto& e : result) {
-      if (!std::exchange(first, false))
-        std::cout << ' ';
-      std::cout << e;
-    }
+  {
+    std::valarray<int> v {0, 1, 2, 3, 4, 5};
+    std::valarray<int> nv {v[std::gslice{0, {2, 1}, {3, 1}}]};
+    for (auto e : nv)
+      std::cout << e << '\n';
+    std::cout << std::flush;
+  }
+  {
+    std::valarray<int> v {0, 1, 2, 3, 4, 5};
+    //std::valarray<int> nv {f(v)};
+    std::cout << "hoge" << std::endl;
+    f(v) = 50;
+    std::cout << "foo" << std::endl;
+    //std::cout << "size : " << nv.size() << '\n';
+    //for (auto e : nv)
+    //  std::cout << e << '\n';
+    //std::cout << std::flush;
+    for (auto e : v)
+      std::cout << e << '\n';
+  }
+  {
+    C v {0, 1, 2, 3, 4, 5};
+    std::valarray<int> nv {v.block({0, 0}, {2, 2})};
+    std::cout << "size : " << nv.size() << '\n';
+    for (auto e : nv)
+      std::cout << e << '\n';
+    std::cout << std::flush;
   }
 }
