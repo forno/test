@@ -1,51 +1,61 @@
 #include <iostream>
-#include <utility>
 #include <valarray>
 
-class C : std::valarray<int>
+enum class Direction
 {
-public:
-  using std::valarray<int>::valarray;
-
-  std::gslice_array<int> block(std::pair<std::size_t, std::size_t> pos, std::pair<std::size_t, std::size_t> size)
-  {
-    return (std::valarray<int>::operator[](std::gslice{pos.first * 3 + pos.second, {size.first, size.second}, {3, 1}}));
-  }
+  Left,
+  Right
 };
 
-std::gslice_array<int> f(std::valarray<int> v)
+void rotate(std::pair<int, int>& dir, Direction dir_specify)
 {
-  return (v[std::gslice{0, {2, 1}, {3, 1}}]);
+  if (dir.first) {
+    dir.second = dir_specify == Direction::Right ? -dir.first : dir.first;
+    dir.first = 0;
+  } else {
+    dir.first = dir_specify == Direction::Right ? dir.second : -dir.second;
+    dir.second = 0;
+  }
 }
 
 int main(int argc, char** argv)
 {
-  {
-    std::valarray<int> v {0, 1, 2, 3, 4, 5};
-    std::valarray<int> nv {v[std::gslice{0, {2, 1}, {3, 1}}]};
-    for (auto e : nv)
-      std::cout << e << '\n';
-    std::cout << std::flush;
+  using position = std::pair<std::size_t, std::size_t>;
+
+  constexpr auto poor {true};
+  constexpr auto rich {false};
+
+  std::ios::sync_with_stdio(false);
+  std::cin.tie(nullptr);
+
+  position size;
+  std::cin >> size.second >> size.first;
+
+  position pos;
+  std::cin >> pos.second >> pos.first;
+  --pos.first;
+  --pos.second;
+
+  std::valarray<bool> map(size.first * size.second);
+  for (auto i {0}; i < map.size(); ++i) {
+    char ch;
+    std::cin >> ch;
+    map[i] = (ch == '.');
   }
-  {
-    std::valarray<int> v {0, 1, 2, 3, 4, 5};
-    //std::valarray<int> nv {f(v)};
-    std::cout << "hoge" << std::endl;
-    f(v) = 50;
-    std::cout << "foo" << std::endl;
-    //std::cout << "size : " << nv.size() << '\n';
-    //for (auto e : nv)
-    //  std::cout << e << '\n';
-    //std::cout << std::flush;
-    for (auto e : v)
-      std::cout << e << '\n';
+
+  std::pair<int, int> dir {0, -1};
+  while (pos.first < size.first && pos.second < size.second) {
+    const auto index_pos {pos.second * size.first + pos.first};
+    rotate(dir, map[index_pos] ? Direction::Left : Direction::Right);
+    map[index_pos] = !map[index_pos];
+    pos.first += dir.first;
+    pos.second += dir.second;
   }
-  {
-    C v {0, 1, 2, 3, 4, 5};
-    std::valarray<int> nv {v.block({0, 0}, {2, 2})};
-    std::cout << "size : " << nv.size() << '\n';
-    for (auto e : nv)
-      std::cout << e << '\n';
-    std::cout << std::flush;
+
+  for (auto i {0}; i < size.second; ++i) {
+    std::valarray<bool> row {map[std::slice{i * size.first, size.first, 1}]};
+    for (auto e : row)
+      std::cout << (e ? '.' : '*');
+    std::cout << '\n';
   }
 }
