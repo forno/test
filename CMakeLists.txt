@@ -1,7 +1,12 @@
 cmake_minimum_required(VERSION 3.8)
 project(test)
 
+find_package(Boost REQUIRED COMPONENTS
+  system regex)
+
+include_directories(Boost::boost)
 add_executable(execute main.cpp)
+target_link_libraries(execute ${Boost_LIBRARIES})
 
 set(TARGETS execute)
 
