@@ -1,5 +1,6 @@
 #include <iostream>
 #include <memory>
+#include <stdexcept>
 #include <utility>
 #include <valarray>
 
@@ -19,18 +20,18 @@ public:
     case '#': return Board::State::ice;
     case '.': return Board::State::dirt;
     }
-    return Board::State{};
+    throw std::domain_error{"Error by convert_state"};
   }
 
-  Board(std::size_t x, std::size_t y)
-    : field(x * y),
-      row_size {x}
+  Board(const Point& size)
+    : field(size.first * size.second),
+      size {size}
   {
   }
 
-  State operator()(std::size_t x, std::size_t y) const
+  State operator()(const Point& position) const
   {
-    return field[get_serial(x, y)];
+    return field[get_serial(position)];
   }
 
   template<typename F>
@@ -41,17 +42,17 @@ public:
 
   Point get_size() const
   {
-    return Point{row_size, field.size() / row_size};
+    return size;
   }
 
 private:
-  std::size_t get_serial(std::size_t x, std::size_t y) const
+  std::size_t get_serial(const Point& position) const
   {
-    return x + y * row_size;
+    return position.first + position.second * size.second;
   }
 
   std::valarray<State> field;
-  std::size_t row_size;
+  Point size;
 };
 
 namespace position
@@ -63,13 +64,13 @@ class Mover
 public:
   virtual ~Mover() = default;
 
-  Point operator()(Point now, const Board& board) const
+  Point move(Point now, const Board& board) const
   {
     do {
       if (is_edge(now, board.get_size()))
         return now;
       now = once(now);
-    } while (board(now.first, now.second) == Board::State::ice);
+    } while (board(now) == Board::State::ice);
     return now;
   }
 
@@ -81,7 +82,7 @@ private:
 class MoverLeft
   : public Mover
 {
-  bool is_edge(const Point& now, const Point& limit) const final override
+  bool is_edge(const Point& now, const Point&) const final override
   {
     return now.first <= 0;
   }
@@ -113,7 +114,7 @@ class MoverUp
   : public Mover
 {
 public:
-  bool is_edge(const Point& now, const Point& limit) const final override
+  bool is_edge(const Point& now, const Point&) const final override
   {
     return now.second <= 0;
   }
@@ -149,16 +150,20 @@ std::unique_ptr<Mover> get_mover(char type)
   case 'U': return std::make_unique<MoverUp>();
   case 'D': return std::make_unique<MoverDown>();
   }
-  return std::unique_ptr<Mover>{};
+  throw std::domain_error{"Error by get_mover"};
 }
 
 }
 
 int main(int argc, char** argv)
 {
-  std::size_t size_x, size_y;
-  std::cin >> size_x >> size_y;
-  Board board {size_x, size_y};
+  Point size;
+  std::cin >> size.second >> size.first;
+  Board board {size};
+  board.apply_self([](Board::State e){
+    std::cout << (e == Board::State::ice ? '#' : '.');
+    return e;
+  });
 
   board.apply_self([](Board::State e){
     char c;
@@ -168,6 +173,7 @@ int main(int argc, char** argv)
   
   Point now;
   std::cin >> now.first >> now.second;
+  --now.first; --now.second;
 
   std::size_t move_count;
   std::cin >> move_count;
@@ -175,7 +181,7 @@ int main(int argc, char** argv)
     char move_type;
     std::cin >> move_type;
     auto mover {position::get_mover(move_type)};
-    now = (*mover)(now, board);
+    now = mover->move(now, board);
   }
-  std::cout << now.first << ' ' << now.second << '\n';
+  std::cout << ++now.first << ' ' << ++now.second << '\n';
 }
