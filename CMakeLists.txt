@@ -8,9 +8,11 @@ set(CMAKE_CXX_EXTENSIONS OFF CACHE BOOL "compiler extension")
 find_package(Boost REQUIRED COMPONENTS
   system regex)
 
+find_package(Threads REQUIRED)
+
 include_directories(Boost::boost)
 add_executable(execute main.cpp)
-target_link_libraries(execute Boost::system Boost::regex)
+target_link_libraries(execute Boost::system Boost::regex Threads::Threads)
 
 add_custom_target(run ALL
   COMMAND execute < input
