@@ -1,8 +1,10 @@
 #include <iostream>
-#include <future>
+#include <string>
 
 int main(int argc, char** argv)
 {
-  auto func {std::async([]{return 9*8*7*6*5*4*3*2;})};
-  std::cout << func.get() << std::endl;
+  int member_count;
+  int size_x, size_y;
+  std::cin >> member_count >> size_x >> size_y;
+  std::cout << (size_x * size_y) % member_count << '\n';
 }
