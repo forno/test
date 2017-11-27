@@ -1,23 +1,12 @@
 #include <iostream>
-#include <string>
+#include <tuple>
 #include <utility>
 
-class Base
-{
-};
-
-class Deriverd
-  : public Base
-{
-};
-
-class DeriverdPrivate
-  : Base
+class C
 {
 public:
-  Base& as_base()
+  explicit C(int, std::pair<int, int>, std::tuple<int, int, std::pair<int, int>>)
   {
-    return static_cast<Base&>(*this);
   }
 };
 
@@ -26,9 +15,5 @@ int main(int argc, char** argv)
   std::ios_base::sync_with_stdio(false);
   std::cin.tie(nullptr);
 
-  Deriverd deriverd {};
-  Base& base_deriverd {static_cast<Base&>(deriverd)};
-
-  DeriverdPrivate deriverd_private {};
-  Base& base_deriverd_private {deriverd_private.as_base()};
+  C instance {0, {1, 2}, {3, 4, {5, 6}}};
 }
