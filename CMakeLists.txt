@@ -15,6 +15,6 @@ add_executable(execute main.cpp)
 target_link_libraries(execute Boost::system Boost::regex Threads::Threads)
 
 add_custom_target(run ALL
-  COMMAND execute < input
+  COMMAND execute < ${CMAKE_SOURCE_DIR}/input
   DEPENDS execute
-  WORKING_DIRECTORY ${CMAKE_SOUCE_DIR})
+  WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
