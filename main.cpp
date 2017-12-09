@@ -4,7 +4,9 @@
 namespace
 {
 
-constexpr auto token {"xtv6U9xiWGDTLpp98eThGM5bDg5pywNgJfJE20Vcacd"};
+constexpr auto token {
+#include "token"
+};
 
 }
 
