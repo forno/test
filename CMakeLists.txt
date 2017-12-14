@@ -11,6 +11,63 @@ find_package(Boost REQUIRED COMPONENTS
 find_package(Threads REQUIRED)
 
 include_directories(Boost::boost)
+
+set(Clang_WARN_OPTIONS
+  -Weverything
+  -Wno-c++98-compat
+)
+set(GNU_WARN_OPTIONS
+  -Wall
+  -Wextra
+  -Wpedantic
+  -Wchkp
+  -Wdouble-promotion
+  -Wnull-dereference
+  -Wimplicit-fallthrough
+  -Wmissing-include-dirs
+  -Wswitch-enum
+  -Wsync-nand
+  -Wunused-parameter
+  -Wuninitialized
+  -Wstrict-overflow
+  -Wsuggest-attribute=noreturn
+  -Wsuggest-final-types
+  -Wsuggest-final-methods
+  -Walloc-zero
+  -Walloca
+  -Wduplicated-branches
+  -Wduplicated-cond
+  -Wtrampolines
+  -Wfloat-equal
+  -Wshadow
+  -Wunsafe-loop-optimizations
+  -Wcast-qual
+  -Wconditionally-supported
+  -Wconversion
+  -Wzero-as-null-pointer-constant
+  -Wdate-time
+  -Wuseless-cast
+  -Wsized-deallocation
+  -Wlogical-op
+  -Wmissing-declarations
+  -Wnormalized
+  -Wopenmp-simd
+  -Wpacked
+  -Wredundant-decls
+  -Wrestrict
+  -Winvalid-pch
+  -Wvla
+  -Wdisabled-optimization
+  -Wstack-protector
+  -Whsa
+)
+
+add_compile_options(
+  "$<$<CXX_COMPILER_ID:Clang>:${Clang_WARN_OPTIONS}>"
+  "$<$<CXX_COMPILER_ID:GNU>:${GNU_WARN_OPTIONS}>"
+  $<$<CXX_COMPILER_ID:MSVC>:/W4>
+)
+
 add_executable(execute main.cpp)
 target_link_libraries(execute Boost::system Boost::regex Threads::Threads)
 
