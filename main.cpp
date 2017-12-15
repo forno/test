@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <cassert>
 #include <cstddef>
 #include <cstdlib>
 #include <functional>
@@ -7,71 +8,15 @@
 #include <valarray>
 #include <vector>
 
-using value_type = unsigned int;
-
-namespace std //! Template specialization is legal on std namespace.
-{
-
-template<>
-struct equal_to<std::valarray<value_type>>
-{
-  bool operator()(const std::valarray<value_type>& lhs, const std::valarray<value_type>& rhs) const
-  {
-    return std::equal(std::begin(lhs), std::end(lhs), std::begin(rhs), std::end(rhs));
-  }
-};
-
-}
+#include <xmaho/std_ext/valarray.hpp>
 
 int main(int, char**)
 {
-  const auto target {[sequence_size = []{std::size_t v; std::cin >> v; return v;}()]{
-    std::valarray<value_type> v(sequence_size);
-    for (auto& e : v)
-      std::cin >> e;
-    return v;
-  }()};
-  const auto transforms {[transform_size = []{std::size_t v; std::cin >> v; return v;}(),
-                          sequence_size = target.size()]{
-    std::vector<std::valarray<std::size_t>> vv(transform_size, std::valarray<std::size_t>(sequence_size));
-    for (auto& v : vv)
-      for (auto& e : v)
-        std::cin >> e;
-    return vv;
-  }()};
+  using namespace std;
+  using namespace xmaho::std_ext;
 
-  const auto inital_sequence {[sequence_size = target.size()]{
-    std::valarray<value_type> v(sequence_size);
-    std::iota(std::begin(v), std::end(v), 0);
-    return v;
-  }()};
-
-  if (std::equal_to<std::valarray<value_type>>{}(target, inital_sequence)) {
-    std::cout << "0\n";
-    return EXIT_SUCCESS;
-  }
-
-  std::vector<std::valarray<value_type>> working_unexplored_sequences {inital_sequence};
-  std::vector<std::valarray<value_type>> explored_sequences {inital_sequence};
-  std::vector<std::valarray<value_type>> untransformed_sequences {}; // for runtime speed: should be in loop.
-  for (auto i {1u}; !working_unexplored_sequences.empty(); ++i) {
-    for (const auto& working_sequence : working_unexplored_sequences)
-      for (const auto& transform : transforms) {
-        std::valarray<value_type> new_sequence {working_sequence[transform]};
-        if (std::equal_to<std::valarray<value_type>>{}(target, new_sequence)) {
-          std::cout << i << '\n';
-          return EXIT_SUCCESS;
-        }
-        const auto find_it {std::find_if(std::begin(explored_sequences), std::end(explored_sequences), [new_sequence](const auto& e){
-          return std::equal_to<std::valarray<value_type>>{}(new_sequence, e);
-        })};
-        if (find_it == std::end(explored_sequences)) {
-          explored_sequences.push_back(new_sequence);
-          untransformed_sequences.push_back(new_sequence);
-        }
-      }
-    working_unexplored_sequences = untransformed_sequences;
-    untransformed_sequences.clear();
-  }
-  std::cout << "-1\n";
+  const valarray<int> v {1, -2, 2};
+  const auto euclidean_distance {norm(v)};
+  static_assert(is_same_v<const double, decltype(euclidean_distance)>, "norm on ordinal 2 return floting point type");
+  assert(euclidean_distance == 3.); // It is correct operation with "==" because result is integer.
 }
