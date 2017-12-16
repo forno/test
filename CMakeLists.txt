@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 3.8.2)
 project(test)
 
 set(CMAKE_CXX_STANDARD 17 CACHE STRING "CXX standard version")
