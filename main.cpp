@@ -1,22 +1,26 @@
-#include <algorithm>
-#include <cassert>
-#include <cstddef>
-#include <cstdlib>
-#include <functional>
 #include <iostream>
-#include <numeric>
-#include <valarray>
-#include <vector>
-
-#include <xmaho/std_ext/valarray.hpp>
+#include <unordered_map>
 
 int main(int, char**)
 {
-  using namespace std;
-  using namespace xmaho::std_ext;
+  std::ios_base::sync_with_stdio(false);
+  std::cin.tie(nullptr);
 
-  const valarray<int> v {1, -2, 2};
-  const auto euclidean_distance {norm(v)};
-  static_assert(is_same_v<const double, decltype(euclidean_distance)>, "norm on ordinal 2 return floting point type");
-  assert(euclidean_distance == 3.); // It is correct operation with "==" because result is integer.
+  const std::unordered_map<int, std::string> month_to_str {
+    {1, "January"},
+    {2, "February"},
+    {3, "March"},
+    {4, "April"},
+    {5, "May"},
+    {6, "June"},
+    {7, "July"},
+    {8, "August"},
+    {9, "September"},
+    {10, "October"},
+    {11, "November"},
+    {12, "December"}
+  };
+
+  const auto month {[]{int v; std::cin >> v; return v;}()};
+  std::cout << month_to_str.at(month) << '\n';
 }

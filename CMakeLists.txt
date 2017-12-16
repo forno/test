@@ -10,8 +10,6 @@ find_package(Boost REQUIRED COMPONENTS
 
 find_package(Threads REQUIRED)
 
-include_directories(Boost::boost)
-
 set(Clang_WARN_OPTIONS
   -Weverything
   -Wno-c++98-compat
@@ -37,9 +35,7 @@ set(GNU_WARN_OPTIONS
   -Walloca
   -Wduplicated-branches
   -Wduplicated-cond
-  -Wtrampolines
-  -Wfloat-equal
-  -Wshadow
+  -Wtrampolines -Wfloat-equal -Wshadow
   -Wunsafe-loop-optimizations
   -Wcast-qual
   -Wconditionally-supported
