@@ -17,12 +17,27 @@ int main()
     tcp::socket s(io_context);
     boost::asio::connect(s, tcp::resolver{io_context}.resolve(host, "http"));
 
-    const std::string query {R"(query=PREFIX%20schema%3A%20<http%3A%2F%2Fschema.org%2F>%0APREFIX%20imas%3A%20<https%3A%2F%2Fsparql.crssnky.xyz%2Fimasrdf%2FURIs%2Fimas-schema.ttl%23>%0ASELECT%20%3Fo%20%3Fh%0AWHERE%20%7B%0A%20%20%3Fs%20schema%3Aname%7Cschema%3AalternateName%20%3Fo%3B%0A%20%20%20%20%20schema%3Aheight%20%3Fh.%0A%7Dorder%20by(%3Fh))"};
+    const std::string query {R"(PREFIX schema: <http://schema.org/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX imas: <https://sparql.crssnky.xyz/imasrdf/URIs/imas-schema.ttl#>
+PREFIX imasrdf: <https://sparql.crssnky.xyz/imasrdf/RDFs/detail/>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+
+SELECT ?n ?p
+WHERE {
+  ?s schema:name|schema:alternateName|imas:nameKana ?o;
+     filter(regex(str(?o),"双葉杏")).
+  ?s ?n ?p;
+})"};
     boost::asio::streambuf request;
     std::ostream req {&request};
-    req << "GET " << sparql_endpoint << '?' << query << " HTTP/1.1\r\n" <<
+    req << "POST " << sparql_endpoint << " HTTP/1.1\r\n" <<
            "Host: " << host << "\r\n" <<
-           "Accept: application/sparql-results+json\r\n\r\n";
+           "Content-Type: application/sparql-query; charset=utf-8\r\n" <<
+           "Content-Length: " << query.size() << "\r\n" <<
+           "Accept: application/sparql-results+json\r\n\r\n" <<
+           query;
 
     boost::asio::write(s, request);
 
