@@ -35,8 +35,7 @@ WHERE {
     req << "POST " << sparql_endpoint << " HTTP/1.1\r\n" <<
            "Host: " << host << "\r\n" <<
            "Content-Type: application/sparql-query; charset=utf-8\r\n" <<
-           "Content-Length: " << query.size() << "\r\n" <<
-           "Accept: application/sparql-results+json\r\n\r\n" <<
+           "Content-Length: " << query.size() << "\r\n\r\n" <<
            query;
 
     boost::asio::write(s, request);
@@ -46,7 +45,7 @@ WHERE {
     boost::asio::read(s, res, ec);
 
     if (ec != boost::asio::error::eof)
-      throw std::runtime_error{"xmaho::ability_bank::Connector: Network error"};
+      throw std::runtime_error{"xmaho::sparql::Connector: Network error"};
 
     std::string receive_data {boost::asio::buffer_cast<const char*>(res.data())};
     std::cout << receive_data << '\n';
