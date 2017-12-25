@@ -6,8 +6,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON CACHE BOOL "version required")
 set(CMAKE_CXX_EXTENSIONS OFF CACHE BOOL "compiler extension")
 
 find_package(Boost REQUIRED COMPONENTS system)
-
 find_package(Threads REQUIRED)
+find_package(OpenSSL REQUIRED)
 
 set(Clang_WARN_OPTIONS
   -Weverything
@@ -64,7 +64,7 @@ add_compile_options(
 )
 
 add_executable(execute main.cpp)
-target_link_libraries(execute Threads::Threads ${Boost_LIBRARIES})
+target_link_libraries(execute Threads::Threads OpenSSL::SSL ${Boost_LIBRARIES})
 
 add_custom_target(run ALL
   COMMAND execute < ${CMAKE_SOURCE_DIR}/input
