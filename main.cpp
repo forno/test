@@ -14,10 +14,7 @@ int main(int, char**)
   std::ios_base::sync_with_stdio(false);
   std::cin.tie(nullptr);
 
-  for (std::string s; std::cin >> s;)
-    std::cout << "load : " << std::cin.good() << ' ' <<  s << std::endl;
-  if (!std::cin)
-    std::cout << "good" << std::endl;
-  if (std::cin.eof())
-    std::cout << "ok" << std::endl;
+  std::cout << static_cast<std::ostringstream&>(std::ostringstream{} << "one" << "two" << "three").str() << '\n';
+  std::ostringstream oss{};
+  std::cout << static_cast<std::ostringstream&>(oss << "one" << "two" << "three").str() << '\n';
 }
