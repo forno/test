@@ -16,16 +16,16 @@ template<typename T>
 constexpr T twice_newline[] {};
 
 template<>
-constexpr char twice_newline<char>[] {"\r\n\r\n"};
+constexpr auto twice_newline<char> {"\r\n\r\n"};
 
 template<>
-constexpr wchar_t twice_newline<wchar_t>[] {L"\r\n\r\n"};
+constexpr auto twice_newline<wchar_t> {L"\r\n\r\n"};
 
 template<>
-constexpr char16_t twice_newline<char16_t>[] {u"\r\n\r\n"};
+constexpr auto twice_newline<char16_t> {u"\r\n\r\n"};
 
 template<>
-constexpr char32_t twice_newline<char32_t>[] {U"\r\n\r\n"};
+constexpr auto twice_newline<char32_t> {U"\r\n\r\n"};
 
 int main(int, char**)
 {
