@@ -6,31 +6,32 @@
 #include <sstream>
 #include <string>
 #include <string_view>
-#include <unordered_set>
+#include <tuple>
 #include <unordered_map>
+#include <unordered_set>
 #include <valarray>
 #include <vector>
 
-void func(std::string_view = {});
+template<typename T>
+constexpr T twice_newline[] {};
 
-void func(std::string_view)
-{
-}
+template<>
+constexpr char twice_newline<char>[] {"\r\n\r\n"};
 
-class c
-{
-public:
-  std::unordered_map<std::string, std::string> f;
-  std::string a;
-  std::string b;
-  std::string c;
-  std::string d;
-};
+template<>
+constexpr wchar_t twice_newline<wchar_t>[] {L"\r\n\r\n"};
+
+template<>
+constexpr char16_t twice_newline<char16_t>[] {u"\r\n\r\n"};
+
+template<>
+constexpr char32_t twice_newline<char32_t>[] {U"\r\n\r\n"};
 
 int main(int, char**)
 {
   std::ios_base::sync_with_stdio(false);
   std::cin.tie(nullptr);
 
-  func();
+  std::cout << "char" << twice_newline<char>;
+  std::wcout << L"wchar" << twice_newline<wchar_t>;
 }
