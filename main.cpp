@@ -12,26 +12,62 @@
 #include <valarray>
 #include <vector>
 
-template<typename T>
-constexpr T twice_newline[] {};
+class C
+{
+public:
+  C()
+    : value_ {"default"}
+  {
+    std::cout << "C::C : default constructer " << value_ << '\n';
+  }
 
-template<>
-constexpr auto twice_newline<char> {"\r\n\r\n"};
+  C(std::string_view value)
+    : value_ {std::cbegin(value), std::cend(value)}
+  {
+    std::cout << "C::C : default constructer " << value_ << '\n';
+  }
 
-template<>
-constexpr auto twice_newline<wchar_t> {L"\r\n\r\n"};
+  C(const C&)
+  {
+    std::cout << "C::C : copy constructer " << value_ << '\n';
+  }
 
-template<>
-constexpr auto twice_newline<char16_t> {u"\r\n\r\n"};
+  C(C&&)
+  {
+    std::cout << "C::C : move constructer " << value_ << '\n';
+  }
 
-template<>
-constexpr auto twice_newline<char32_t> {U"\r\n\r\n"};
+  C& operator=(const C&)
+  {
+    std::cout << "C::C : copy assign " << value_ << '\n';
+    return *this;
+  }
+
+  C& operator=(C&&)
+  {
+    std::cout << "C::C : move assign " << value_ << '\n';
+    return *this;
+  }
+
+  template<typename... Args>
+  C& operator()(Args...)
+  {
+    return *this;
+  }
+
+  ~C()
+  {
+    std::cout << "C::~C : destructer " << value_ << '\n';
+  }
+
+private:
+  std::string value_;
+};
 
 int main(int, char**)
 {
   std::ios_base::sync_with_stdio(false);
   std::cin.tie(nullptr);
 
-  std::cout << "char" << twice_newline<char>;
-  std::wcout << L"wchar" << twice_newline<wchar_t>;
+  C{"wide"}(C{"first argument"})(C{"second argument1"}, C{"second argument2"})(C{"third argument"});
 }
