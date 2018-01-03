@@ -63,10 +63,10 @@ add_compile_options(
   $<$<CXX_COMPILER_ID:MSVC>:/W4>
 )
 
-add_executable(execute main.cpp)
-target_link_libraries(execute Threads::Threads OpenSSL::SSL ${Boost_LIBRARIES})
+add_executable(executable main.cpp)
+target_link_libraries(executable Threads::Threads OpenSSL::SSL ${Boost_LIBRARIES})
 
 add_custom_target(run ALL
-  COMMAND execute < ${CMAKE_SOURCE_DIR}/input
-  DEPENDS execute
+  COMMAND executable < ${CMAKE_SOURCE_DIR}/input
+  DEPENDS executable
   WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
