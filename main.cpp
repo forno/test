@@ -72,20 +72,18 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char** argv)
   std::ios_base::sync_with_stdio(false);
   std::cin.tie(nullptr);
 
-  rectangle::Rectangle calc_buf {rectangle::square::make_square(std::cin)};
+  rectangle::Rectangle calc_buf {};
   std::queue<rectangle::Rectangle> rectangles;
   std::queue<std::unique_ptr<rectangle::Operation>> operations;
   for (auto i {get_input<std::size_t>(std::cin)}; i != 0; --i)
   {
-    rectangles.push(rectangle::square::make_square(std::cin));
     operations.push(get_input<std::unique_ptr<rectangle::Operation>>(std::cin));
+    rectangles.push(rectangle::square::make_square(std::cin));
   }
 
   for (; !operations.empty(); operations.pop(), rectangles.pop())
     calc_buf = (*operations.front())(calc_buf, rectangles.front());
 
-  for (const auto& e : calc_buf) std::cout << '<' << e.first << ", " << e.second << "> ";
-  std::cout << '\n';
   std::cout << calc_buf.size() << '\n';
 }
 
@@ -146,8 +144,8 @@ std::unique_ptr<rectangle::Operation> rectangle::ComplementOperation::copy() con
 std::istream& rectangle::operator>>(std::istream& is, std::unique_ptr<Operation>& v)
 {
   std::unordered_map<char, std::unique_ptr<Operation>> map;
-  map.emplace('a', std::make_unique<UnionOperation>());
-  map.emplace('d', std::make_unique<ComplementOperation>());
+  map.emplace('+', std::make_unique<UnionOperation>());
+  map.emplace('-', std::make_unique<ComplementOperation>());
 
   const auto ch {get_input<char>(is)};
   const auto it {map.find(ch)};
