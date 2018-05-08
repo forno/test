@@ -97,8 +97,7 @@ BigInteger& BigInteger::operator+=(const BigInteger& rhs)
   auto carry {false};
   auto it {std::begin(values)};
   for (const auto& e : rhs.values) {
-    carry = mod <= (*it += e + (carry ? 1u : 0u));
-    if (carry)
+    if (carry = mod <= (*it += e + (carry ? 1u : 0u)))
       *it -= mod;
     ++it;
   }
