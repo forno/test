@@ -81,7 +81,7 @@ T get_input(std::basic_istream<Args...>& is)
 BigInteger::BigInteger() = default;
 
 BigInteger::BigInteger(std::uintmax_t init_value)
-  : values(static_cast<std::uintmax_t>(std::log10(static_cast<long double>(init_value))) / 4 + 1)
+  : values(static_cast<std::uintmax_t>(std::log10(static_cast<long double>(init_value))) / 4u + 1u)
 {
   for (auto& e : values) {
     e = static_cast<std::uint_least16_t>(init_value % mod);
@@ -94,19 +94,19 @@ BigInteger& BigInteger::operator+=(const BigInteger& rhs)
   if (values.size() < rhs.values.size())
     resize(rhs.values.size());
 
-  bool carry {false};
+  auto carry {false};
   auto it {std::begin(values)};
-  std::for_each(std::begin(rhs.values), std::end(rhs.values), [&carry, &it](const auto& e){
-    carry = mod <= (*it += e + (carry ? 1 : 0));
+  for (const auto& e : rhs.values) {
+    carry = mod <= (*it += e + (carry ? 1u : 0u));
     if (carry)
       *it -= mod;
     ++it;
-  });
+  }
+
   if (carry) {
     if (it == std::end(values)) {
-      resize(values.size() + 1);
-      it = std::end(values);
-      --it;
+      resize(values.size() + 1u);
+      it = std::prev(std::end(values));
     }
     *it += 1;
   }
@@ -116,7 +116,7 @@ BigInteger& BigInteger::operator+=(const BigInteger& rhs)
 template<typename... Args>
 std::basic_ostream<Args...>& operator<<(std::basic_ostream<Args...>& os, const BigInteger& rhs)
 {
-  if (rhs.values.size() == 0)
+  if (rhs.values.size() == 0u)
     return os;
   bool isfirst {false};
   std::for_each(std::reverse_iterator{std::end(rhs.values)}, std::reverse_iterator{std::begin(rhs.values)},
