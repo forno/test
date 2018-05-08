@@ -120,7 +120,7 @@ std::basic_ostream<Args...>& operator<<(std::basic_ostream<Args...>& os, const B
     return os;
   bool isfirst {false};
   std::for_each(std::reverse_iterator{std::end(rhs.values)}, std::reverse_iterator{std::begin(rhs.values)},
-  [&os, &isfirst](const auto& e){os << (std::exchange(isfirst, true) ? ' ' : '\0') << e;});
+                [&os, &isfirst](const auto& e){os << (std::exchange(isfirst, true) ? ' ' : '\0') << e;});
   return os;
 }
 
