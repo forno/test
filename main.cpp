@@ -126,7 +126,9 @@ std::basic_ostream<Args...>& operator<<(std::basic_ostream<Args...>& os, const B
 
 void BigInteger::resize(std::size_t length)
 {
-  const auto tmp {values};
+  if (values.size() == length)
+    return;
+  const decltype(values) tmp {length > values.size() ? values : values[std::slice(0, length, 1)]};
   values.resize(length);
   std::copy(std::begin(tmp), std::end(tmp), std::begin(values));
 }
