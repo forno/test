@@ -66,6 +66,8 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char** argv)
   std::cout << "be added 5000 is  : " << value << '\n';
   value += 10000;
   std::cout << "be added 10000 is : " << value << '\n';
+  value += 9999 * 10000;
+  std::cout << "be added 9999* is : " << value << '\n';
 }
 
 template<typename T, typename... Args>
