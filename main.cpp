@@ -57,17 +57,23 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char** argv)
   std::ios_base::sync_with_stdio(false);
   std::cin.tie(nullptr);
 
-  constexpr auto init {98765};
-  BigInteger value {init};
-  std::cout << "first is          : " << value << '\n';
-  value += 50;
-  std::cout << "be added 50 is    : " << value << '\n';
-  value += 5000;
-  std::cout << "be added 5000 is  : " << value << '\n';
-  value += 10000;
-  std::cout << "be added 10000 is : " << value << '\n';
-  value += 9999 * 10000;
-  std::cout << "be added 9999* is : " << value << '\n';
+  std::uintmax_t count {0};
+  std::uintmax_t limit {2600};
+  while (true) {
+    long double now_time;
+    if (std::cin >> now_time) {
+      if (now_time < limit)
+        ++count;
+      else {
+        std::cout << limit << ',' << count << '\n';
+        limit += 2600;
+        count = 1;
+      }
+    } else {
+      std::cout << limit << ',' << count << '\n';
+      return 0;
+    }
+  }
 }
 
 template<typename T, typename... Args>
