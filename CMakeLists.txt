@@ -8,6 +8,7 @@ set(CMAKE_CXX_EXTENSIONS OFF CACHE BOOL "compiler extension")
 find_package(Boost REQUIRED COMPONENTS system)
 find_package(Threads REQUIRED)
 find_package(OpenSSL REQUIRED)
+find_package(Eigen3 REQUIRED)
 
 set(Clang_WARN_OPTIONS
   -Weverything
@@ -62,6 +63,8 @@ add_compile_options(
   "$<$<CXX_COMPILER_ID:GNU>:${GNU_WARN_OPTIONS}>"
   $<$<CXX_COMPILER_ID:MSVC>:/W4>
 )
+
+include_directories(${EIGEN3_INCLUDE_DIR})
 
 add_executable(executable main.cpp)
 target_link_libraries(executable Threads::Threads OpenSSL::SSL ${Boost_LIBRARIES})
