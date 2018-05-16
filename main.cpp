@@ -35,9 +35,7 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char** argv)
   std::ios_base::sync_with_stdio(false);
   std::cin.tie(nullptr);
 
-  Eigen::Vector3d point {1, 2, 3};
-  auto new_point {Eigen::Quaterniond::UnitRandom() * point};
-  std::cout << new_point << '\n';
+  std::cout << "Hello world!!!\n";
 }
 
 template<typename T, typename... Args>
