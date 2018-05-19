@@ -21,6 +21,8 @@
 #include <Eigen/Dense>
 #include <Eigen/Geometry>
 
+inline constexpr auto pi {3.1415926535897932384626433832795029L};
+
 template<typename T>
 [[deprecated]]
 constexpr void f(T)
@@ -35,7 +37,9 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char** argv)
   std::ios_base::sync_with_stdio(false);
   std::cin.tie(nullptr);
 
-  std::cout << "Hello world!!!\n";
+  const auto point {Eigen::Vector3d::UnitX()};
+  const auto rotate_point {Eigen::AngleAxis{pi / 2, Eigen::Vector3d::UnitY()} * point};
+  std::cout << rotate_point << '\n';
 }
 
 template<typename T, typename... Args>
