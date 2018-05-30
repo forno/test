@@ -29,59 +29,42 @@
 #include <boost/beast/http.hpp>
 #include <boost/beast/version.hpp>
 
-// Performs an HTTP GET and prints the response
+constexpr auto host {"sparql.crssnky.xyz"};
+constexpr auto target {"/spql/imas/query"};
+constexpr auto version {11u};
+
 int main()
 {
   try
   {
-    auto const host = "www.example.com";
-    auto const port = "443";
-    auto const target = "/";
-    auto const version = 11;
-
-    // The io_context is required for all I/O
+    // Prepare some objects for The TCP over TLS connection (Asio settings)
     boost::asio::io_context ioc;
-
-    // The SSL context is required, and holds certificates
     boost::asio::ssl::context ctx{boost::asio::ssl::context::tlsv12_client};
-
-    // This holds the root certificate used for verification
     ctx.set_default_verify_paths();
-
-    // These objects perform our I/O
-    boost::asio::ip::tcp::resolver resolver{ioc};
     boost::asio::ssl::stream<boost::asio::ip::tcp::socket> stream{ioc, ctx};
 
-    // Look up the domain name
-    auto const results = resolver.resolve(host, port);
-
-    // Make the connection on the IP address we get from a lookup
-    boost::asio::connect(stream.next_layer(), results.begin(), results.end());
-
-    // Perform the SSL handshake
+    boost::asio::connect(stream.next_layer(), boost::asio::ip::tcp::resolver{ioc}.resolve(host, "https"));
     stream.handshake(boost::asio::ssl::stream_base::client);
 
-    // Set up an HTTP GET request message
-    boost::beast::http::request<boost::beast::http::string_body> req{boost::beast::http::verb::get, target, version};
+    // HTTP POST section (with Beast library)
+    boost::beast::http::request<boost::beast::http::string_body> req {boost::beast::http::verb::post, target, version};
+    req.set(boost::beast::http::field::accept, "text/tab-separated-values");
+    req.set(boost::beast::http::field::content_type, "application/sparql-query; charset=utf-8");
     req.set(boost::beast::http::field::host, host);
     req.set(boost::beast::http::field::user_agent, BOOST_BEAST_VERSION_STRING);
+    req.body() = std::string{"SELECT ?n ?p WHERE{?s "}.append("<http://schema.org/name>").append(1, '|').append("<http://schema.org/alternateName>").append(1, '|').append("<https://sparql.crssnky.xyz/imasrdf/URIs/imas-schema.ttl#nameKana>").append(" ?o; filter(regex(str(?o),\"").append("幽谷霧子").append("\")). ?s ?n ?p;}");
+    req.content_length(req.body().size());
 
-    // Send the HTTP request to the remote host
     boost::beast::http::write(stream, req);
 
-    // This buffer is used for reading and must be persisted
+    // HTTP response operation
     boost::beast::flat_buffer buffer;
-
-    // Declare a container to hold the response
     boost::beast::http::response<boost::beast::http::dynamic_body> res;
-
-    // Receive the HTTP response
     boost::beast::http::read(stream, buffer, res);
 
-    // Write the message to standard out
-    std::cout << res << std::endl;
+    std::cout << boost::beast::buffers(res.body().data()) << std::endl;
 
-    // Gracefully close the stream
+    // Close connection (Asio setting)
     boost::system::error_code ec;
     stream.shutdown(ec);
     if(ec == boost::asio::error::eof) {
@@ -90,10 +73,7 @@ int main()
     if(ec)
       throw boost::system::system_error{ec};
 
-    // If we get here then the connection is closed gracefully
-  }
-  catch(std::exception const& e)
-  {
+  } catch(std::exception const& e) {
     std::cerr << "Error: " << e.what() << std::endl;
     return EXIT_FAILURE;
   }
