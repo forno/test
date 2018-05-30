@@ -1,0 +1,198 @@
+#include <algorithm>
+#include <bitset>
+#include <cmath>
+#include <cstddef>
+#include <cstdint>
+#include <ios>
+#include <iostream>
+#include <iterator>
+#include <limits>
+#include <memory>
+#include <queue>
+#include <sstream>
+#include <string>
+#include <string_view>
+#include <tuple>
+#include <unordered_map>
+#include <unordered_set>
+#include <utility>
+#include <valarray>
+#include <vector>
+
+#include <boost/asio.hpp>
+
+inline constexpr auto pi {3.1415926535897932384626433832795029L};
+
+struct Name
+{
+  std::string fimily;
+  std::string fimily_kana;
+  std::string given;
+  std::string given_kana;
+};
+
+struct Age
+{
+  operator int()
+  {
+    try {
+      return std::stoi(age);
+    } catch (const std::invalid_argument& e) {
+      return -1;
+    }
+  }
+
+  explicit operator std::string()
+  {
+    return age;
+  }
+
+  std::string age;
+};
+
+struct BloodType
+{
+  enum class Kind
+  {
+    Unknown,
+    A,
+    B,
+    O,
+    AB
+  };
+
+  operator Kind()
+  {
+    return value;
+  }
+
+  explicit operator std::string_view()
+  {
+    switch (value) {
+    case Kind::Unknown:
+      return "Unknown";
+    case Kind::A:
+      return "A";
+    case Kind::B:
+      return "B";
+    case Kind::O:
+      return "O";
+    case Kind::AB:
+      return "AB";
+    }
+    throw std::invalid_argument {"Invalid blood type"};
+  }
+
+  Kind value;
+};
+
+struct BiometricInformation
+{
+};
+
+struct Handedness
+{
+  enum class Kind
+  {
+    Unknown,
+    Left,
+    Right,
+    Both
+  };
+
+  constexpr Handedness(Kind k)
+    : value {k}
+  {
+  }
+
+  operator Kind()
+  {
+    return value;
+  }
+
+  Kind value;
+};
+
+struct Color
+{
+  template<typename... Args>
+  Color(Args&&... args)
+    : value(std::forward<Args>(args)...)
+  {
+  }
+
+  explicit operator std::string() const
+  {
+    return '#' + value.to_string();
+  }
+
+  std::bitset<12> value;
+};
+
+class IdolBuilder;
+
+class Idol
+{
+public:
+  Idol() = delete;
+
+  std::optional<Age>         age()        const;
+  std::optional<BloodType>   blood_type() const;
+  std::optional<Color>       color()      const;
+  std::optional<Handedness>  handedness() const;
+  std::optional<IdolImage>   idol_image() const;
+  std::optional<Name>        name()       const;
+  std::optional<std::string> birthplace() const;
+  std::optional<std::string> bust()       const;
+  std::optional<std::string> cv()         const;
+  std::optional<std::string> height()     const;
+  std::optional<std::string> hip()        const;
+  std::optional<std::string> waist()      const;
+  std::optional<std::string> weight()     const;
+  std::optional<std::time_t> birthday()   const;
+  std::vector<std::string>   favorites()  const;
+  std::vector<std::string>   hobbies()    const;
+  std::vector<std::string>   talents()    const;
+
+private:
+  std::optional<Age>         age_;
+  std::optional<BloodType>   blood_type_;
+  std::optional<Color>       color_;
+  std::optional<Handedness>  handedness_;
+  std::optional<IdolImage>   idol_image_;
+  std::optional<Name>        name_;
+  std::optional<std::string> birthplace_;
+  std::optional<std::string> bust_;
+  std::optional<std::string> cv_;
+  std::optional<std::string> height_;
+  std::optional<std::string> hip_;
+  std::optional<std::string> waist_;
+  std::optional<std::string> weight_;
+  std::optional<std::time_t> birthday_;
+  std::vector<std::string>   favorites_;
+  std::vector<std::string>   hobbies_;
+  std::vector<std::string>   talents_;
+};
+
+template<typename T>
+[[deprecated]]
+constexpr void f(T)
+{
+}
+
+template<typename T, typename... Args>
+T get_input(std::basic_istream<Args...>& is);
+
+int main([[maybe_unused]] int argc, [[maybe_unused]] char** argv)
+{
+  std::ios_base::sync_with_stdio(false);
+  std::cin.tie(nullptr);
+}
+
+template<typename T, typename... Args>
+T get_input(std::basic_istream<Args...>& is)
+{
+  T value;
+  is >> value;
+  return value;
+}
