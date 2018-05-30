@@ -3,6 +3,7 @@
 #include <cmath>
 #include <cstddef>
 #include <cstdint>
+#include <cstdlib>
 #include <ios>
 #include <iostream>
 #include <iterator>
@@ -20,112 +21,81 @@
 #include <valarray>
 #include <vector>
 
-#include <boost/asio.hpp>
-#include <boost/asio/ssl.hpp>
+#include <boost/asio/connect.hpp>
+#include <boost/asio/ip/tcp.hpp>
+#include <boost/asio/ssl/error.hpp>
+#include <boost/asio/ssl/stream.hpp>
+#include <boost/beast/core.hpp>
+#include <boost/beast/http.hpp>
+#include <boost/beast/version.hpp>
 
-inline constexpr auto pi {3.1415926535897932384626433832795029L};
-
-namespace imasref
+// Performs an HTTP GET and prints the response
+int main()
 {
-
-namespace imasparql
-{
-
-class Transporter
-{
-public:
-  static constexpr auto host {"sparql.crssnky.xyz"};
-  static constexpr auto sparql_endpoint {"/spql/imas/query"};
-
-  explicit Transporter(boost::asio::io_context& io)
-    : io_ {io},
-      socket_ {io_, context_}
+  try
   {
-    context_.set_default_verify_paths();
-    socket_.set_verify_mode(boost::asio::ssl::verify_peer);
-  }
+    auto const host = "www.example.com";
+    auto const port = "443";
+    auto const target = "/";
+    auto const version = 11;
 
-  template<typename Iter>
-  std::string communicate(Iter begin, Iter end, std::string_view value)
-  {
-    if (begin == end)
-      return {};
-  
-    const static auto query_sequence {[&]{
-      std::vector<std::string_view> query_parts {"SELECT ?n ?p WHERE{?s "};
-      query_parts.emplace_back(*begin);
-      for (++begin; begin != end; ++begin) {
-        query_parts.emplace_back("|");
-        query_parts.emplace_back(*begin);
-      }
-      query_parts.emplace_back(" ?o; filter(regex(str(?o),");
-      query_parts.emplace_back(value);
-      query_parts.emplace_back(")). ?s ?n ?p;}");
-      return query_parts;
-    }()};
-  
-    boost::asio::connect(socket_.lowest_layer(), boost::asio::ip::tcp::resolver{io_}.resolve(host, "https"));
-    socket_.handshake(boost::asio::ssl::stream_base::client);
-    boost::asio::streambuf request;
-    std::ostream req {&request};
-    req << "POST " << sparql_endpoint << " HTTP/1.1\r\n" <<
-           "Host: " << host << "\r\n" <<
-           "Content-Type: application/sparql-query; charset=utf-8\r\n" <<
-           "Content-Length: " << std::accumulate(query_sequence.cbegin(), query_sequence.cend(), 0u, [](auto i, const auto& e){return i + e.size();}) << "\r\n" <<
-           "Accept: text/tab-separated-values\r\n\r\n";
-    for (const auto& e : query_sequence)
-      req << e;
-    boost::asio::write(socket_, request);
+    // The io_context is required for all I/O
+    boost::asio::io_context ioc;
 
-    boost::asio::streambuf res;
+    // The SSL context is required, and holds certificates
+    boost::asio::ssl::context ctx{boost::asio::ssl::context::tlsv12_client};
+
+    // This holds the root certificate used for verification
+    ctx.set_default_verify_paths();
+
+    // These objects perform our I/O
+    boost::asio::ip::tcp::resolver resolver{ioc};
+    boost::asio::ssl::stream<boost::asio::ip::tcp::socket> stream{ioc, ctx};
+
+    // Look up the domain name
+    auto const results = resolver.resolve(host, port);
+
+    // Make the connection on the IP address we get from a lookup
+    boost::asio::connect(stream.next_layer(), results.begin(), results.end());
+
+    // Perform the SSL handshake
+    stream.handshake(boost::asio::ssl::stream_base::client);
+
+    // Set up an HTTP GET request message
+    boost::beast::http::request<boost::beast::http::string_body> req{boost::beast::http::verb::get, target, version};
+    req.set(boost::beast::http::field::host, host);
+    req.set(boost::beast::http::field::user_agent, BOOST_BEAST_VERSION_STRING);
+
+    // Send the HTTP request to the remote host
+    boost::beast::http::write(stream, req);
+
+    // This buffer is used for reading and must be persisted
+    boost::beast::flat_buffer buffer;
+
+    // Declare a container to hold the response
+    boost::beast::http::response<boost::beast::http::dynamic_body> res;
+
+    // Receive the HTTP response
+    boost::beast::http::read(stream, buffer, res);
+
+    // Write the message to standard out
+    std::cout << res << std::endl;
+
+    // Gracefully close the stream
     boost::system::error_code ec;
-    boost::asio::read(socket_, res, ec);
-    if (ec != boost::asio::error::eof)
-      throw std::runtime_error{"imasref::imasparql::Connector: Network error"};
-    return std::string{boost::asio::buffer_cast<const char*>(res.data())};
-  }
+    stream.shutdown(ec);
+    if(ec == boost::asio::error::eof) {
+      ec.assign(0, ec.category());
+    }
+    if(ec)
+      throw boost::system::system_error{ec};
 
-  std::string find_by_name(std::string_view name)
+    // If we get here then the connection is closed gracefully
+  }
+  catch(std::exception const& e)
   {
-    static const std::vector<std::string_view> predicate {"<http://schema.org/name>",
-                                                          "<http://schema.org/alternateName>",
-                                                          "<https://sparql.crssnky.xyz/imasrdf/URIs/imas-schema.ttl#nameKana>"};
-    return communicate(predicate.cbegin(), predicate.cend(), std::string{'"'}.append(name).append(1, '"'));
+    std::cerr << "Error: " << e.what() << std::endl;
+    return EXIT_FAILURE;
   }
-
-private:
-    boost::asio::ssl::context context_ {boost::asio::ssl::context::tlsv12};
-    boost::asio::io_context& io_;
-    boost::asio::ssl::stream<boost::asio::ip::tcp::socket> socket_;
-};
-
-}
-
-}
-
-template<typename T>
-[[deprecated]]
-constexpr void f(T)
-{
-}
-
-template<typename T, typename... Args>
-T get_input(std::basic_istream<Args...>& is);
-
-int main([[maybe_unused]] int argc, [[maybe_unused]] char** argv)
-{
-  std::ios_base::sync_with_stdio(false);
-  std::cin.tie(nullptr);
-
-  boost::asio::io_context io {};
-  imasref::imasparql::Transporter t {io};
-  std::cout << t.find_by_name("萩原") << '\n';
-}
-
-template<typename T, typename... Args>
-T get_input(std::basic_istream<Args...>& is)
-{
-  T value;
-  is >> value;
-  return value;
+  return EXIT_SUCCESS;
 }
