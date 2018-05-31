@@ -74,11 +74,11 @@ constexpr auto weight           {"<http://schema.org/weight>"sv};
 namespace imasparql
 {
 
+using RDFClass = std::unordered_multimap<std::string, std::unordered_multimap<std::string, std::string>>;
+
 class Connector
 {
 public:
-  using RDFClass = std::unordered_multimap<std::string, std::unordered_multimap<std::string, std::string>>;
-
   static constexpr auto host_name {"sparql.crssnky.xyz"};
   static constexpr auto end_point {"/spql/imas/query"};
   static constexpr auto http_version {11u};
@@ -97,21 +97,11 @@ public:
     std::for_each(++predicate_begin, predicate_end, [&sparql_query](const auto& e){
       sparql_query.emplace_back("|");
       sparql_query.emplace_back(e);});
-    sparql_query.emplace_back(" ?o; filter(regex(str(?o),\"");
+    sparql_query.emplace_back(" ?o. filter(regex(str(?o),\"");
     sparql_query.emplace_back(std::move(value));
-    sparql_query.emplace_back("\")). ?s ?n ?p;}");
+    sparql_query.emplace_back("\")). ?s ?n ?p.}");
 
     return parse_rdf_from_tsv(communicate(sparql_query.cbegin(), sparql_query.cend()));
-  }
-
-  RDFClass find_by_name(std::string_view value)
-  {
-    constexpr std::string_view predicates[] {
-      predicate::idol::name,
-      predicate::idol::alternate_name,
-      predicate::idol::name_kana};
-
-    return find_by(std::cbegin(predicates), std::cend(predicates), std::move(value));
   }
 
 private:
@@ -179,6 +169,16 @@ private:
   boost::asio::ssl::context& ctx_;
 };
 
+inline RDFClass find_by_name(Connector& connector, std::string_view value)
+{
+  constexpr std::string_view predicates[] {
+    predicate::idol::name,
+    predicate::idol::alternate_name,
+    predicate::idol::name_kana};
+
+  return connector.find_by(std::cbegin(predicates), std::cend(predicates), std::move(value));
+}
+
 }
 }
 
@@ -191,7 +191,7 @@ int main()
     ctx.set_default_verify_paths();
 
     imasref::imasparql::Connector client {ioc, ctx};
-    const auto rdf {client.find_by_name("幽谷霧子")};
+    const auto rdf {imasref::imasparql::find_by_name(client, "幽谷霧子")};
 
     for (const auto n : rdf)
       for (const auto p : n.second)
