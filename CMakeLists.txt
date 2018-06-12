@@ -1,14 +1,14 @@
 cmake_minimum_required(VERSION 3.8.2)
 project(test)
 
-set(CMAKE_CXX_STANDARD 17 CACHE STRING "CXX standard version")
+set(CMAKE_CXX_STANDARD          17 CACHE STRING "CXX standard version")
 set(CMAKE_CXX_STANDARD_REQUIRED ON CACHE BOOL "version required")
-set(CMAKE_CXX_EXTENSIONS OFF CACHE BOOL "compiler extension")
+set(CMAKE_CXX_EXTENSIONS        OFF CACHE BOOL "compiler extension")
 
-find_package(Boost REQUIRED COMPONENTS system)
+find_package(Boost   REQUIRED COMPONENTS system)
 find_package(Threads REQUIRED)
 find_package(OpenSSL REQUIRED)
-find_package(Eigen3 REQUIRED)
+find_package(Eigen3  REQUIRED)
 
 set(Clang_WARN_OPTIONS
   -Weverything
