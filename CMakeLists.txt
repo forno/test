@@ -6,9 +6,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON CACHE BOOL "version required")
 set(CMAKE_CXX_EXTENSIONS        OFF CACHE BOOL "compiler extension")
 
 find_package(Boost   REQUIRED COMPONENTS system)
-find_package(Threads REQUIRED)
-find_package(OpenSSL REQUIRED)
 find_package(Eigen3  REQUIRED)
+find_package(OpenSSL REQUIRED)
+find_package(Threads REQUIRED)
 
 set(Clang_WARN_OPTIONS
   -Weverything
@@ -16,46 +16,46 @@ set(Clang_WARN_OPTIONS
 )
 set(GNU_WARN_OPTIONS
   -Wall
-  -Wextra
-  -Wpedantic
-  -Wchkp
-  -Wdouble-promotion
-  -Wnull-dereference
-  -Wimplicit-fallthrough
-  -Wmissing-include-dirs
-  -Wswitch-enum
-  -Wsync-nand
-  -Wunused-parameter
-  -Wuninitialized
-  -Wstrict-overflow
-  -Wsuggest-attribute=noreturn
-  -Wsuggest-final-types
-  -Wsuggest-final-methods
   -Walloc-zero
   -Walloca
-  -Wduplicated-branches
-  -Wduplicated-cond
-  -Wtrampolines -Wfloat-equal -Wshadow
-  -Wunsafe-loop-optimizations
   -Wcast-qual
+  -Wchkp
   -Wconditionally-supported
   -Wconversion
-  -Wzero-as-null-pointer-constant
   -Wdate-time
-  -Wuseless-cast
-  -Wsized-deallocation
+  -Wdisabled-optimization
+  -Wdouble-promotion
+  -Wduplicated-branches
+  -Wduplicated-cond
+  -Wextra
+  -Whsa
+  -Wimplicit-fallthrough
+  -Winvalid-pch
   -Wlogical-op
   -Wmissing-declarations
+  -Wmissing-include-dirs
   -Wnormalized
+  -Wnull-dereference
   -Wopenmp-simd
   -Wpacked
+  -Wpedantic
   -Wredundant-decls
   -Wrestrict
-  -Winvalid-pch
-  -Wvla
-  -Wdisabled-optimization
+  -Wsized-deallocation
   -Wstack-protector
-  -Whsa
+  -Wstrict-overflow
+  -Wsuggest-attribute=noreturn
+  -Wsuggest-final-methods
+  -Wsuggest-final-types
+  -Wswitch-enum
+  -Wsync-nand
+  -Wtrampolines -Wfloat-equal -Wshadow
+  -Wuninitialized
+  -Wunsafe-loop-optimizations
+  -Wunused-parameter
+  -Wuseless-cast
+  -Wvla
+  -Wzero-as-null-pointer-constant
 )
 
 add_compile_options(
@@ -64,10 +64,8 @@ add_compile_options(
   $<$<CXX_COMPILER_ID:MSVC>:/W4>
 )
 
-include_directories(${EIGEN3_INCLUDE_DIR})
-
 add_executable(executable main.cpp)
-target_link_libraries(executable Threads::Threads OpenSSL::SSL ${Boost_LIBRARIES})
+target_link_libraries(executable Threads::Threads OpenSSL::SSL Boost::system Eigen3::Eigen)
 
 add_custom_target(run ALL
   COMMAND executable < ${CMAKE_SOURCE_DIR}/input
