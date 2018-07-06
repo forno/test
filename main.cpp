@@ -1,4 +1,6 @@
 #include <algorithm>
+#include <cassert>
+#include <cstddef>
 #include <cstdint>
 #include <cstdlib>
 #include <experimental/algorithm>
@@ -7,16 +9,26 @@
 #include <map>
 #include <numeric>
 #include <random>
+#include <string>
 #include <valarray>
 
-int main([[maybe_unused]] int argc, [[maybe_unused]] char** argv)
+int main(int argc, char** argv)
 {
-  constexpr auto length {10000000u};
-  static_assert(length < std::numeric_limits<std::uint_fast32_t>::max(), "Size error");
+  if (argc < 3) {
+    std::cerr << "I need arguments\n";
+    return EXIT_FAILURE;
+  }
+
+  std::size_t length {std::strtoul(argv[1], nullptr, 10)};
+  assert(length < std::numeric_limits<std::uint_fast32_t>::max());
+
+  float percent {std::strtof(argv[2], nullptr)};
+  assert(percent <= 1);
+
   std::valarray<std::uint_fast32_t> a(length);
   std::iota(std::begin(a), std::end(a), 1);
 
-  std::valarray<std::uint_fast32_t> ans(a.size() / 2);
+  std::valarray<std::uint_fast32_t> ans(static_cast<std::size_t>(a.size() * percent));
   std::experimental::sample(std::begin(a), std::end(a), std::begin(ans), ans.size(), std::default_random_engine{std::random_device{}()});
 
   std::sort(std::begin(ans), std::end(ans));
