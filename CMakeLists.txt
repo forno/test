@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 3.8.2)
 project(test)
 
-set(CMAKE_CXX_STANDARD          17 CACHE STRING "CXX standard version")
-set(CMAKE_CXX_STANDARD_REQUIRED ON CACHE BOOL "version required")
-set(CMAKE_CXX_EXTENSIONS        OFF CACHE BOOL "compiler extension")
+set(CMAKE_CXX_STANDARD          17  CACHE STRING "CXX standard version")
+set(CMAKE_CXX_STANDARD_REQUIRED ON  CACHE BOOL   "version required")
+set(CMAKE_CXX_EXTENSIONS        OFF CACHE BOOL   "compiler extension")
 
 find_package(Boost   REQUIRED COMPONENTS system)
 find_package(Eigen3  REQUIRED)
@@ -67,7 +67,7 @@ add_compile_options(
 add_executable(executable main.cpp)
 target_link_libraries(executable Threads::Threads OpenSSL::SSL Boost::system Eigen3::Eigen)
 
-add_custom_target(run ALL
+add_custom_target(run
   COMMAND executable < ${CMAKE_SOURCE_DIR}/input
   DEPENDS executable
   WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
