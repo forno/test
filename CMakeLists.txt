@@ -64,7 +64,7 @@ add_compile_options(
   $<$<CXX_COMPILER_ID:MSVC>:/W4>
 )
 
-add_executable(executable main.cpp)
+add_executable(executable src/main.cpp)
 target_link_libraries(executable Threads::Threads OpenSSL::SSL Boost::system Eigen3::Eigen)
 
 add_custom_target(run
