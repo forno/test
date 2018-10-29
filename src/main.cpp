@@ -41,6 +41,13 @@ int main(int argc, char** argv)
   for (auto e : dis)
     ++res[e];
 
-  for (const auto& e : res)
+  for (auto e : res)
     std::cout << e.first << ',' << e.second << '\n';
+
+  auto ave {0.0};
+  std::for_each(std::next(std::begin(res)), std::end(res), [&ave, size = static_cast<decltype(ave)>(dis.size())](auto e) {
+    ave += static_cast<decltype(ave)>(e.first - 1) * static_cast<decltype(ave)>(e.second) / size;
+  });
+
+  std::cout << "Average: " << ave << '\n';
 }
