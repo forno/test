@@ -19,6 +19,9 @@
 namespace rdf
 {
 
+namespace resource
+{
+
 class World
 {
 public:
@@ -244,7 +247,12 @@ private:
 
 Iterator get_targets(librdf_model* m, librdf_node* source, librdf_node* arc);
 
+}
+
 namespace raptor
+{
+
+namespace resource
 {
 
 raptor_world* get_raptor(librdf_world* p) noexcept;
@@ -279,6 +287,7 @@ Iostream new_iostream(
 
 }
 }
+}
 
 int main(int argc, char** argv)
 {
@@ -289,23 +298,23 @@ int main(int argc, char** argv)
     return 1;
   }
 
-  auto world {rdf::new_world()};
+  auto world {rdf::resource::new_world()};
   librdf_world_open(world);
-  auto raptor_world_ptr {rdf::raptor::get_raptor(world)};
+  auto raptor_world_ptr {rdf::raptor::resource::get_raptor(world)};
 
-  auto uri {rdf::new_uri(world, argv[1])};
+  auto uri {rdf::resource::new_uri(world, argv[1])};
   if (!uri) {
     std::cerr << program << ": Failed to create URI\n";
     return 1;
   }
 
-  auto storage {rdf::new_storage(world, "memory", "test", nullptr)};
+  auto storage {rdf::resource::new_storage(world, "memory", "test", nullptr)};
   if (!storage) {
     std::cerr << program << ": Failed to create new storage\n";
     return 1;
   }
 
-  auto model {rdf::new_model(world, storage, nullptr)};
+  auto model {rdf::resource::new_model(world, storage, nullptr)};
   if (!model) {
     std::cerr << program << ": Failed to create model\n";
     return 1;
@@ -314,7 +323,7 @@ int main(int argc, char** argv)
   auto parser_name {argc == 3 ? argv[2] : nullptr};
 
   {
-    auto parser {rdf::new_parser(world, parser_name, nullptr, nullptr)};
+    auto parser {rdf::resource::new_parser(world, parser_name, nullptr, nullptr)};
     if (!parser) {
       std::cerr << program << ": Failed to create new parser\n";
       return 1;
@@ -329,7 +338,7 @@ int main(int argc, char** argv)
   }
 
   {
-    auto statement2 {rdf::new_statement(
+    auto statement2 {rdf::resource::new_statement(
       world,
       librdf_new_node_from_uri_string(world, (const unsigned char*)"http://www.dajobe.org/"),
       librdf_new_node_from_uri_string(world, (const unsigned char*)"http://purl.org/dc/elements/1.1/title"),
@@ -340,7 +349,7 @@ int main(int argc, char** argv)
   /* Print out the model*/
   std::cout << program << ": Resulting model is:\n";
   {
-    auto iostr {rdf::raptor::new_iostream(raptor_world_ptr, stdout)};
+    auto iostr {rdf::raptor::resource::new_iostream(raptor_world_ptr, stdout)};
     librdf_model_write(model, iostr);
   }
 
@@ -355,7 +364,7 @@ int main(int argc, char** argv)
     return 1;
   }
 
-  auto partial_statement {rdf::new_statement(world)};
+  auto partial_statement {rdf::resource::new_statement(world)};
   librdf_statement_set_subject(partial_statement, subject);
   librdf_statement_set_predicate(partial_statement, predicate);
 
@@ -363,7 +372,7 @@ int main(int argc, char** argv)
   /* QUERY TEST 1 - use find_statements to match */
 
   std::cout << program << ": Trying to find_statements\n";
-  if (auto stream {rdf::find_statements(model, partial_statement)}; !stream) {
+  if (auto stream {rdf::resource::find_statements(model, partial_statement)}; !stream) {
     std::cerr << program << ": librdf_model_find_statements returned nullptr stream\n";
   } else {
     auto count {0};
@@ -388,7 +397,7 @@ int main(int argc, char** argv)
   /* QUERY TEST 2 - use get_targets to do match */
   std::cout << program << ": Trying to get targets\n";
   {
-    auto iterator {rdf::get_targets(model, subject, predicate)};
+    auto iterator {rdf::resource::get_targets(model, subject, predicate)};
     if (!iterator) {
       std::cerr << program << ": librdf_model_get_targets failed to return iterator for searching\n";
       return 1;
@@ -418,41 +427,41 @@ int main(int argc, char** argv)
   return 0;
 }
 
-inline rdf::World::World(librdf_world* v) noexcept
+inline rdf::resource::World::World(librdf_world* v) noexcept
   : value {v}
 {
 }
 
-inline rdf::World::World(World&& rhs) noexcept
+inline rdf::resource::World::World(World&& rhs) noexcept
   : value {rhs.release()}
 {
 }
 
-inline rdf::World& rdf::World::operator=(World&& rhs) noexcept
+inline rdf::resource::World& rdf::resource::World::operator=(World&& rhs) noexcept
 {
   delete_resource();
   value = rhs.release();
   return *this;
 }
 
-inline rdf::World::~World() noexcept
+inline rdf::resource::World::~World() noexcept
 {
   delete_resource();
 }
 
-inline librdf_world* rdf::World::get() noexcept
+inline librdf_world* rdf::resource::World::get() noexcept
 {
   return value;
 }
 
-inline librdf_world* rdf::World::release() noexcept
+inline librdf_world* rdf::resource::World::release() noexcept
 {
   auto v {value};
   value = nullptr;
   return v;
 }
 
-inline void rdf::World::delete_resource() noexcept
+inline void rdf::resource::World::delete_resource() noexcept
 {
   if (value) {
     librdf_free_world(value);
@@ -460,46 +469,46 @@ inline void rdf::World::delete_resource() noexcept
   }
 }
 
-inline rdf::World rdf::new_world()
+inline rdf::resource::World rdf::resource::new_world()
 {
   return World {librdf_new_world()};
 }
 
-inline rdf::Uri::Uri(librdf_uri* v) noexcept
+inline rdf::resource::Uri::Uri(librdf_uri* v) noexcept
   : value {v}
 {
 }
 
-inline rdf::Uri::Uri(Uri&& u) noexcept
+inline rdf::resource::Uri::Uri(Uri&& u) noexcept
   : value {u.release()}
 {
 }
 
-inline rdf::Uri& rdf::Uri::operator=(Uri&& rhs) noexcept
+inline rdf::resource::Uri& rdf::resource::Uri::operator=(Uri&& rhs) noexcept
 {
   delete_resource();
   value = rhs.release();
   return *this;
 }
 
-inline rdf::Uri::~Uri() noexcept
+inline rdf::resource::Uri::~Uri() noexcept
 {
   delete_resource();
 }
 
-inline librdf_uri* rdf::Uri::get() noexcept
+inline librdf_uri* rdf::resource::Uri::get() noexcept
 {
   return value;
 }
 
-inline librdf_uri* rdf::Uri::release() noexcept
+inline librdf_uri* rdf::resource::Uri::release() noexcept
 {
   auto v {value};
   value = nullptr;
   return v;
 }
 
-inline void rdf::Uri::delete_resource() noexcept
+inline void rdf::resource::Uri::delete_resource() noexcept
 {
   if (value) {
     librdf_free_uri(value);
@@ -507,46 +516,46 @@ inline void rdf::Uri::delete_resource() noexcept
   }
 }
 
-inline rdf::Uri rdf::new_uri(librdf_world* w, const char* uri)
+inline rdf::resource::Uri rdf::resource::new_uri(librdf_world* w, const char* uri)
 {
   return Uri {librdf_new_uri(w, reinterpret_cast<const unsigned char*>(uri))};
 }
 
-inline rdf::Storage::Storage(librdf_storage* v) noexcept
+inline rdf::resource::Storage::Storage(librdf_storage* v) noexcept
   : value {v}
 {
 }
 
-inline rdf::Storage::Storage(Storage&& rhs) noexcept
+inline rdf::resource::Storage::Storage(Storage&& rhs) noexcept
   : value {rhs.release()}
 {
 }
 
-inline rdf::Storage& rdf::Storage::operator=(Storage&& rhs) noexcept
+inline rdf::resource::Storage& rdf::resource::Storage::operator=(Storage&& rhs) noexcept
 {
   delete_resource();
   value = rhs.release();
   return *this;
 }
 
-inline rdf::Storage::~Storage() noexcept
+inline rdf::resource::Storage::~Storage() noexcept
 {
   delete_resource();
 }
 
-inline librdf_storage* rdf::Storage::get() noexcept
+inline librdf_storage* rdf::resource::Storage::get() noexcept
 {
   return value;
 }
 
-inline librdf_storage* rdf::Storage::release() noexcept
+inline librdf_storage* rdf::resource::Storage::release() noexcept
 {
   auto v {value};
   value = nullptr;
   return v;
 }
 
-inline void rdf::Storage::delete_resource() noexcept
+inline void rdf::resource::Storage::delete_resource() noexcept
 {
   if (value) {
     librdf_free_storage(value);
@@ -554,7 +563,7 @@ inline void rdf::Storage::delete_resource() noexcept
   }
 }
 
-inline rdf::Storage rdf::new_storage(
+inline rdf::resource::Storage rdf::resource::new_storage(
   librdf_world* w,
   const char* storage_name,
   const char* name,
@@ -563,41 +572,41 @@ inline rdf::Storage rdf::new_storage(
   return Storage {librdf_new_storage(w, storage_name, name, options_string)};
 }
 
-inline rdf::Model::Model(librdf_model* v) noexcept
+inline rdf::resource::Model::Model(librdf_model* v) noexcept
   : value {v}
 {
 }
 
-inline rdf::Model::Model(Model&& rhs) noexcept
+inline rdf::resource::Model::Model(Model&& rhs) noexcept
   : value {rhs.release()}
 {
 }
 
-inline rdf::Model& rdf::Model::operator=(Model&& rhs) noexcept
+inline rdf::resource::Model& rdf::resource::Model::operator=(Model&& rhs) noexcept
 {
   delete_resource();
   value = rhs.release();
   return *this;
 }
 
-inline rdf::Model::~Model() noexcept
+inline rdf::resource::Model::~Model() noexcept
 {
   delete_resource();
 }
 
-inline librdf_model* rdf::Model::get() noexcept
+inline librdf_model* rdf::resource::Model::get() noexcept
 {
   return value;
 }
 
-inline librdf_model* rdf::Model::release() noexcept
+inline librdf_model* rdf::resource::Model::release() noexcept
 {
   auto v {value};
   value = nullptr;
   return v;
 }
 
-inline void rdf::Model::delete_resource() noexcept
+inline void rdf::resource::Model::delete_resource() noexcept
 {
   if (value) {
     librdf_free_model(value);
@@ -605,7 +614,7 @@ inline void rdf::Model::delete_resource() noexcept
   }
 }
 
-inline rdf::Model rdf::new_model(
+inline rdf::resource::Model rdf::resource::new_model(
   librdf_world* w,
   librdf_storage* s,
   const char* options_string)
@@ -613,41 +622,41 @@ inline rdf::Model rdf::new_model(
   return Model {librdf_new_model(w, s, options_string)};
 }
 
-inline rdf::Parser::Parser(librdf_parser* v) noexcept
+inline rdf::resource::Parser::Parser(librdf_parser* v) noexcept
   : value {v}
 {
 }
 
-inline rdf::Parser::Parser(Parser&& rhs) noexcept
+inline rdf::resource::Parser::Parser(Parser&& rhs) noexcept
   : value {rhs.release()}
 {
 }
 
-inline rdf::Parser& rdf::Parser::operator=(Parser&& rhs) noexcept
+inline rdf::resource::Parser& rdf::resource::Parser::operator=(Parser&& rhs) noexcept
 {
   delete_resource();
   value = rhs.release();
   return *this;
 }
 
-inline rdf::Parser::~Parser() noexcept
+inline rdf::resource::Parser::~Parser() noexcept
 {
   delete_resource();
 }
 
-inline librdf_parser* rdf::Parser::get() noexcept
+inline librdf_parser* rdf::resource::Parser::get() noexcept
 {
   return value;
 }
 
-inline librdf_parser* rdf::Parser::release() noexcept
+inline librdf_parser* rdf::resource::Parser::release() noexcept
 {
   auto v {value};
   value = nullptr;
   return v;
 }
 
-inline void rdf::Parser::delete_resource() noexcept
+inline void rdf::resource::Parser::delete_resource() noexcept
 {
   if (value) {
     librdf_free_parser(value);
@@ -655,7 +664,7 @@ inline void rdf::Parser::delete_resource() noexcept
   }
 }
 
-inline rdf::Parser rdf::new_parser(
+inline rdf::resource::Parser rdf::resource::new_parser(
   librdf_world* w,
   const char* name,
   const char* mine_type,
@@ -664,41 +673,41 @@ inline rdf::Parser rdf::new_parser(
   return Parser {librdf_new_parser(w, name, mine_type, type_uri)};
 }
 
-inline rdf::Statement::Statement(librdf_statement* v) noexcept
+inline rdf::resource::Statement::Statement(librdf_statement* v) noexcept
   : value {v}
 {
 }
 
-inline rdf::Statement::Statement(Statement&& rhs) noexcept
+inline rdf::resource::Statement::Statement(Statement&& rhs) noexcept
   : value {rhs.release()}
 {
 }
 
-inline rdf::Statement& rdf::Statement::operator=(Statement&& rhs) noexcept
+inline rdf::resource::Statement& rdf::resource::Statement::operator=(Statement&& rhs) noexcept
 {
   delete_resource();
   value = rhs.release();
   return *this;
 }
 
-inline rdf::Statement::~Statement() noexcept
+inline rdf::resource::Statement::~Statement() noexcept
 {
   delete_resource();
 }
 
-inline librdf_statement* rdf::Statement::get() noexcept
+inline librdf_statement* rdf::resource::Statement::get() noexcept
 {
   return value;
 }
 
-inline librdf_statement* rdf::Statement::release() noexcept
+inline librdf_statement* rdf::resource::Statement::release() noexcept
 {
   auto v {value};
   value = nullptr;
   return v;
 }
 
-inline void rdf::Statement::delete_resource() noexcept
+inline void rdf::resource::Statement::delete_resource() noexcept
 {
   if (value) {
     librdf_free_statement(value);
@@ -706,12 +715,12 @@ inline void rdf::Statement::delete_resource() noexcept
   }
 }
 
-inline rdf::Statement rdf::new_statement(librdf_world* w)
+inline rdf::resource::Statement rdf::resource::new_statement(librdf_world* w)
 {
   return Statement {librdf_new_statement(w)};
 }
 
-inline rdf::Statement rdf::new_statement(
+inline rdf::resource::Statement rdf::resource::new_statement(
   librdf_world* w,
   librdf_node* subject,
   librdf_node* predicate,
@@ -720,41 +729,41 @@ inline rdf::Statement rdf::new_statement(
   return Statement {librdf_new_statement_from_nodes(w, subject, predicate, object)};
 }
 
-inline rdf::Stream::Stream(librdf_stream* v) noexcept
+inline rdf::resource::Stream::Stream(librdf_stream* v) noexcept
   : value {v}
 {
 }
 
-inline rdf::Stream::Stream(Stream&& rhs) noexcept
+inline rdf::resource::Stream::Stream(Stream&& rhs) noexcept
   : value {rhs.release()}
 {
 }
 
-inline rdf::Stream& rdf::Stream::operator=(Stream&& rhs) noexcept
+inline rdf::resource::Stream& rdf::resource::Stream::operator=(Stream&& rhs) noexcept
 {
   delete_resource();
   value = rhs.release();
   return *this;
 }
 
-inline rdf::Stream::~Stream() noexcept
+inline rdf::resource::Stream::~Stream() noexcept
 {
   delete_resource();
 }
 
-inline librdf_stream* rdf::Stream::get() noexcept
+inline librdf_stream* rdf::resource::Stream::get() noexcept
 {
   return value;
 }
 
-inline librdf_stream* rdf::Stream::release() noexcept
+inline librdf_stream* rdf::resource::Stream::release() noexcept
 {
   auto v {value};
   value = nullptr;
   return v;
 }
 
-inline void rdf::Stream::delete_resource() noexcept
+inline void rdf::resource::Stream::delete_resource() noexcept
 {
   if (value) {
     librdf_free_stream(value);
@@ -762,46 +771,46 @@ inline void rdf::Stream::delete_resource() noexcept
   }
 }
 
-inline rdf::Stream rdf::find_statements(librdf_model* m, librdf_statement* s)
+inline rdf::resource::Stream rdf::resource::find_statements(librdf_model* m, librdf_statement* s)
 {
   return Stream {librdf_model_find_statements(m, s)};
 }
 
-inline rdf::Iterator::Iterator(librdf_iterator* v) noexcept
+inline rdf::resource::Iterator::Iterator(librdf_iterator* v) noexcept
   : value {v}
 {
 }
 
-inline rdf::Iterator::Iterator(Iterator&& rhs) noexcept
+inline rdf::resource::Iterator::Iterator(Iterator&& rhs) noexcept
   : value {rhs.release()}
 {
 }
 
-inline rdf::Iterator& rdf::Iterator::operator=(Iterator&& rhs) noexcept
+inline rdf::resource::Iterator& rdf::resource::Iterator::operator=(Iterator&& rhs) noexcept
 {
   delete_resource();
   value = rhs.release();
   return *this;
 }
 
-inline rdf::Iterator::~Iterator() noexcept
+inline rdf::resource::Iterator::~Iterator() noexcept
 {
   delete_resource();
 }
 
-inline librdf_iterator* rdf::Iterator::get() noexcept
+inline librdf_iterator* rdf::resource::Iterator::get() noexcept
 {
   return value;
 }
 
-inline librdf_iterator* rdf::Iterator::release() noexcept
+inline librdf_iterator* rdf::resource::Iterator::release() noexcept
 {
   auto v {value};
   value = nullptr;
   return v;
 }
 
-inline void rdf::Iterator::delete_resource() noexcept
+inline void rdf::resource::Iterator::delete_resource() noexcept
 {
   if (value) {
     librdf_free_iterator(value);
@@ -809,51 +818,51 @@ inline void rdf::Iterator::delete_resource() noexcept
   }
 }
 
-rdf::Iterator rdf::get_targets(librdf_model* m, librdf_node* source, librdf_node* arc)
+rdf::resource::Iterator rdf::resource::get_targets(librdf_model* m, librdf_node* source, librdf_node* arc)
 {
   return Iterator {librdf_model_get_targets(m, source, arc)};
 }
 
-inline raptor_world* rdf::raptor::get_raptor(librdf_world* p) noexcept
+inline raptor_world* rdf::raptor::resource::get_raptor(librdf_world* p) noexcept
 {
   return librdf_world_get_raptor(p);
 }
 
-inline rdf::raptor::Iostream::Iostream(raptor_iostream* v) noexcept
+inline rdf::raptor::resource::Iostream::Iostream(raptor_iostream* v) noexcept
   : value {v}
 {
 }
 
-inline rdf::raptor::Iostream::Iostream(Iostream&& rhs) noexcept
+inline rdf::raptor::resource::Iostream::Iostream(Iostream&& rhs) noexcept
   : value {rhs.release()}
 {
 }
 
-inline rdf::raptor::Iostream& rdf::raptor::Iostream::operator=(Iostream&& rhs) noexcept
+inline rdf::raptor::resource::Iostream& rdf::raptor::resource::Iostream::operator=(Iostream&& rhs) noexcept
 {
   delete_resource();
   value = rhs.release();
   return *this;
 }
 
-inline rdf::raptor::Iostream::~Iostream() noexcept
+inline rdf::raptor::resource::Iostream::~Iostream() noexcept
 {
   delete_resource();
 }
 
-inline raptor_iostream* rdf::raptor::Iostream::get() noexcept
+inline raptor_iostream* rdf::raptor::resource::Iostream::get() noexcept
 {
   return value;
 }
 
-inline raptor_iostream* rdf::raptor::Iostream::release() noexcept
+inline raptor_iostream* rdf::raptor::resource::Iostream::release() noexcept
 {
   auto v {value};
   value = nullptr;
   return v;
 }
 
-inline void rdf::raptor::Iostream::delete_resource() noexcept
+inline void rdf::raptor::resource::Iostream::delete_resource() noexcept
 {
   if (value) {
     raptor_free_iostream(value);
@@ -861,7 +870,7 @@ inline void rdf::raptor::Iostream::delete_resource() noexcept
   }
 }
 
-inline rdf::raptor::Iostream rdf::raptor::new_iostream(
+inline rdf::raptor::resource::Iostream rdf::raptor::resource::new_iostream(
   raptor_world* w,
   std::FILE* handle)
 {
