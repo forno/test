@@ -15,17 +15,20 @@
 #include <utility>
 #include <valarray>
 
+#include <redland.h>
+
 class C
-  : public std::shared_ptr<int>
+  : public std::shared_ptr<librdf_world>
 {
 public:
-  C(int* value)
-    : std::shared_ptr<int>(value, [](auto p){delete p;})
+  C(librdf_world* value) noexcept
+    : std::shared_ptr<librdf_world>(value, [](auto p){librdf_free_world(p);})
   {
   }
+
+  ~C() noexcept;
 };
 
 int main(int argc, char** argv)
 {
-  C {new int};
 }
