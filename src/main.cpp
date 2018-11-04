@@ -17,8 +17,12 @@
 
 #include <redland.h>
 
+bool f()
+{
+  return 4;
+}
+
 int main(int argc, char** argv)
 {
-  bool b {};
-  std::cout << static_cast<int>(b) << '\n';
+  std::cout << f() << '\n';
 }
