@@ -17,18 +17,11 @@
 
 #include <redland.h>
 
-class C
-  : public std::shared_ptr<librdf_world>
-{
-public:
-  C(librdf_world* value) noexcept
-    : std::shared_ptr<librdf_world>(value, [](auto p){librdf_free_world(p);})
-  {
-  }
-
-  ~C() noexcept;
-};
-
 int main(int argc, char** argv)
 {
+  std::shared_ptr<int> p {new int};
+  [](std::weak_ptr<int> s) {
+    if (auto v {s.lock()})
+      std::cout << "receive " << *v << '\n';
+  }(p);
 }
