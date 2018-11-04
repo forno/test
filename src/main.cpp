@@ -19,7 +19,6 @@
 
 int main(int argc, char** argv)
 {
-  const std::shared_ptr<int> p {new int};
-
-  std::cout << *p << '\n';
+  bool b {};
+  std::cout << static_cast<int>(b) << '\n';
 }
