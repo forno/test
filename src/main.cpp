@@ -19,9 +19,7 @@
 
 int main(int argc, char** argv)
 {
-  std::shared_ptr<int> p {new int};
-  [](std::weak_ptr<int> s) {
-    if (auto v {s.lock()})
-      std::cout << "receive " << *v << '\n';
-  }(p);
+  const std::shared_ptr<int> p {new int};
+
+  std::cout << *p << '\n';
 }
