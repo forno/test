@@ -17,12 +17,9 @@
 
 #include <redland.h>
 
-bool f()
-{
-  return 4;
-}
-
 int main(int argc, char** argv)
 {
-  std::cout << f() << '\n';
+  const std::shared_ptr<int> p {new int};
+  *p = 5;
+  std::cout << *p << '\n';
 }
