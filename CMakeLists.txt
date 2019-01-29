@@ -65,8 +65,8 @@ add_compile_options(
 )
 
 add_executable(executable src/main.cpp)
-target_include_directories(executable PUBLIC /usr/include/raptor2 PUBLIC /usr/include/rasqal)
-target_link_libraries(executable Threads::Threads OpenSSL::SSL Boost::system Eigen3::Eigen rdf raptor2)
+#target_include_directories(executable PUBLIC /usr/include/raptor2 PUBLIC /usr/include/rasqal)
+target_link_libraries(executable Threads::Threads OpenSSL::SSL Boost::system Eigen3::Eigen)# rdf raptor2)
 
 add_custom_target(run
   COMMAND executable < ${CMAKE_SOURCE_DIR}/input
