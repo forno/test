@@ -8,7 +8,7 @@ class Score
 public:
     int total() const
     {
-        return total_;
+        return win_ * 2 + draw;
     }
     
     int win() const
@@ -23,7 +23,7 @@ public:
     
     int lose() const
     {
-        return total_ - win_ * 2 - draw_;
+        return lose_;
     }
     
     void add(const char c)
@@ -31,20 +31,20 @@ public:
         switch (c) {
             case 'W':
             ++win_;
-            total_ += 2;
             break;
             case 'D':
             ++draw_;
-            ++total_;
+            case 'L':
+            ++lose_;
             break;
             default:
             ;
         }
     }
 private:
-    int total_;
     int win_;
     int draw_;
+    int lose_;
 };
 
 namespace std
