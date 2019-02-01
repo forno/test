@@ -1,76 +1,49 @@
-#include <iostream>
-#include <vector>
 #include <algorithm>
-using namespace std;
+#include <cassert>
+#include <cstddef>
+#include <cstdint>
+#include <cstdio>
+#include <cstdlib>
+#include <iostream>
+#include <limits>
+#include <map>
+#include <memory>
+#include <numeric>
+#include <random>
+#include <string>
+#include <string_view>
+#include <utility>
+#include <valarray>
 
-class Score
+template<typename T>
+constexpr T get_value(std::istream& is)
 {
-public:
-    int total() const
-    {
-        return win_ * 2 + draw;
-    }
-    
-    int win() const
-    {
-        return win_;
-    }
-    
-    int draw() const
-    {
-        return draw_;
-    }
-    
-    int lose() const
-    {
-        return lose_;
-    }
-    
-    void add(const char c)
-    {
-        switch (c) {
-            case 'W':
-            ++win_;
-            break;
-            case 'D':
-            ++draw_;
-            case 'L':
-            ++lose_;
-            break;
-            default:
-            ;
-        }
-    }
-private:
-    int win_;
-    int draw_;
-    int lose_;
-};
-
-namespace std
-{
-    inline std::ostream& operator<<(std::ostream& os, const Score& s)
-    {
-        os << s.total() << ' ' << s.win() << ' ' << s.draw() << ' ' << s.lose();
-        return os;
-    }
+  T v {};
+  is >> v;
+  return v;
 }
 
-int main(void){
-    std::size_t length;
-    std::cin >> length;
-    std::vector<Score> scores(length);
-    for (auto& v : scores) {
-        for (auto i {length}; i; --i) {
-            char c;
-            std::cin >> c;
-            v.add(c);
-        }
-    }
+int main([[maybe_unused]] int argc, [[maybe_unused]] char** argv)
+{
+  const auto input_length {get_value<std::size_t>(std::cin)};
+  std::map<int, int> used_count {};
 
-    const auto max_score {max_element(scores.begin(), scores.end(), [](const auto& lhs, const auto& rhs){
-        return lhs.total() < rhs.total();
-    })};
-    cout << max_score - scores.begin() + 1 << ' ' << *max_score;
-    return 0;
+  for (auto i {input_length}; i; --i) {
+    const auto input {get_value<int>(std::cin)};
+    ++used_count[input];
+  }
+
+  const auto max_value {std::max_element(used_count.begin(), used_count.end(), [](const auto& lhs, const auto& rhs){
+    return lhs.second < rhs.second;
+  })->second};
+
+  bool is_first {false};
+  for (auto& v : used_count) {
+    if (v.second == max_value) {
+      if (std::exchange(is_first, true)) {
+        std::cout.put(' ');
+      }
+      std::cout << v.first;
+    }
+  }
 }
