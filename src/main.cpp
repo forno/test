@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <cassert>
+#include <cmath>
 #include <cstddef>
 #include <cstdint>
 #include <cstdio>
@@ -25,25 +26,22 @@ constexpr T get_value(std::istream& is)
 
 int main([[maybe_unused]] int argc, [[maybe_unused]] char** argv)
 {
-  const auto input_length {get_value<std::size_t>(std::cin)};
-  std::map<int, int> used_count {};
-
-  for (auto i {input_length}; i; --i) {
-    const auto input {get_value<int>(std::cin)};
-    ++used_count[input];
-  }
-
-  const auto max_value {std::max_element(used_count.begin(), used_count.end(), [](const auto& lhs, const auto& rhs){
-    return lhs.second < rhs.second;
-  })->second};
-
-  bool is_first {false};
-  for (auto& v : used_count) {
-    if (v.second == max_value) {
-      if (std::exchange(is_first, true)) {
-        std::cout.put(' ');
-      }
-      std::cout << v.first;
-    }
-  }
+	int A, B, C, X;
+	int total;
+	int ans = 0;
+	std::cin >> A >> B >> C >> X;
+	for (int i = 0; i <= A; ++i) {
+    std::cout << "i";
+		for (int j = 0; j <= B; ++j) {
+      std::cout << "j";
+			for (int k = 0; k <= C; ++k) {
+        std::cout << "k";
+				total = 500*i + 100*j + 50*k;
+				if (total == X) ++ans;
+			}
+		}
+    std::cout << '\n';
+	}
+	std::cout << ans << std::endl;
+	return 0;
 }
