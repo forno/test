@@ -1,11 +1,18 @@
+#include <algorithm>
+#include <chrono>
 #include <cstdlib>
 #include <iomanip>
 #include <iostream>
 #include <locale>
+#include <random>
 #include <sstream>
 #include <string>
 #include <string_view>
+#include <utility>
+#include <vector>
 
+#include <boost/archive/iterators/base64_from_binary.hpp>
+#include <boost/archive/iterators/transform_width.hpp>
 #include <boost/asio/connect.hpp>
 #include <boost/asio/ip/tcp.hpp>
 #include <boost/asio/ssl/error.hpp>
@@ -13,6 +20,8 @@
 #include <boost/beast/core.hpp>
 #include <boost/beast/http.hpp>
 #include <boost/beast/version.hpp>
+
+#include <openssl/hmac.h>
 
 namespace
 {
@@ -47,29 +56,139 @@ std::string encode_percent_encoding(std::string_view sv)
   return ss.str();
 }
 
+template<typename T>
+std::string get_authorizing_oauth_value(T begin, T end)
+{
+  std::sort(begin, end);
+  std::string result{"OAuth "};
+  bool is_first {true};
+  for (auto it{begin}; it != end; ++it) {
+    if (!std::exchange(is_first, false)) {
+      result.append(", ");
+    }
+    result.append(encode_percent_encoding(it->first)).append("=\"").append(encode_percent_encoding(it->second).append(1, '"'));
+  }
+  return result;
+}
+
+std::string hash_hmac_sha1(const std::string& key, const std::string& data)
+{
+  char result[21]{'\0'};
+  unsigned int read_count;
+  HMAC(EVP_sha1(), key.data(), key.size(), reinterpret_cast<const unsigned char*>(data.data()), data.size(), reinterpret_cast<unsigned char*>(result), &read_count);
+  return {result};
+}
+
+std::string encode64(std::string_view val)
+{
+  using namespace boost::archive::iterators;
+  using It = base64_from_binary<transform_width<std::string::const_iterator, 6, 8>>;
+  auto tmp = std::string(It(std::begin(val)), It(std::end(val)));
+  return tmp.append((3 - val.size() % 3) % 3, '=');
+}
+
+template<typename T>
+std::string encode_url(T begin, T end)
+{
+  std::vector<std::pair<std::string, std::string>> encorded{};
+  for (auto it{begin}; it != end; ++it) {
+    encorded.emplace_back(encode_percent_encoding(it->first), encode_percent_encoding(it->second));
+  }
+  std::string result;
+  bool is_first {true};
+  for (const auto& v : encorded) {
+    if (!std::exchange(is_first, false)) {
+      result.append(1, '&');
+    }
+    result.append(v.first).append(1, '=').append(v.second);
+  }
+  return result;
+}
+
+template<typename T>
+std::string signature_oauth_hmac_sha1(std::string_view key, const boost::beast::http::request<boost::beast::http::string_body>& req, T begin, T end)
+{
+  std::vector<std::pair<std::string, std::string>> encorded{};
+  for (auto it{begin}; it != end; ++it) {
+    encorded.emplace_back(encode_percent_encoding(it->first), encode_percent_encoding(it->second));
+  }
+  std::sort(encorded.begin(), encorded.end());
+  std::string concatenated {};
+  bool is_first {true};
+  for (const auto& v : encorded) {
+    if (!std::exchange(is_first, false)) {
+      concatenated.append(1, '&');
+    }
+    concatenated.append(v.first).append(1, '=').append(v.second);
+  }
+
+  std::string result {req.method_string()};
+  const auto host{req.at(boost::beast::http::field::host)};
+  const auto target{req.target()};
+  result.append("&https").append(encode_percent_encoding("://")).append(encode_percent_encoding(std::string{host})).append(encode_percent_encoding(std::string{target})).append(1, '&').append(encode_percent_encoding(concatenated));
+  const auto sha1_hash {hash_hmac_sha1({key.begin(), key.end()}, result)};
+  return encode64(sha1_hash);
+}
+
 }
 
 int main(int argc, char** argv)
 {
-  for (std::string s; std::getline(std::cin, s);) {
-    std::cout << encode_percent_encoding(s) << '\n';
-  }
-  return EXIT_SUCCESS;
-
   try {
-    constexpr auto host{"example.com"};
+    constexpr auto host{"api.twitter.com"};
     constexpr auto method{"https"};
-    constexpr auto target{"/"};
+    constexpr auto target{"/1.1/statuses/update.json"};
     constexpr auto version{11};
+    //const std::vector<std::pair<std::string, std::string>> oauth_parameters_template {
+    //  {"oauth_consumer_key", "xvz1evFS4wEEPTGEFPHBog"},
+    //  {"oauth_nonce", "kYjzVBB8Y0ZFabxSWbWovY3uYSQ2pTgmZeNu2VS4cg"},
+    //  {"oauth_signature_method", "HMAC-SHA1"},
+    //  {"oauth_timestamp", "1318622958"},
+    //  {"oauth_token", "370773112-GmHxMAgYyLbNEtIKZeRNFsMKPR9EyMZeS9weJAEb"},
+    //  {"oauth_version", "1.0"}
+    //};
+    //const std::vector<std::pair<std::string, std::string>> body_parameters {
+    //  {"include_entities", "true"},
+    //  {"status", u8"Hello Ladies + Gentlemen, a signed OAuth request!"}
+    //};
+    const std::vector<std::pair<std::string, std::string>> oauth_parameters_template {
+      {"oauth_consumer_key", "scW8F15dhrq1kgJqHSfb68zg7"},
+      {"oauth_nonce", ""},
+      {"oauth_signature_method", "HMAC-SHA1"},
+      {"oauth_timestamp", ""},
+      {"oauth_token", "916970816-drmPmiKefCKNE6hiy0E0SU1J988dx1czhuQ4EBjV"},
+      {"oauth_version", "1.0"}
+    };
+    const std::vector<std::pair<std::string, std::string>> body_parameters {
+      {"include_entities", "true"},
+      {"status", u8"Test text by FORNO app"}
+    };
 
     boost::asio::io_context ioc{};
     boost::asio::ssl::context ctx{boost::asio::ssl::context::tlsv12_client};
     ctx.set_default_verify_paths();
     boost::asio::ssl::stream<boost::asio::ip::tcp::socket> stream{ioc, ctx};
 
-    boost::beast::http::request<boost::beast::http::string_body> req{boost::beast::http::verb::get, target, version};
+    boost::beast::http::request<boost::beast::http::string_body> req{boost::beast::http::verb::post, target, version};
     req.set(boost::beast::http::field::host, host);
     req.set(boost::beast::http::field::user_agent, BOOST_BEAST_VERSION_STRING);
+    req.set(boost::beast::http::field::content_type, "application/x-www-form-urlencoded");
+    req.body() = encode_url(body_parameters.begin(), body_parameters.end());
+    req.content_length(req.body().size());
+
+    auto oauth_parameters {oauth_parameters_template};
+    const auto find_value_by_first{[](const auto& value){return [value](const auto& v){return v.first == value;};}};
+    std::find_if(oauth_parameters.begin(), oauth_parameters.end(), find_value_by_first("oauth_nonce"))->second = std::to_string(std::random_device{}());
+    std::find_if(oauth_parameters.begin(), oauth_parameters.end(), find_value_by_first("oauth_timestamp"))->second = std::to_string(std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count());
+
+    auto signature_parameters {oauth_parameters};
+    signature_parameters.insert(signature_parameters.end(), body_parameters.begin(), body_parameters.end());
+    const auto signature {signature_oauth_hmac_sha1("e52iAkfuPpXgPs7HaXvaaojYCpykPVb6Ii3PYN5xM0Zo0rLFv2&HLuAJiIxnyzsKMb0CwJRws71IAtC5D6sQiJvHshgVemKx", req, signature_parameters.begin(), signature_parameters.end())};
+    //const auto signature {signature_oauth_hmac_sha1("kAcSOqF21Fu85e7zjz7ZN2U4ZRhfV3WpwPAoE3Z7kBw&LswwdoUaIvS8ltyTt5jkRh4J50vUPVVHtR2YPi5kE", req, signature_parameters.begin(), signature_parameters.end())};
+    oauth_parameters.emplace_back("oauth_signature", signature);
+    req.set("Authorization", get_authorizing_oauth_value(oauth_parameters.begin(), oauth_parameters.end()));
+
+    std::cout << req << "\n\n";
 
     boost::asio::connect(stream.next_layer(), boost::asio::ip::tcp::resolver{ioc}.resolve(host, method));
     stream.handshake(boost::asio::ssl::stream_base::client);
