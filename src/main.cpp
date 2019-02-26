@@ -1,11 +1,14 @@
-#include <boost/beast/core.hpp>
-#include <boost/beast/http.hpp>
-#include <boost/beast/version.hpp>
-#include <boost/asio/connect.hpp>
-#include <boost/asio/ip/tcp.hpp>
 #include <cstdlib>
 #include <iostream>
 #include <string>
+
+#include <boost/asio/connect.hpp>
+#include <boost/asio/ip/tcp.hpp>
+#include <boost/asio/ssl/error.hpp>
+#include <boost/asio/ssl/stream.hpp>
+#include <boost/beast/core.hpp>
+#include <boost/beast/http.hpp>
+#include <boost/beast/version.hpp>
 
 int main(int argc, char** argv)
 {
@@ -13,31 +16,34 @@ int main(int argc, char** argv)
   namespace http = boost::beast::http;
 
   try {
-    constexpr auto host {"example.com"};
-    constexpr auto method {"http"};
-    constexpr auto target {"/"};
-    constexpr auto version {11};
+    constexpr auto host{"example.com"};
+    constexpr auto method{"https"};
+    constexpr auto target{"/"};
+    constexpr auto version{11};
 
-    boost::asio::io_context ioc {};
+    boost::asio::io_context ioc{};
+    boost::asio::ssl::context ctx{boost::asio::ssl::context::tlsv12_client};
+    ctx.set_default_verify_paths();
+    boost::asio::ssl::stream<boost::asio::ip::tcp::socket> stream{ioc, ctx};
 
     http::request<http::string_body> req{http::verb::get, target, version};
     req.set(http::field::host, host);
     req.set(http::field::user_agent, BOOST_BEAST_VERSION_STRING);
 
-    tcp::socket socket{ioc};
-    boost::asio::connect(socket, tcp::resolver{ioc}.resolve(host, method));
+    boost::asio::connect(stream.next_layer(), tcp::resolver{ioc}.resolve(host, method));
+    stream.handshake(boost::asio::ssl::stream_base::client);
 
-    http::write(socket, req);
+    http::write(stream, req);
 
     boost::beast::flat_buffer buffer;
     http::response<http::dynamic_body> res;
-    http::read(socket, buffer, res);
+    http::read(stream, buffer, res);
 
     std::cout << res << std::endl;
 
     boost::system::error_code ec;
-    socket.shutdown(tcp::socket::shutdown_both, ec);
-    if(ec && ec != boost::system::errc::not_connected)
+    stream.shutdown(ec);
+    if(ec && ec != boost::asio::error::eof)
       throw boost::system::system_error{ec};
   } catch(const std::exception& e) {
     std::cerr << "Error: " << e.what() << std::endl;
