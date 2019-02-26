@@ -3,6 +3,7 @@
 #include <cstdlib>
 #include <iomanip>
 #include <iostream>
+#include <limits>
 #include <locale>
 #include <random>
 #include <sstream>
@@ -130,38 +131,49 @@ std::string signature_oauth_hmac_sha1(std::string_view key, const boost::beast::
   return encode64(sha1_hash);
 }
 
+template<typename T>
+T get_value(std::istream& is)
+{
+  T v;
+  is >> v;
+  return v;
+}
+
+std::string get_string_to_eof(std::istream& is)
+{
+  return {std::istreambuf_iterator<char>{is}, std::istreambuf_iterator<char>{}};
+}
+
 }
 
 int main(int argc, char** argv)
 {
+  constexpr auto host{"api.twitter.com"};
+  constexpr auto method{"https"};
+  constexpr auto target{"/1.1/statuses/update.json"};
+  constexpr auto version{11};
+  const std::vector<std::pair<std::string, std::string>> oauth_parameters_template {
+    {"oauth_consumer_key", argv[1]},
+    {"oauth_nonce", ""},
+    {"oauth_signature_method", "HMAC-SHA1"},
+    {"oauth_timestamp", ""},
+    {"oauth_token", argv[2]},
+    {"oauth_version", "1.0"}
+  };
+
+  if (argc < 3) {
+    std::cout << "This application need 2 arguments:\nex) " << *argv << " [API key] [Access token secret]\n";
+    return EXIT_SUCCESS;
+  }
+
   try {
-    constexpr auto host{"api.twitter.com"};
-    constexpr auto method{"https"};
-    constexpr auto target{"/1.1/statuses/update.json"};
-    constexpr auto version{11};
-    //const std::vector<std::pair<std::string, std::string>> oauth_parameters_template {
-    //  {"oauth_consumer_key", "xvz1evFS4wEEPTGEFPHBog"},
-    //  {"oauth_nonce", "kYjzVBB8Y0ZFabxSWbWovY3uYSQ2pTgmZeNu2VS4cg"},
-    //  {"oauth_signature_method", "HMAC-SHA1"},
-    //  {"oauth_timestamp", "1318622958"},
-    //  {"oauth_token", "370773112-GmHxMAgYyLbNEtIKZeRNFsMKPR9EyMZeS9weJAEb"},
-    //  {"oauth_version", "1.0"}
-    //};
-    //const std::vector<std::pair<std::string, std::string>> body_parameters {
-    //  {"include_entities", "true"},
-    //  {"status", u8"Hello Ladies + Gentlemen, a signed OAuth request!"}
-    //};
-    const std::vector<std::pair<std::string, std::string>> oauth_parameters_template {
-      {"oauth_consumer_key", "scW8F15dhrq1kgJqHSfb68zg7"},
-      {"oauth_nonce", ""},
-      {"oauth_signature_method", "HMAC-SHA1"},
-      {"oauth_timestamp", ""},
-      {"oauth_token", "916970816-drmPmiKefCKNE6hiy0E0SU1J988dx1czhuQ4EBjV"},
-      {"oauth_version", "1.0"}
-    };
+    const auto api_secret_key {get_value<std::string>(std::cin)};
+    const auto api_secret_key_encorded {encode_percent_encoding(api_secret_key)};
+    const auto access_token_secret {get_value<std::string>(std::cin)};
+    const auto access_token_secret_encorded {encode_percent_encoding(access_token_secret)};
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     const std::vector<std::pair<std::string, std::string>> body_parameters {
-      {"include_entities", "true"},
-      {"status", u8"Test text by FORNO app"}
+      {"status", get_string_to_eof(std::cin)}
     };
 
     boost::asio::io_context ioc{};
@@ -183,8 +195,7 @@ int main(int argc, char** argv)
 
     auto signature_parameters {oauth_parameters};
     signature_parameters.insert(signature_parameters.end(), body_parameters.begin(), body_parameters.end());
-    const auto signature {signature_oauth_hmac_sha1("e52iAkfuPpXgPs7HaXvaaojYCpykPVb6Ii3PYN5xM0Zo0rLFv2&HLuAJiIxnyzsKMb0CwJRws71IAtC5D6sQiJvHshgVemKx", req, signature_parameters.begin(), signature_parameters.end())};
-    //const auto signature {signature_oauth_hmac_sha1("kAcSOqF21Fu85e7zjz7ZN2U4ZRhfV3WpwPAoE3Z7kBw&LswwdoUaIvS8ltyTt5jkRh4J50vUPVVHtR2YPi5kE", req, signature_parameters.begin(), signature_parameters.end())};
+    const auto signature {signature_oauth_hmac_sha1(api_secret_key + '&' + access_token_secret, req, signature_parameters.begin(), signature_parameters.end())};
     oauth_parameters.emplace_back("oauth_signature", signature);
     req.set("Authorization", get_authorizing_oauth_value(oauth_parameters.begin(), oauth_parameters.end()));
 
