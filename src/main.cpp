@@ -1,6 +1,10 @@
 #include <cstdlib>
+#include <iomanip>
 #include <iostream>
+#include <locale>
+#include <sstream>
 #include <string>
+#include <string_view>
 
 #include <boost/asio/connect.hpp>
 #include <boost/asio/ip/tcp.hpp>
@@ -10,8 +14,48 @@
 #include <boost/beast/http.hpp>
 #include <boost/beast/version.hpp>
 
+namespace
+{
+
+bool is_whitelist_character_of_percent_encoding(char v)
+{
+  if (std::isalpha(v) || std::isdigit(v)) {
+    return true;
+  }
+  switch (v) {
+  case '-':
+  case '.':
+  case '_':
+  case '~':
+    return true;
+  }
+  return false;
+}
+
+std::string encode_percent_encoding(std::string_view sv)
+{
+  std::stringstream ss{};
+  ss << std::hex << std::uppercase << std::setfill('0');
+  for (unsigned char v : sv) {
+    if (is_whitelist_character_of_percent_encoding(v)) {
+      ss.put(v);
+    } else {
+      ss.put('%');
+      ss << std::setw(2) << static_cast<int>(v);
+    }
+  }
+  return ss.str();
+}
+
+}
+
 int main(int argc, char** argv)
 {
+  for (std::string s; std::getline(std::cin, s);) {
+    std::cout << encode_percent_encoding(s) << '\n';
+  }
+  return EXIT_SUCCESS;
+
   try {
     constexpr auto host{"example.com"};
     constexpr auto method{"https"};
