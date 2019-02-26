@@ -12,9 +12,6 @@
 
 int main(int argc, char** argv)
 {
-  using tcp = boost::asio::ip::tcp;
-  namespace http = boost::beast::http;
-
   try {
     constexpr auto host{"example.com"};
     constexpr auto method{"https"};
@@ -26,18 +23,18 @@ int main(int argc, char** argv)
     ctx.set_default_verify_paths();
     boost::asio::ssl::stream<boost::asio::ip::tcp::socket> stream{ioc, ctx};
 
-    http::request<http::string_body> req{http::verb::get, target, version};
-    req.set(http::field::host, host);
-    req.set(http::field::user_agent, BOOST_BEAST_VERSION_STRING);
+    boost::beast::http::request<boost::beast::http::string_body> req{boost::beast::http::verb::get, target, version};
+    req.set(boost::beast::http::field::host, host);
+    req.set(boost::beast::http::field::user_agent, BOOST_BEAST_VERSION_STRING);
 
-    boost::asio::connect(stream.next_layer(), tcp::resolver{ioc}.resolve(host, method));
+    boost::asio::connect(stream.next_layer(), boost::asio::ip::tcp::resolver{ioc}.resolve(host, method));
     stream.handshake(boost::asio::ssl::stream_base::client);
 
-    http::write(stream, req);
+    boost::beast::http::write(stream, req);
 
     boost::beast::flat_buffer buffer;
-    http::response<http::dynamic_body> res;
-    http::read(stream, buffer, res);
+    boost::beast::http::response<boost::beast::http::dynamic_body> res;
+    boost::beast::http::read(stream, buffer, res);
 
     std::cout << res << std::endl;
 
