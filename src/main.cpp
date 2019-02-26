@@ -7,15 +7,14 @@
 #include <iostream>
 #include <string>
 
-using tcp = boost::asio::ip::tcp;       // from <boost/asio/ip/tcp.hpp>
-namespace http = boost::beast::http;    // from <boost/beast/http.hpp>
-
-// Performs an HTTP GET and prints the response
 int main(int argc, char** argv)
 {
+  using tcp = boost::asio::ip::tcp;
+  namespace http = boost::beast::http;
+
   try {
     constexpr auto host {"example.com"};
-    constexpr auto port {"80"};
+    constexpr auto method {"http"};
     constexpr auto target {"/"};
     constexpr auto version {11};
 
@@ -26,7 +25,7 @@ int main(int argc, char** argv)
     req.set(http::field::user_agent, BOOST_BEAST_VERSION_STRING);
 
     tcp::socket socket{ioc};
-    boost::asio::connect(socket, tcp::resolver{ioc}.resolve(host, port));
+    boost::asio::connect(socket, tcp::resolver{ioc}.resolve(host, method));
 
     http::write(socket, req);
 
