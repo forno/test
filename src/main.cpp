@@ -1,20 +1,7 @@
-#include <algorithm>
-#include <chrono>
-#include <cstdlib>
-#include <iomanip>
 #include <iostream>
-#include <limits>
-#include <locale>
-#include <numeric>
-#include <random>
-#include <sstream>
-#include <string>
-#include <string_view>
-#include <utility>
-#include <vector>
 
 template<typename T>
-T get_value(std::istream& is)
+inline T get_value(std::istream& is)
 {
   T v;
   is >> v;
@@ -30,7 +17,7 @@ T gcd_impl(T a, T b) {
 }
 
 template<typename T>
-T gcd(T a, T b)
+inline T gcd(T a, T b)
 {
   return a > b ? gcd_impl(a, b) : gcd_impl(b, a);
 }
@@ -39,6 +26,9 @@ int main()
 {
   using std::cin;
   using std::cout;
+
+  cin.tie(nullptr);
+  std::ios_base::sync_with_stdio(false);
 
   const auto size{get_value<std::size_t>(cin)};
   auto ans{get_value<unsigned int>(cin)};
