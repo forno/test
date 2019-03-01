@@ -2,7 +2,7 @@
 #include <string>
 
 template<typename T>
-inline T get_value(std::istream& is);
+T get_value(std::istream& is);
 
 int main()
 {
