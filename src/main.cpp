@@ -12,7 +12,8 @@ int main()
   cin.tie(nullptr);
   std::ios_base::sync_with_stdio(false);
 
-  auto ans{get_value<int>(cin)};
+  std::cin >> std::boolalpha;
+  auto ans{get_value<bool>(cin)};
   cout << ans << '\n';
 }
 
