@@ -56,6 +56,7 @@ set(GNU_WARN_OPTIONS
   -Wuseless-cast
   -Wvla
   -Wzero-as-null-pointer-constant
+  --pedantic-errors
 )
 
 add_compile_options(
