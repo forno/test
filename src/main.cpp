@@ -12,7 +12,7 @@ int main(int argc, char** argv)
   cin.tie(nullptr);
   std::ios_base::sync_with_stdio(false);
 
-  std::cin >> std::boolalpha;
+  cin >> std::boolalpha;
   auto ans{get_value<bool>(cin)};
   cout << ans << '\n';
 }
