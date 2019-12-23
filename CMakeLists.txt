@@ -1,7 +1,7 @@
-cmake_minimum_required(VERSION 3.14)
+cmake_minimum_required(VERSION 3.16)
 project(test)
 
-set(CMAKE_CXX_STANDARD          17  CACHE STRING "CXX standard version")
+set(CMAKE_CXX_STANDARD          20  CACHE STRING "CXX standard version")
 set(CMAKE_CXX_STANDARD_REQUIRED ON  CACHE BOOL   "version required")
 set(CMAKE_CXX_EXTENSIONS        OFF CACHE BOOL   "compiler extension")
 
@@ -19,7 +19,6 @@ set(GNU_WARN_OPTIONS
   -Walloc-zero
   -Walloca
   -Wcast-qual
-  -Wchkp
   -Wconditionally-supported
   -Wconversion
   -Wdate-time
