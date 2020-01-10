@@ -71,3 +71,8 @@ add_custom_target(run
   COMMAND executable < ${CMAKE_SOURCE_DIR}/input
   DEPENDS executable
   WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
+
+# For WSL clipboard
+add_custom_target(clip
+  DEPENDS executable
+  COMMAND clip.exe < ${CMAKE_SOURCE_DIR}/src/main.cpp)
