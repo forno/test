@@ -24,7 +24,7 @@ ll llsize(const C(&)[N]);
 
 ll llgcd(ll a, ll b);
 ll lllcm(ll a, ll b);
-ll lllog2p1(ll x);
+ll lllog2(ll x);
 }
 using namespace forno;
 
@@ -33,7 +33,7 @@ using namespace forno;
 void task();
 void task()
 {
-  vector<ll> v(get_value<size_t>(cin));
+  vector<ll> v(input<size_t>());
   const auto limitation {input<ll>()};
   inputfill(v);
   for (auto& e: v) {
@@ -43,9 +43,9 @@ void task()
     }
     e >>= 1; // divide 2
   }
-  const auto t {lllog2p1(v[0])};
+  const auto t {lllog2(v[0])};
   for (auto& e: v) {
-    if (t != lllog2p1(e)) {
+    if (t != lllog2(e)) {
       cout << "0\n";
       return;
     }
@@ -62,7 +62,7 @@ void task()
     }
   }
 
-  cout << m << ' ' << (m/l + 1) / 2 << '\n';
+  cout << (m/l + 1) / 2 << '\n';
   return;
 }
 
@@ -128,12 +128,12 @@ ll lllcm(ll a, ll b)
   return a / gcd(a, b) * b;
 }
 
-ll lllog2p1(ll x)
+ll lllog2(ll x)
 {
   ll res {0};
   for (;!(x % 2); ++res)
     x >>= 1;
-  return res + 1;
+  return res;
 }
 
 }
