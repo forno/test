@@ -31,7 +31,6 @@ using namespace forno;
 
 int main()
 {
-  std::cout << true << '\n';
   return 0;
 }
 
@@ -60,7 +59,7 @@ namespace forno
 {
 
 template<typename T>
-inline T get_value(std::istream& is)
+T get_value(std::istream& is)
 {
   T v;
   is >> v;
