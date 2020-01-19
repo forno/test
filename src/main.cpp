@@ -49,7 +49,7 @@ class initalization
 public:
   initalization()
   {
-    std::cin.sync_with_stdio(false);
+    std::ios_base::sync_with_stdio(false);
     std::cin.tie(nullptr);
     std::cout << std::boolalpha;
     std::cout.imbue(std::locale(std::cout.getloc(), new custom_numpunct{}));
