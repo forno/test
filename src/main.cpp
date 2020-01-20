@@ -4,10 +4,10 @@ using namespace std::literals::chrono_literals;
 using namespace std::literals::string_literals;
 using ll = long long;
 
-#define repi(i, s, n) for (ll i {s}; i##_len{n}; i < i##_len; ++i)
+#define repi(i, s, n) for (ll i {s}, i##_len{n}; i < i##_len; ++i)
 #define rep(i, n) repi(i, 0, n)
 #define each(e, c) for (auto& e: c)
-#define all(x) (x).begin(), (x).end()
+#define all(x) std::begin(x), std::end(x)
 
 namespace forno
 {
