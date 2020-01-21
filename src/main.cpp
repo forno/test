@@ -10,14 +10,10 @@ using ll = long long;
 
 namespace forno
 {
-template<typename T>
-T get_value(std::istream& is);
-template<typename T>
-T input();
-template<typename C>
-void container_fill(C& c, std::istream& is);
-template<typename C>
-void inputfill(C& c);
+template<typename T, typename... Args>
+T get_value(std::basic_istream<Args...>& is = std::cin);
+template<typename C, typename... Args>
+C get_container(std::basic_istream<Args...>& is = std::cin, typename C::size_type length = std::numeric_limits<typename C::size_type>::max());
 template<typename C>
 ll llsize(const C& c);
 template<typename C, size_t N>
@@ -29,8 +25,41 @@ ll lllog2(ll x);
 }
 using namespace forno;
 
+template<typename T>
+class myvec : public std::vector<T>
+{
+public:
+  void push_back(const T& x)
+  {
+    cout << "myvec push_back\n";
+    vector<T>::push_back(x);
+  }
+
+  void push_back(T&& x)
+  {
+    cout << "myvec push_back with move\n";
+    vector<T>::push_back(std::move(x));
+  }
+
+  vector<T>::iterator insert(vector<T>::const_iterator it, const T& x)
+  {
+    cout << "myvec insert\n";
+    return vector<T>::insert(it, x);
+  }
+
+  vector<T>::iterator insert(vector<T>::const_iterator it, T&& x)
+  {
+    cout << "myvec insert with move\n";
+    return vector<T>::insert(it, std::move(x));
+  }
+};
+
 int main()
 {
+  istringstream iss {"1 1 1 1 1 1 1 1 1 1 1 1 1 1 1"s};
+  get_container<vector<int>>(cin, 5);
+  get_container<myvec<int>>(cin, 5);
+  get_container<unordered_set<int>>(cin, 5);
   return 0;
 }
 
@@ -58,31 +87,48 @@ public:
 namespace forno
 {
 
-template<typename T>
-T get_value(std::istream& is)
+template<typename T, typename... Args>
+T get_value(std::basic_istream<Args...>& is)
 {
-  T v;
+  T v {};
   is >> v;
   return v;
 }
 
+namespace detail
+{
+
+struct test
+{
+  template<typename T>
+  static auto has_push_back_impl(nullptr_t) -> decltype(std::declval<T>().push_back(std::declval<typename T::value_type>()), std::true_type{});
+
+  template<typename T>
+  static auto has_push_back_impl(...) -> std::false_type;
+};
+
 template<typename T>
-T input()
-{
-  return get_value<T>(std::cin);
+struct has_push_back
+  : decltype(test::has_push_back_impl<T>(nullptr)) {};
+
 }
 
-template<typename C>
-void container_fill(C& c, std::istream& is)
+template<typename C, typename... Args>
+C get_container(std::basic_istream<Args...>& is, typename C::size_type length)
 {
-  for (auto& e: c)
-    is >> e;
-}
-
-template<typename C>
-void inputfill(C& c)
-{
-  container_fill(c, std::cin);
+  C v {};
+  if (length != std::numeric_limits<typename C::size_type>::max())
+    v.reserve(length);
+  typename C::value_type e {};
+  for (auto i {length}; i != 0 && is >> e; --i) {
+    if constexpr (detail::has_push_back<C>{}) {
+      v.push_back(std::move_if_noexcept(e));
+    } else {
+      using std::cend;
+      v.insert(cend(v), std::move_if_noexcept(e));
+    }
+  }
+  return v;
 }
 
 template<typename C>
