@@ -98,18 +98,18 @@ T get_value(std::basic_istream<Args...>& is)
 namespace detail
 {
 
-struct test
-{
-  template<typename T>
-  static auto has_push_back_impl(nullptr_t) -> decltype(std::declval<T>().push_back(std::declval<typename T::value_type>()), std::true_type{});
+template<typename T>
+auto has_push_back_impl(nullptr_t) -> decltype(
+  std::declval<T>().push_back(std::declval<typename T::value_type>()),
+  std::true_type{});
 
-  template<typename T>
-  static auto has_push_back_impl(...) -> std::false_type;
-};
+template<typename T>
+auto has_push_back_impl(...) -> std::false_type;
 
 template<typename T>
 struct has_push_back
-  : decltype(test::has_push_back_impl<T>(nullptr)) {};
+  : decltype(has_push_back_impl<T>(nullptr))
+{};
 
 }
 
