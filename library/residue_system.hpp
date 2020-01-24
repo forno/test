@@ -1,6 +1,6 @@
 namespace xmaho
 {
-inline namespace math
+namespace math // no inline for c++17 or newer env
 {
 template<std::size_t modulo, typename T = long long>
 class residue_system
