@@ -24,7 +24,7 @@ inline namespace integer
 {
 template<typename C>
 constexpr auto ssize(const C& c) noexcept(noexcept(c.size()))
-  -> std::common_type<std::ptrdiff_t, typename std::make_signed<decltype(c.size())>::type>::type;
+  -> typename std::common_type<std::ptrdiff_t, typename std::make_signed<decltype(c.size())>::type>::type;
 template <class T, ptrdiff_t N>
 constexpr std::ptrdiff_t ssize(const T (&)[N]) noexcept;
 }
@@ -33,9 +33,7 @@ using namespace xmaho;
 
 int main()
 {
-  array a {0, 1, 2, 3, 4};
-  cout << ssize(a);
-
+  cout << (get_value<int>() == get_value<int>()) << '\n';
   return 0;
 }
 
@@ -78,7 +76,7 @@ C xmaho::input::get_container(std::istream& is, typename C::size_type length)
 
 template<typename C>
 constexpr auto xmaho::integer::ssize(const C& c) noexcept(noexcept(c.size()))
-  -> std::common_type<std::ptrdiff_t, typename std::make_signed<decltype(c.size())>::type>::type
+  -> typename std::common_type<std::ptrdiff_t, typename std::make_signed<decltype(c.size())>::type>::type
 { return c.size(); }
 
 template <class T, ptrdiff_t N>
