@@ -4,7 +4,7 @@ using namespace std::literals::chrono_literals;
 using namespace std::literals::string_literals;
 using ll = long long;
 
-#define repi(i, s, n) for (ll i {s}, i##_len{n}; i < i##_len; ++i)
+#define repi(i, s, n) for (long long i {s}, i##_len{n}; i < i##_len; ++i)
 #define rep(i, n) repi(i, 0, n)
 #define all(x) std::begin(x), std::end(x)
 
@@ -48,11 +48,7 @@ public:
 
 template<typename T>
 T xmaho::input::get_value(std::istream& is)
-{
-  T v {};
-  is >> v;
-  return v;
-}
+{ T v {}; is >> v; return v; }
 
 template<typename C>
 C xmaho::input::get_container(std::istream& is, typename C::size_type length)

@@ -1,10 +1,6 @@
 template<typename T>
 T xmaho::input::get_value(std::istream& is)
-{
-  T v {};
-  is >> v;
-  return v;
-}
+{ T v {}; is >> v; return v; }
 
 template<typename C>
 C xmaho::input::get_container(std::istream& is, typename C::size_type length)
