@@ -41,7 +41,7 @@ class residue_system
   static_assert(std::is_nothrow_move_constructible<T>::value ||
                 std::is_nothrow_copy_constructible<T>::value, "T must can be maked by T");
   static_assert(noexcept(T{} + T{}), "T must can be noexcept addition by T");
-  static_assert(noexcept(std::declval<T&> -= T{}), "T must can be noexcept assign with subtraction by T");
+  static_assert(noexcept(std::declval<T&>() -= T{}), "T must can be noexcept assign with subtraction by T");
   static_assert(noexcept(T{} - T{}), "T must can be noexcept assign with subtraction by T");
   static_assert(noexcept(T{} % T{}), "T must can be noexcept dividion by T");
   static_assert(noexcept(T{} >= T{}), "T must can be compared with T");
@@ -91,13 +91,13 @@ template<std::size_t modulo, typename T>
 constexpr void swap(residue_system<modulo, T>& a, residue_system<modulo, T>& b) noexcept;
 template<std::size_t modulo, typename T>
 constexpr residue_system<modulo, T> operator%(const T& lhs, const residue_system<modulo, T>& rhs) // no limited lhs
-  noexcept(std::is_nothrow_copy_constructible<T>::value);
+  noexcept(std::is_nothrow_constructible<residue_system<modulo, T>, T>::value);
 template<std::size_t modulo, typename T>
 constexpr residue_system<modulo, T> operator<<(const T& lhs, const residue_system<modulo, T>& rhs) // no limited lhs
-  noexcept(noexcept(std::declval<T&>() <<= T{}));
+  noexcept(noexcept(std::declval<T&>() << T{}));
 template<std::size_t modulo, typename T>
 constexpr residue_system<modulo, T> operator>>(const T& lhs, const residue_system<modulo, T>& rhs) // no limited lhs
-  noexcept(noexcept(std::declval<T&>() >>= T{}));
+  noexcept(noexcept(std::declval<T&>() >> T{}));
 }
 }
 using namespace xmaho;
@@ -266,16 +266,19 @@ constexpr void xmaho::math::swap(residue_system<modulo, T>& lhs, residue_system<
 { lhs.swap(rhs); }
 
 template<std::size_t modulo, typename T>
-constexpr xmaho::math::residue_system<modulo, T> xmaho::math::operator%(const T& lhs, const residue_system<modulo, T>& rhs) // no limited lhs
-  noexcept(std::is_nothrow_copy_constructible<T>::value)
+constexpr xmaho::math::residue_system<modulo, T>
+xmaho::math::operator%(const T& lhs, const residue_system<modulo, T>& rhs) // no limited lhs
+  noexcept(std::is_nothrow_constructible<residue_system<modulo, T>, T>::value)
 { return {lhs % static_cast<T>(rhs)}; }
 
 template<std::size_t modulo, typename T>
-constexpr xmaho::math::residue_system<modulo, T> xmaho::math::operator<<(const T& lhs, const residue_system<modulo, T>& rhs) // no limited lhs
-  noexcept(noexcept(std::declval<T&>() <<= T{}))
-{ throw std::exception(); }
+constexpr xmaho::math::residue_system<modulo, T>
+xmaho::math::operator<<(const T& lhs, const residue_system<modulo, T>& rhs) // no limited lhs
+  noexcept(noexcept(std::declval<T&>() << T{}))
+{ throw std::exception("xmaho::math::operator<<(const T& lhs, const residue_system<modulo, T>& rhs): No implementation now"); }
 
 template<std::size_t modulo, typename T>
-constexpr xmaho::math::residue_system<modulo, T> xmaho::math::operator>>(const T& lhs, const residue_system<modulo, T>& rhs) // no limited lhs
-  noexcept(noexcept(std::declval<T&>() >>= T{}))
-{ throw std::exception(); }
+constexpr xmaho::math::residue_system<modulo, T>
+xmaho::math::operator>>(const T& lhs, const residue_system<modulo, T>& rhs) // no limited lhs
+  noexcept(noexcept(std::declval<T&>() >> T{}))
+{ return {lhs >> static_cast<T>(rhs)}; }
