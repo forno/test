@@ -42,9 +42,8 @@ class residue_system
                 std::is_nothrow_copy_constructible<T>::value, "T must can be maked by T");
   static_assert(noexcept(T{} + T{}), "T must can be noexcept addition by T");
   static_assert(noexcept(std::declval<T&>() -= T{}), "T must can be noexcept assign with subtraction by T");
-  static_assert(noexcept(T{} - T{}), "T must can be noexcept assign with subtraction by T");
   static_assert(noexcept(T{} % T{}), "T must can be noexcept dividion by T");
-  static_assert(noexcept(T{} >= T{}), "T must can be compared with T");
+  static_assert(noexcept(T{} < T{}), "T must can be compared with T");
   static_assert(noexcept(static_cast<T>(std::size_t{})), "T must can be noexcept convation by std::size_t");
 public:
   using value_type = T;
@@ -58,7 +57,7 @@ public:
   constexpr residue_system& operator+=(const residue_system& rhs) &
     noexcept(noexcept(std::declval<T&>() += T{}));
   constexpr residue_system& operator-=(const residue_system& rhs) &
-    noexcept; // Have a static_assert(noexcept(std::declval<T&>() -= T{}));
+    noexcept(noexcept(std::declval<T&>() += T{}) && noexcept(T{} - T{}));
   constexpr residue_system& operator*=(const residue_system& rhs) &
     noexcept(noexcept(std::declval<T&>() *= T{}));
   constexpr residue_system& operator/=(const residue_system& rhs) &
@@ -110,27 +109,7 @@ using namespace xmaho;
 
 int main()
 {
-  {
-  math::residue_system<static_cast<std::size_t>(1e9+7), long long> rs {};
-  cout << 0 << ' ' << rs << '\n';
-  rs += static_cast<long long>(1e9);
-  cout << 1e9 << ' ' << rs << '\n';
-  rs += 7;
-  cout << 0 << ' ' << rs << '\n';
-  rs -= 7;
-  cout << 1e9 << ' ' << rs << '\n';
-  rs *= 2;
-  cout << 1e9-7 << ' ' << rs << '\n';
-  rs %= 2;
-  cout << 1 << ' ' << rs << '\n';
-  }
-  math::residue_system<7> rs {1};
-  rs <<= 3;
-  cout << 1 << ' ' << rs << '\n';
-  rs <<= 4;
-  cout << 2 << ' ' << rs << '\n';
-  rs <<= 4;
-  cout << (2*16 % 7) << ' ' << rs << '\n';
+  math::residue_system<static_cast<std::size_t>(1e9)> rs;
   return 0;
 }
 
@@ -203,25 +182,25 @@ template<std::size_t modulo, typename T>
 constexpr xmaho::math::residue_system<modulo, T>&
 xmaho::math::residue_system<modulo, T>::operator+=(const residue_system& rhs) &
   noexcept(noexcept(std::declval<T&>() += T{}))
-{ if ((value_ += rhs.value_) >= modulo_value) value_ -= modulo_value; return *this; }
+{ if (modulo_value < (value_ += rhs.value_)) value_ -= modulo_value; return *this; }
 
 template<std::size_t modulo, typename T>
 constexpr xmaho::math::residue_system<modulo, T>&
 xmaho::math::residue_system<modulo, T>::operator-=(const residue_system& rhs) &
-  noexcept
-{ if ((value_ += modulo_value - rhs.value_) >= modulo_value) value_ -= modulo_value; return *this; }
+  noexcept(noexcept(std::declval<T&>() += T{}) && noexcept(T{} - T{}))
+{ if (modulo_value < (value_ += modulo_value - rhs.value_)) value_ -= modulo_value; return *this; }
 
 template<std::size_t modulo, typename T>
 constexpr xmaho::math::residue_system<modulo, T>&
 xmaho::math::residue_system<modulo, T>::operator*=(const residue_system& rhs) &
   noexcept(noexcept(std::declval<T&>() *= T{}))
-{ if ((value_ *= rhs.value_) >= modulo_value) value_ %= modulo_value; return *this; }
+{ if (modulo_value < (value_ *= rhs.value_)) value_ %= modulo_value; return *this; }
 
 template<std::size_t modulo, typename T>
 constexpr xmaho::math::residue_system<modulo, T>&
 xmaho::math::residue_system<modulo, T>::operator/=(const residue_system& rhs) &
   noexcept(noexcept(std::declval<T&>() /= T{}))
-{ if ((value_ /= rhs.value_) >= modulo_value) value_ %= modulo_value; return *this; }
+{ if (modulo_value < (value_ /= rhs.value_)) value_ %= modulo_value; return *this; }
 
 template<std::size_t modulo, typename T>
 constexpr xmaho::math::residue_system<modulo, T>&
@@ -233,7 +212,7 @@ template<std::size_t modulo, typename T>
 constexpr xmaho::math::residue_system<modulo, T>&
 xmaho::math::residue_system<modulo, T>::operator<<=(const T& rhs) & // no limited rhs
   noexcept(noexcept(std::declval<T&>() <<= T{}))
-{ operator*=({1ll << rhs}); return *this; }
+{ operator*=({1ll << rhs}); return *this; } // TODO: check correct
 
 template<std::size_t modulo, typename T>
 constexpr xmaho::math::residue_system<modulo, T>&
