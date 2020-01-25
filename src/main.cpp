@@ -89,6 +89,8 @@ private:
 template<std::size_t modulo, typename T>
 constexpr void swap(residue_system<modulo, T>& a, residue_system<modulo, T>& b) noexcept;
 template<std::size_t modulo, typename T>
+constexpr xmaho::math::residue_system<modulo, T> pow(residue_system<modulo, T> a, const T& b); // no limited lhs // TODO: can it noexcept?
+template<std::size_t modulo, typename T>
 constexpr residue_system<modulo, T> operator%(const T& lhs, const residue_system<modulo, T>& rhs) // no limited lhs
   noexcept(std::is_nothrow_constructible<residue_system<modulo, T>, T>::value);
 template<std::size_t modulo, typename T>
@@ -117,12 +119,15 @@ int main()
   rs res {0};
   rep(i, n) {
     const auto r {n - 1 - i};
-    rs now {n};
-    if (r != 0) now += 1ll << (r - 1);
-    now *= a[i];
+    rs now {r};
+    if (r != 0)
+      now <<= r - 1;
+    now += 1ll << r;
     now <<= i;
-    res += now;
+    now *= a[i];
+    res += std::move(now);
   }
+  res <<= n;
   cout << res << '\n';
   return 0;
 }
@@ -279,6 +284,18 @@ xmaho::math::residue_system<modulo, T>::operator>>(const T& rhs) const // no lim
 template<std::size_t modulo, typename T>
 constexpr void xmaho::math::residue_system<modulo, T>::swap(residue_system& other) noexcept
 { std::swap(value_, other.value_); }
+
+template<std::size_t modulo, typename T>
+constexpr xmaho::math::residue_system<modulo, T>
+xmaho::math::pow(residue_system<modulo, T> a, const T& b)
+{
+  if (b == 0)
+    return {1};
+  a *= a;
+  if (b % 2)
+    a += a;
+  return a;
+}
 
 template<std::size_t modulo, typename T>
 constexpr void xmaho::math::swap(residue_system<modulo, T>& lhs, residue_system<modulo, T>& rhs) noexcept
