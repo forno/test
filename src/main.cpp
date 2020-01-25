@@ -109,7 +109,21 @@ using namespace xmaho;
 
 int main()
 {
-  math::residue_system<static_cast<std::size_t>(1e9)> rs;
+  const auto n {get_value<ll>()};
+  auto a {get_container<vector<ll>>(cin, n)};
+  sort(a.begin(), a.end());
+
+  using rs = math::residue_system<static_cast<std::size_t>(1e9+7)>;
+  rs res {0};
+  rep(i, n) {
+    const auto r {n - 1 - i};
+    rs now {n};
+    if (r != 0) now += 1ll << (r - 1);
+    now *= a[i];
+    now <<= i;
+    res += now;
+  }
+  cout << res << '\n';
   return 0;
 }
 
