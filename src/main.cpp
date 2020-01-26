@@ -33,11 +33,57 @@ using namespace xmaho;
 
 int main()
 {
-  const auto h {get_value<ll>()};
-  const auto a {get_value<ll>()};
+  const auto h {get_value<uint64_t>()};
+  const auto n {get_value<uint64_t>()};
+  vector<std::pair<uint64_t, uint64_t>> magics{};
+  magics.reserve(n);
+  for (auto i {n}; i != 0; --i) {
+    std::pair<uint64_t, uint64_t> p;
+    cin >> p.first >> p.second;
+    magics.push_back(std::move(p));
+  }
+  sort(magics.begin(), magics.end(), [](const auto& lhs, const auto& rhs){return lhs.second < rhs.second;}); // low use point
+  const auto efficiency_comp {[](const auto& lhs, const auto& rhs){return (static_cast<float>(rhs.first) / rhs.second) < (static_cast<float>(lhs.first) / lhs.second);}};
+  stable_sort(magics.begin(), magics.end(), efficiency_comp); // high effect
 
-  cout << ((h + (a - 1))/ a) << '\n';
-  return 0;
+
+  const auto& useful_magic {magics.front()};
+  {
+    vector<float> efficiency(n);
+    transform(magics.begin(), magics.end(), efficiency.begin(), [](const auto& e){return static_cast<float>(e.first) / e.second;});
+
+    auto useful_efficity {efficiency.front()};
+    const auto no_need_it {lower_bound(efficiency.begin(), efficiency.end(), useful_efficity / 2, greater<float>{})};
+    magics.erase(next(magics.begin(), distance(efficiency.begin(), no_need_it)), magics.end());
+    //magics.erase(lower_bound(magics.begin(), magics.end(), static_cast<float>(useful_magic.first) / useful_magic.second, efficiency_comp));
+  }
+
+  // after magics is useful magic only
+  vector<uint64_t> damages(n);
+  transform(magics.begin(), magics.end(), damages.begin(), [](const auto& e){return e.first;});
+  const auto max_damage {*max_element(damages.begin(), damages.end())};
+  if (h <= max_damage) {
+    sort(magics.begin(), magics.end(), [](auto lhs, auto rhs){return lhs.first < rhs.first;});
+    for (const auto& e : magics) {
+      if (h <= e.first) {
+        cout << e.second << '\n';
+        return 0;
+      }
+    }
+    return 1;
+  }
+  uint64_t use_count {(h - max_damage + useful_magic.first - 1) / useful_magic.first};
+  const auto left_h {h - useful_magic.first * use_count};
+  auto res {useful_magic.second * use_count};
+  sort(magics.begin(), magics.end(), [](auto lhs, auto rhs){return lhs.first < rhs.first;});
+  for (const auto& e : magics) {
+    if (left_h <= e.first) {
+      cout << res + e.second << '\n';
+      return 0;
+    }
+  }
+
+  return 1;
 }
 
 class initalization
