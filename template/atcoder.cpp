@@ -33,6 +33,9 @@ using namespace xmaho;
 
 int main()
 {
+  const auto n {get_value<int>()};
+  ll res {0};
+  cout << res << '\n';
   return 0;
 }
 
