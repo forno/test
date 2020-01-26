@@ -213,7 +213,7 @@ template<std::size_t modulo, typename T>
 constexpr xmaho::math::residue_system<modulo, T>&
 xmaho::math::residue_system<modulo, T>::operator*=(const residue_system& rhs) &
   noexcept(noexcept(std::declval<T&>() *= T{}))
-{ if (modulo_value < (value_ *= rhs.value_)) value_ %= modulo_value; return *this; }
+{ (value_ *= rhs.value_) %= modulo_value; return *this; }
 
 template<std::size_t modulo, typename T>
 constexpr xmaho::math::residue_system<modulo, T>&
