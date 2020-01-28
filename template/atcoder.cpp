@@ -2,11 +2,6 @@
 using namespace std;
 using namespace std::literals::chrono_literals;
 using namespace std::literals::string_literals;
-using ll = long long;
-
-#define repi(i, s, n) for (long long i {s}, i##_len{n}; i < i##_len; ++i)
-#define rep(i, n) repi(i, 0, n)
-#define all(x) std::begin(x), std::end(x)
 
 namespace xmaho
 {
@@ -18,24 +13,10 @@ template<typename C>
 C get_container(std::istream& is = std::cin, typename C::size_type length = std::numeric_limits<typename C::size_type>::max());
 }
 }
-namespace xmaho
-{
-inline namespace integer
-{
-template<typename C>
-constexpr auto ssize(const C& c) noexcept(noexcept(c.size()))
-  -> typename std::common_type<std::ptrdiff_t, typename std::make_signed<decltype(c.size())>::type>::type;
-template <class T, ptrdiff_t N>
-constexpr std::ptrdiff_t ssize(const T (&)[N]) noexcept;
-}
-}
 using namespace xmaho;
 
 int main()
 {
-  const auto n {get_value<int>()};
-  ll res {0};
-  cout << res << '\n';
   return 0;
 }
 
@@ -75,12 +56,3 @@ C xmaho::input::get_container(std::istream& is, typename C::size_type length)
     v.push_back(std::move_if_noexcept(e));
   return v;
 }
-
-template<typename C>
-constexpr auto xmaho::integer::ssize(const C& c) noexcept(noexcept(c.size()))
-  -> typename std::common_type<std::ptrdiff_t, typename std::make_signed<decltype(c.size())>::type>::type
-{ return c.size(); }
-
-template <class T, ptrdiff_t N>
-constexpr std::ptrdiff_t xmaho::integer::ssize(const T (&)[N]) noexcept
-{ return N; }
