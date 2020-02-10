@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
+#include <boost/range/irange.hpp>
+using namespace std::literals;
 using namespace std;
-using namespace std::literals::chrono_literals;
-using namespace std::literals::string_literals;
 
 namespace xmaho
 {
