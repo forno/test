@@ -1,94 +1,62 @@
-namespace xmaho::si
+#include <bits/stdc++.h>
+#include <boost/range/irange.hpp>
+using namespace std::literals;
+using namespace std;
+
+namespace xmaho
 {
-
-template<int M, int K, int S>
-struct Unit {
-  enum {m = M, kg=K, s=S};
-};
-
-using M    = Unit<1,0,0>;
-using Kg   = Unit<0,1,0>;
-using S    = Unit<0,0,1>;
-using MpS  = Unit<1,0,-1>;
-using MpS2 = Unit<1,0,-2>;
-
-template<typename U1, typename U2>
-struct Uplus {
-  using type = Unit<U1::m+U2::m, U1::kg+U2::kg, U1::s+U2::s>;
-};
-
-template<typename U1, typename U2>
-using Unit_plus = typename Uplus<U1, U2>::type;
-
-template<typename U1, typename U2>
-struct Uminus {
-  using type = Unit<U1::m-U2::m, U1::kg-U2::kg, U1::s-U2::s>;
-};
-
-template<typename U1, typename U2>
-using Unit_minus = typename Uplus<U1, U2>::type;
-
-template<typename U, typename T = double>
-struct Quantity {
-  T val;
-  explicit constexpr Quantity(double f) : val{f} {}
-};
-
-template<typename U, typename T>
-constexpr Quantity<U> operator+(Quantity<U, T> lhs, Quantity<U, T> rhs) {
-  return Quantity<U>{lhs.val + rhs.val};
+  inline namespace input
+  {
+    template<typename T>
+      T get_value(std::istream& is = std::cin);
+    template<typename C>
+      C get_container(std::istream& is = std::cin, typename C::size_type length = std::numeric_limits<typename C::size_type>::max());
+  }
 }
+using namespace xmaho;
 
-template<typename U, typename T>
-constexpr Quantity<U, T> operator-(Quantity<U, T> lhs, Quantity<U, T> rhs) {
-  return Quantity<U, T>{lhs.val - rhs.val};
-}
-
-template<typename U1, typename U2, typename T>
-constexpr Quantity<Unit_plus<U1, U2>> operator*(Quantity<U1, T> lhs, Quantity<U2, T> rhs) {
-  return Quantity<Unit_plus<U1, U2>>{lhs.val * rhs.val};
-}
-
-template<typename U1, typename U2, typename T>
-constexpr Quantity<Unit_minus<U1, U2>> operator/(Quantity<U1, T> lhs, Quantity<U2, T> rhs) {
-  return Quantity<Unit_minus<U1, U2>>{lhs.val / rhs.val};
-}
-
-template<typename U, typename T>
-constexpr Quantity<U, T> operator*(Quantity<U, T> lhs, T rhs) {
-  return Quantity<U, T>{lhs.val * rhs};
-}
-
-template<typename U, typename T>
-constexpr Quantity<U, T> operator*(T lhs, Quantity<U, T> rhs) {
-  return Quantity<U, T>{lhs * rhs.val};
-}
-
-template<typename U, typename T>
-constexpr Quantity<U, T> operator/(Quantity<U, T> lhs, T rhs) {
-  return Quantity<U, T>{lhs.val / rhs};
-}
-
-template<typename U, typename T>
-constexpr Quantity<U, T> operator/(T lhs, Quantity<U, T> rhs) {
-  return Quantity<U, T>{lhs / rhs.val};
-}
-
-}
-
-namespace xmaho::literals
+int main()
 {
-inline namespace si_literals
-{
-
-constexpr si::Quantity<si::M, double> operator""_m(long double d) { return si::Quantity<si::M, double>{static_cast<double>(d)}; }
-constexpr si::Quantity<si::Kg, double> operator"" _kg(long double d) { return si::Quantity<si::Kg, double>{static_cast<double>(d)}; }
-constexpr si::Quantity<si::S, double> operator"" _s(long double d) { return si::Quantity<si::S, double>{static_cast<double>(d)}; }
-
-}
-}
-
-int main([[maybe_unused]] int argc, [[maybe_unused]] char** argv)
-{
+  double r;
+  cin >> r;
+  cout << (2.0 * r * 3.14159) << endl;
   return 0;
 }
+
+class initalization
+{
+  class custom_numpunct: public std::numpunct<char>
+  {
+    public:
+      using numpunct::numpunct;
+    protected:
+      std::string do_truename() const override { return "Yes"; }
+      std::string do_falsename() const override { return "No"; }
+  };
+
+  public:
+  initalization()
+  {
+    std::ios_base::sync_with_stdio(false);
+    std::cin.tie(nullptr);
+    std::cout.imbue(std::locale(std::cout.getloc(), new custom_numpunct{}));
+    std::cout << std::boolalpha << std::fixed << std::setprecision(15);
+  }
+} initalize;
+
+  template<typename T>
+T xmaho::input::get_value(std::istream& is)
+{ T v {}; is >> v; return v; }
+
+  template<typename C>
+C xmaho::input::get_container(std::istream& is, typename C::size_type length)
+{
+  C v {};
+  if (length != std::numeric_limits<typename C::size_type>::max())
+    v.reserve(length);
+  typename C::value_type e {};
+  for (auto i {length}; i != 0 && is >> e; --i)
+    v.push_back(std::move_if_noexcept(e));
+  return v;
+}
+
