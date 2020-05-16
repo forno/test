@@ -5,11 +5,6 @@ set(CMAKE_CXX_STANDARD          20  CACHE STRING "CXX standard version")
 set(CMAKE_CXX_STANDARD_REQUIRED ON  CACHE BOOL   "version required")
 set(CMAKE_CXX_EXTENSIONS        OFF CACHE BOOL   "compiler extension")
 
-find_package(Boost   REQUIRED COMPONENTS system)
-find_package(Eigen3  REQUIRED)
-find_package(OpenSSL REQUIRED)
-find_package(Threads REQUIRED)
-
 set(Clang_WARN_OPTIONS
   -Weverything
   -Wno-c++98-compat
@@ -65,7 +60,7 @@ add_compile_options(
 )
 
 add_executable(executable src/main.cpp)
-target_link_libraries(executable Threads::Threads OpenSSL::SSL Boost::system Eigen3::Eigen)
+target_link_libraries(executable)
 
 add_custom_target(run
   COMMAND executable < ${CMAKE_SOURCE_DIR}/input
