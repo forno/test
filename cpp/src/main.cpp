@@ -1,5 +1,5 @@
 #include <bits/stdc++.h>
-#include <boost/range/irange.hpp>
+//#include <boost/range/irange.hpp>
 using namespace std::literals;
 using namespace std;
 
@@ -17,35 +17,7 @@ using namespace xmaho;
 
 int main()
 {
-  const auto N {get_value<unsigned long>(cin)};
-  const auto K {get_value<unsigned long>(cin)};
-  auto A {get_container<vector<unsigned long>>(cin, N)};
-
-  vector<unsigned long> footprints(N);
-
-  auto pos {0ul};
-  for (auto i {0ul}; i < K; ++i) {
-    if (footprints[pos] == 0) {
-      footprints[pos] = i + 1;
-      pos = A[pos] - 1;
-    } else {
-      const auto loop_length {i + 1 - footprints[pos]};
-      if (loop_length > 1) {
-        const auto left_count {K - i};
-        const auto surplus_left_count {left_count % loop_length};
-        const auto it {find(footprints.begin(), footprints.end(), surplus_left_count + footprints[pos])};
-        pos = distance(footprints.begin(), it);
-        cerr << "i, loop_length: " << i << ' ' << loop_length << '\n';
-        cerr << "left_count: " << left_count << '\n';
-        cerr << "surplus_left_count: " << surplus_left_count << '\n';
-        cerr << "pos: " << pos << '\n';
-      }
-      break;
-    }
-  }
-
-  cout << pos + 1 << '\n';
-
+  std::cout << "Hello world!" << std::endl;
   return 0;
 }
 
