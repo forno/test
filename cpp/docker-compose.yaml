@@ -1,0 +1,8 @@
+version: '3.8'
+services:
+  app:
+    image: gcc
+    command: sh -c 'g++ -o executable src/main.cpp && ./executable'
+    working_dir: /usr/src/myapp
+    volumes:
+      - ./:/usr/src/myapp
