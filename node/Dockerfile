@@ -1,6 +1,5 @@
 FROM node
 
-RUN npm install moment
 COPY . .
 
 EXPOSE 8888

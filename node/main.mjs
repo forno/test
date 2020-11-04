@@ -1,11 +1,22 @@
-import moment from 'moment';
+import https from 'https';
 
-const now = moment();
-const startThisMonth = now.startOf('month');
-console.log(now.toDate());
-console.log(startThisMonth.toDate());
-const diff = now.diff(startThisMonth);
-console.log(diff);
-const duration = moment.duration(diff);
-console.log(duration.asMonths());
-console.log(duration.as('month'));
+const options = {
+  hostname: 'encrypted.google.com',
+  port: 443,
+  path: '/',
+  method: 'GET'
+};
+
+const req = https.request(options, (res) => {
+  console.log('statusCode:', res.statusCode);
+  console.log('headers:', res.headers);
+
+  res.on('data', (d) => {
+    process.stdout.write(d);
+  });
+});
+
+req.on('error', (e) => {
+  console.error(e);
+});
+req.end();
