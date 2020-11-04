@@ -1,22 +1,7 @@
-import https from 'https';
+import readline from "readline";
 
-const options = {
-  hostname: 'encrypted.google.com',
-  port: 443,
-  path: '/',
-  method: 'GET'
-};
+const inout = readline.createInterface(process.stdin, process.stdout);
 
-const req = https.request(options, (res) => {
-  console.log('statusCode:', res.statusCode);
-  console.log('headers:', res.headers);
-
-  res.on('data', (d) => {
-    process.stdout.write(d);
-  });
-});
-
-req.on('error', (e) => {
-  console.error(e);
-});
-req.end();
+inout.on('line', (line) => {
+  console.log(line);
+})
