@@ -25,7 +25,7 @@ int main()
 
   const auto test_ochinchin = [&get_dice](auto)
   {
-    unordered_map<int, uint> dice_count{};
+    array<uint, 6> dice_count{};
 
     for (const auto dice : views::iota(0, 5) | views::transform(get_dice))
     {
