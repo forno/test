@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "wpapi": "^1.2.2"
+  }
+}
